@@ -5,10 +5,11 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
 
-// The specification file lives OUTSIDE this project folder (one level up). If it is not there (for example
-// on a fresh copy of the project) the check is skipped instead of failing.
-const mdPath = path.join(__dirname, '..', '..', 'THÍ NGHIỆM 1909.md');
-const hasMd = fs.existsSync(mdPath);
+// Where the specification is: first the ORIGINAL (one level above this project folder – always the newest),
+// otherwise the COPY kept inside the project (docs/). If neither exists the check is skipped instead of failing.
+const specName = 'THÍ NGHIỆM 1909.md';
+const mdPath = [path.join(__dirname, '..', '..', specName), path.join(__dirname, '..', 'docs', specName)].find((p) => fs.existsSync(p));
+const hasMd = !!mdPath;
 const md = !hasMd ? '' : fs.readFileSync(mdPath, 'utf8')
   .replace(/\\([\\`*_{}\[\]()#+\-.!|<>~])/g, '$1')       // Markdown escapes such as "Chính xác\!"
   .replace(/\*\*/g, '')                                   // bold markers are formatting, not text
@@ -23,7 +24,7 @@ function strings(obj, trail, out) {
 
 const dir = path.join(__dirname, '..', 'js', 'content');
 fs.readdirSync(dir).filter((f) => f.endsWith('.vi.js')).forEach((file) => {
-  test(file + ': every "md" string is in the md file', { skip: hasMd ? false : 'the specification file "THÍ NGHIỆM 1909.md" is not next to this folder' }, () => {
+  test(file + ': every "md" string is in the md file', { skip: hasMd ? false : 'the specification file "THÍ NGHIỆM 1909.md" was not found (neither above this folder nor in docs/)' }, () => {
     global.window = global; global.Lab = { content: {} };
     delete require.cache[require.resolve(path.join(dir, file))];
     require(path.join(dir, file));
