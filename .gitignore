@@ -1,5 +1,6 @@
 # Local tool settings (Claude Code preview server) – personal, not part of the website
-.claude/
+.claude/launch.json
+.claude/settings.local.json
 
 # Generated helper page – rebuild it with:  node tools/make-shots-page.mjs
 tests/shots.html
