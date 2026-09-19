@@ -138,6 +138,7 @@ a.btn { display: block; text-align: center; text-decoration: none; line-height: 
 .thermo.locked .lcd-value { opacity: .72; }
 .thermo-note { min-height: 0; margin-top: 8px; font-size: 14px; font-weight: 700; color: var(--tertiary); text-align: center; display: none; }
 .thermo-note.show { display: block; }
+.thermo-gap { height: 2px; margin: 12px 0 10px; background: #e2ebe2; border-radius: 1px; }
 
 .cond-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .cond-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 10px; border-radius: 12px; background: #f1f6f1; font-size: 15px; font-weight: 800; }
@@ -153,6 +154,7 @@ a.btn { display: block; text-align: center; text-decoration: none; line-height: 
 .tab.active { color: #fff; background: linear-gradient(#3ec4ff, #0093e0); box-shadow: 0 3px 0 #006ea8, 0 6px 12px rgba(0, 0, 0, .15); }
 .panel-card.conclusion { padding: 10px 14px; background: rgba(233, 246, 234, .95); }
 .panel-card.conclusion .result-note { margin: 0; color: var(--primary); }
+.panel-card.conclusion .keywords { font-size: 12.5px; }
 .info-table, .result-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 16px; }
 .result-table { font-size: 15px; }
 .result-table th:nth-child(1) { width: 21%; } .result-table th:nth-child(2) { width: 34%; }
@@ -170,6 +172,22 @@ a.btn { display: block; text-align: center; text-decoration: none; line-height: 
 .result-note { margin: 10px 2px 0; font-size: 15px; font-weight: 700; color: var(--ink-soft); line-height: 1.35; }
 .obs-list { margin: 8px 0 0; padding-left: 20px; font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--ink); }
 .obs-list li { margin: 2px 0; }
+.tabs.three .tab { padding: 10px 4px; font-size: 14px; }
+.r3 .panel-card { padding: 10px 12px; }
+.r3 .result-table th, .r3 .result-table td { padding: 4px 8px; }
+.r3 .panel-card.conclusion { padding: 8px 12px; }
+.r3 .panel-card.conclusion .result-note { font-size: 14px; line-height: 1.3; }
+.result-note.strong { color: var(--ink); font-size: 16px; }
+.keywords { margin: 8px 2px 0; font-size: 13.5px; font-weight: 800; color: var(--tertiary); letter-spacing: .2px; line-height: 1.4; }
+.result-table.analysis td:last-child { font-weight: 700; color: var(--ink-soft); }
+.done-card { text-align: center; }
+.done-title { font-size: 26px; font-weight: 800; color: var(--primary); line-height: 1.15; }
+.done-sub { margin: 6px 0 12px; font-size: 15px; font-weight: 800; color: var(--secondary); letter-spacing: .3px; }
+.done-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 6px; text-align: left; }
+.done-list li { display: flex; align-items: center; gap: 10px; padding: 6px 12px; border-radius: 14px; background: #f1f6f1; font-weight: 800; font-size: 16px; }
+.done-list .ic { font-size: 24px; width: 30px; text-align: center; }
+.done-list .tx { flex: 1; }
+.done-list .ok { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; color: #fff; background: var(--primary-c); }
 .obs-head { margin: 12px 0 2px; font-size: 14px; font-weight: 800; color: var(--tertiary); text-transform: uppercase; letter-spacing: .4px; }
 
 /* ---------- labels over the 3D scene ---------- */
@@ -180,13 +198,13 @@ a.btn { display: block; text-align: center; text-decoration: none; line-height: 
 .tag3d.b { border-color: var(--tertiary-c); }
 .tag3d.clickable { pointer-events: auto; cursor: pointer; }
 .tag3d.clickable:hover { filter: brightness(1.05); }
-.tag3d.card-tag { white-space: normal; border-radius: 18px; padding: 8px 10px 10px; width: 212px; }
+.tag3d.card-tag { white-space: normal; border-radius: 18px; padding: 8px 10px 10px; width: 232px; }
 .tag3d .ct { font-size: 14px; letter-spacing: .3px; text-align: center; margin-bottom: 5px; color: var(--primary); }
 .tag3d.b .ct { color: var(--tertiary); }
 .tag3d .cond-list { gap: 3px; }
 .tag3d .cond-row { padding: 1px 10px 1px 9px; font-size: 12.5px; }
 .tag3d .cond-row .mark { width: 19px; height: 19px; font-size: 11.5px; }
-.tag3d .cond-row.num .mark { padding-right: 0; }
+.tag3d .cond-row.num .mark { padding-right: 0; width: auto; }
 .tag3d .ct { margin-bottom: 4px; font-size: 13.5px; }
 
 /* ---------- toasts, captions, dialogs ---------- */
@@ -255,6 +273,9 @@ canvas.confetti { position: fixed; inset: 0; z-index: 80; pointer-events: none; 
   .card-label { font-size: 12.5px; }
   #panel { width: 244px; }
   .lcd-value { font-size: 30px; }
+  .tag3d.card-tag { width: 192px; padding: 6px 8px 8px; }
+  .tag3d .ct { font-size: 12px; letter-spacing: 0; }
+  .tag3d .cond-row { font-size: 11.5px; }
 }
 @media (max-height: 800px) {
   #tray { padding: 8px; }

@@ -53,6 +53,7 @@
     tick: function (t) { tone(300, t, 0.07, 'triangle', 0.14, 240); },
     water: function (t) { noise(t, 1.6, 0.16, 1400, 4200); },
     pour: function (t) { noise(t, 1.1, 0.12, 600, 2200); },
+    chirp: function (t) { tone(2300, t, 0.07, 'sine', 0.09, 3100); tone(2700, t + 0.11, 0.07, 'sine', 0.08, 3400); },
     step: function (t) { tone(523, t, 0.14, 'sine', 0.2); tone(659, t + 0.1, 0.14, 'sine', 0.2); tone(784, t + 0.2, 0.24, 'sine', 0.2); },
     done: function (t) {
       [523, 659, 784, 1047, 1319].forEach(function (f, i) { tone(f, t + i * 0.13, 0.32, 'sine', 0.2); });

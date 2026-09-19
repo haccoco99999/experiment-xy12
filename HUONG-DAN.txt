@@ -5,7 +5,8 @@ Phòng thí nghiệm sân vườn là trang web thí nghiệm khoa học cho h�
 Thí nghiệm hiện có
 
 Thí nghiệm 1 đã xong: các yếu tố cần thiết cho sự sống và phát triển của thực vật (cây đậu xanh).
-Thí nghiệm 2 đến 8 chưa làm. Trên trang chủ, các thẻ này ghi "Sắp có".
+Thí nghiệm 3 đã xong: 5 yếu tố cần thiết cho sự sống của động vật (gà con).
+Thí nghiệm 2 và thí nghiệm 4 đến 8 chưa làm. Trên trang chủ, các thẻ này ghi "Sắp có".
 
 Cách mở
 
@@ -39,23 +40,43 @@ Nút "LÀM LẠI THÍ NGHIỆM" nằm ở góc dưới bên phải và dùng đ�
 
 Thanh trên cùng có ba nút: ngôi nhà về trang chủ, dấu hỏi mở hướng dẫn, chiếc loa bật hoặc tắt âm thanh.
 
+Cách chơi thí nghiệm 3
+
+Có hai chuồng gà con. Chuồng 1 (viền xanh lá) là chuồng đối chứng: luôn có thức ăn, nước và đèn bật sáng, không có nắp, giữ 37°C. Học sinh chỉ quan sát chuồng 1. Học sinh thay đổi điều kiện của chuồng 2 (viền cam) rồi so sánh hai chuồng sau 7 ngày.
+
+1. Kéo "Chuồng 1" và "Chuồng 2" từ khay bên trái, thả lên bàn thí nghiệm. Mỗi chuồng tự vào đúng chỗ: chuồng 1 bên trái, chuồng 2 bên phải. Chuồng 1 có sẵn khay thức ăn, bát nước và đèn.
+2. Kéo "Gà con A" vào chuồng 1 và "Gà con B" vào chuồng 2. Thả sai chỗ thì gà quay về khay kèm một lời nhắc. Phải đặt đủ hai chuồng trước khi đặt gà.
+3. Khi hai gà đã vào chuồng, kéo khay thức ăn, bát nước, đèn chiếu sáng và nắp chuồng vào chuồng 2, theo thứ tự tùy ý. Món nào không kéo vào thì chuồng 2 thiếu yếu tố đó. Nắp làm chuồng 2 kín, thiếu O₂, kính mờ đi và có hơi nước. Trước khi bắt đầu quan sát, nhấp vào nắp để mở lại. Các dụng cụ khác không lấy ra được. Muốn làm lại từ đầu, bấm "LÀM LẠI THÍ NGHIỆM". Dụng cụ thả vào chuồng 1 hoặc thả ra ngoài chuồng sẽ quay về khay kèm một lời nhắc.
+4. Nút trừ và nút cộng của chuồng 2 đổi nhiệt độ mỗi lần 1°C, trong khoảng 0 đến 60°C, bắt đầu từ 37°C. Giữ nút để đổi nhanh. Theo bảng nhiệt độ của tài liệu, gà khỏe ở 32 đến 35°C. Bấm nút của chuồng 1 thì nhiệt độ không đổi và hiện dòng chữ "Nhiệt độ chuồng 1 được giữ cố định ở 37°C."
+5. Bấm "BẮT ĐẦU QUAN SÁT", rồi bấm "BẮT ĐẦU" trong hộp xác nhận. Bấm "HỦY" thì quay lại bước thiết lập. Sau khi bắt đầu, không đổi được điều kiện nữa.
+6. Màn hình hiện lần lượt "NGÀY 1" đến "NGÀY 7". Gà đổi cách sinh hoạt theo điều kiện của chuồng. Chuồng thiếu nhiều yếu tố thì các biểu hiện xuất hiện cùng lúc.
+7. Sau ngày 7, màn hình hiện "KẾT QUẢ THÍ NGHIỆM". Bảng bên phải có ba thẻ. Thẻ "So sánh" có bảng so sánh hai chuồng và kết luận. Thẻ "Phân tích" cho biết chuồng 2 được thiết lập thế nào, gà làm gì và mỗi yếu tố ảnh hưởng ra sao. Thẻ "Hoàn thành" ghi 5 yếu tố cần thiết và kết luận cuối.
+
+Nút nhiệt độ của chuồng 2 và nút "BẮT ĐẦU QUAN SÁT" bị khóa cho đến khi hai gà vào chuồng.
+
+Nhấp vào Gà con A hoặc Gà con B (trong khay hoặc trong chuồng) để xem bảng thông tin: độ tuổi, cân nặng, giới tính, màu lông, giống loài và tình trạng sức khỏe. Xem bảng không làm đổi thí nghiệm.
+
+Cân nặng của chuồng 1 (65g lên 75g) lấy từ tài liệu đặc tả. Cân nặng của chuồng 2 là số ước tính, nằm trong bảng WEIGHT_AFTER của tệp js/logic/exp3.js.
+
+Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1.
+
 Âm thanh
 
-Trang phát âm thanh nhẹ khi thả dụng cụ, đổi nhiệt độ, sang ngày mới và khi xong thí nghiệm. Trình duyệt chỉ cho phát âm thanh sau lần bấm đầu tiên trên trang.
+Trang phát âm thanh nhẹ khi thả dụng cụ, đổi nhiệt độ, sang ngày mới và khi xong thí nghiệm. Thí nghiệm 3 có thêm tiếng gà con kêu khi gà vào chuồng và thỉnh thoảng trong lúc quan sát. Trình duyệt chỉ cho phép phát âm thanh sau lần bấm đầu tiên trên trang.
 
 Cách sửa chữ
 
-Chữ của từng thí nghiệm nằm trong thư mục js/content. Với thí nghiệm 1, mở tệp js/content/exp1.vi.js bằng Notepad, sửa chữ nằm giữa hai dấu nháy, lưu tệp ở dạng UTF-8, rồi bấm F5 trong trình duyệt để xem kết quả.
+Chữ của từng thí nghiệm nằm trong thư mục js/content. Với thí nghiệm 1, mở tệp js/content/exp1.vi.js. Với thí nghiệm 3, mở tệp js/content/exp3.vi.js. Mở tệp bằng Notepad, sửa chữ nằm giữa hai dấu nháy, lưu tệp ở dạng UTF-8, rồi bấm F5 trong trình duyệt để xem kết quả.
 
 Tệp có hai nhóm. Nhóm "md" gồm các câu chép nguyên văn từ tài liệu đặc tả. Nhóm "app" gồm các câu phụ mà tài liệu đặc tả không có.
 
-Chữ ở trang chủ và ở các nút chung nằm trong js/core/app.js, js/core/ui.js và index.html. Một vài nhãn nhỏ khác nằm ngay trong js/experiments/exp1.js và js/models/tools.js.
+Chữ ở trang chủ và ở các nút chung nằm trong js/core/app.js, js/core/ui.js và index.html. Một vài nhãn nhỏ khác nằm ngay trong js/experiments/exp1.js, js/experiments/exp3.js và js/models/tools.js.
 
 Cách đổi quy tắc nhiệt độ
 
 Mở tệp js/logic/temperature-bands.js. Tệp có một bảng nhỏ gồm 5 khoảng nhiệt độ: 0 đến 27°C, 28 đến 31°C, 32 đến 35°C, 36 đến 39°C và 40 đến 60°C. Bảng hiện đúng như tài liệu đặc tả. Tài liệu đó tự mâu thuẫn ở vài chỗ, xem SPEC-NOTES.md.
 
-Đổi số trong bảng thì kết quả thí nghiệm đổi theo. Các khoảng nhiệt độ hiện cho học sinh xem nằm riêng trong js/content/exp1.vi.js (phần "temp" của nhóm "md"), nên cần sửa thêm ở đó cho khớp.
+Đổi số trong bảng thì kết quả của thí nghiệm 1 và của chuồng 2 trong thí nghiệm 3 đổi theo. Chuồng 1 của thí nghiệm 3 không dùng bảng này và luôn khỏe. Các khoảng nhiệt độ hiện cho học sinh xem nằm riêng trong js/content/exp1.vi.js và js/content/exp3.vi.js (phần "temp" của nhóm "md"), nên cần sửa thêm ở đó cho khớp.
 
 Nếu không thấy hình 3D
 

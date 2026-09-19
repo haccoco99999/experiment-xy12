@@ -123,6 +123,8 @@
     },
     clearTickers: function () { tickers.length = 0; },
     tickerCount: function () { return tickers.length; },
+    /* runs every ticker once with a fixed step – used by the test pages, which drive time by hand */
+    tickAll: function (dt, time) { for (var i = 0; i < tickers.length; i++) tickers[i].fn(dt, time); },
     frames: function () { return frames; }
   };
 })(window.Lab);

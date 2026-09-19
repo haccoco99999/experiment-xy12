@@ -206,6 +206,23 @@
     var t = tex(c); t.wrapS = t.wrapT = T.RepeatWrapping; return t;
   }
 
+  /* Wood shavings for the chick cage floor. */
+  function drawBedding() {
+    var S = 256, c = mk(S, S), g = c.getContext('2d'), R = U.rng(41);
+    g.fillStyle = '#e3c789'; g.fillRect(0, 0, S, S);
+    var cols = ['#f3dfa8', '#cfae6a', '#ecd396', '#b9964f', '#f7e8be'];
+    g.lineCap = 'round';
+    for (var i = 0; i < 620; i++) {
+      var x = R() * S, y = R() * S, len = 10 + R() * 22, a = R() * 6.283;
+      g.strokeStyle = cols[(R() * cols.length) | 0]; g.globalAlpha = 0.55 + R() * 0.4; g.lineWidth = 1.2 + R() * 2.2;
+      g.beginPath(); g.moveTo(x, y);
+      g.quadraticCurveTo(x + Math.cos(a) * len * 0.5 + (R() - 0.5) * 8, y + Math.sin(a) * len * 0.5 + (R() - 0.5) * 8, x + Math.cos(a) * len, y + Math.sin(a) * len);
+      g.stroke();
+    }
+    g.globalAlpha = 1;
+    return tex(c, { repeat: [2, 2] });
+  }
+
   /* Text painted on a texture (labels on bags, etc.). Call after fonts are ready. */
   function textTexture(lines, o) {
     o = o || {};
@@ -243,7 +260,8 @@
       soil: function (state, kind) { return once('soil' + state + (kind || 'face'), function () { return drawSoil(state, kind || 'face'); }); },
       terracotta: function () { return once('terra', function () { return drawNoise(21, '#e9e9e9', 0.5); }); },
       plastic: function () { return once('plastic', function () { return drawNoise(33, '#f2f2f2', 0.25); }); },
-      condensation: function () { return once('cond', drawCondensation); }
+      condensation: function () { return once('cond', drawCondensation); },
+      bedding: function () { return once('bedding', drawBedding); }
     }
   };
 })(window.Lab);
