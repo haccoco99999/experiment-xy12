@@ -1,0 +1,15 @@
+# One line-ending style (LF) for every assistant and every machine.
+# This stops the "LF will be replaced by CRLF" warnings and noisy diffs.
+* text=auto eol=lf
+
+# Files that must never be converted
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.mp3 binary
+*.ogg binary
+*.glb binary

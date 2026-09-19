@@ -82,6 +82,19 @@ Nếu không thấy hình 3D
 
 Nếu trang báo "Máy chưa mở được màn hình 3D", mở lại bằng Google Chrome hoặc Microsoft Edge bản mới nhất. Nếu vẫn báo, nhờ người quản trị máy bật tăng tốc phần cứng (hardware acceleration) trong trình duyệt. Trên máy tính bảng, giữ máy nằm ngang.
 
+Dùng nhiều trợ lý AI trong cùng thư mục
+
+Có thể cho nhiều trợ lý AI (Claude, Codex, Antigravity) lần lượt làm việc trong thư mục này. Mỗi lần chỉ một trợ lý làm việc, vì các thí nghiệm cùng sửa vài tệp chung như index.html và HUONG-DAN.txt.
+
+1. Mở thư mục D:\Code\Thí nghiệm\v5 trong ứng dụng của trợ lý đó.
+2. Bảo trợ lý đọc AGENTS.md và HANDOFF.md trước khi làm. Lần đầu dùng một trợ lý mới, dán câu thử trong HANDOFF.md (mục "First-time check for each new assistant") để xem trợ lý có đọc đúng quy tắc không.
+3. Khi xong, trợ lý ghi việc đã làm và việc kế tiếp vào đầu phần nhật ký trong HANDOFF.md.
+4. Chỉ sau đó mới mở trợ lý khác.
+
+Quy tắc nằm trong AGENTS.md. CLAUDE.md có một dòng nạp AGENTS.md, và GEMINI.md là bản sao nguyên văn của AGENTS.md. Tài liệu của Codex và Antigravity nói cả hai đọc AGENTS.md, nhưng hai công cụ này chưa được thử trên thư mục này.
+
+Nếu sửa AGENTS.md hoặc một skill trong .claude/skills, trợ lý chạy lệnh "node tools/sync-skills.mjs" để các bản sao giống bản gốc. Một bài kiểm tra báo lỗi nếu chúng khác nhau.
+
 Trong thư mục có gì
 
 index.html: tệp duy nhất cần mở.
@@ -90,7 +103,11 @@ js: mã chương trình. Thư mục js/content chứa chữ của từng thí ng
 vendor: thư viện 3D three.js. Không sửa thư mục này.
 docs: bản sao tài liệu đặc tả "THÍ NGHIỆM 1909.md".
 SPEC-NOTES.md: các chỗ tài liệu đặc tả mâu thuẫn hoặc còn thiếu, và cách đã xử lý.
-CLAUDE.md: quy tắc làm việc cho trợ lý AI.
-.claude/skills: ba skill cho trợ lý AI. web-design-guidelines và frontend-design nói về thiết kế giao diện, nguồn của hai skill này ghi trong .claude/skills/SOURCES.md. frontend-pr-generator đọc thay đổi trong git rồi viết tiêu đề commit tiếng Việt và mô tả Pull Request.
+AGENTS.md: quy tắc làm việc chung cho mọi trợ lý AI (Claude, Codex, Antigravity).
+CLAUDE.md: một dòng nạp AGENTS.md, cùng ghi chú riêng cho Claude.
+GEMINI.md: bản sao nguyên văn của AGENTS.md.
+HANDOFF.md: ghi chú bàn giao giữa các trợ lý AI: việc đã xong, việc kế tiếp, câu hỏi còn mở.
+.claude/skills: bốn skill cho trợ lý AI. web-design-guidelines và frontend-design nói về thiết kế giao diện. humanizer là hướng dẫn viết văn tự nhiên, dùng khi viết HUONG-DAN.txt. Nguồn của ba skill này ghi trong .claude/skills/SOURCES.md. frontend-pr-generator đọc thay đổi trong git rồi viết tiêu đề commit tiếng Việt và mô tả Pull Request.
+.agents/skills: bản sao của .claude/skills, dành cho Codex và Antigravity.
 .claude/commands: lệnh gõ nhanh cho trợ lý AI. Gõ /pr hoặc /generate-pr để chạy skill frontend-pr-generator.
 tests và tools: dành cho người lập trình, có thể bỏ qua.
