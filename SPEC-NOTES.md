@@ -3,6 +3,9 @@
 Findings from reviewing the file, and what was done about each. New findings are added while each
 experiment is built.
 
+A copy of the specification (a snapshot of the original) is kept in `docs/THÍ NGHIỆM 1909.md`; the line numbers below
+refer to it. If you change the original, copy it into `docs/` again so the two stay the same.
+
 ## Decisions taken by you
 - Scope: all 8 experiments. Look: 3D with three.js. Temperature contradictions: **follow the md exactly**.
 
