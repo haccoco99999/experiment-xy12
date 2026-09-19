@@ -1,0 +1,53 @@
+PHÒNG THÍ NGHIỆM SÂN VƯỜN  –  HƯỚNG DẪN / GUIDE
+================================================
+
+HOW TO OPEN (no installation, no internet needed)
+-------------------------------------------------
+1. Open the folder "v5".
+2. Double-click the file  index.html
+   It opens in your web browser (Google Chrome or Microsoft Edge work best).
+3. Click "Bắt đầu" on an experiment card and drag the tools from the tray on the left onto the table.
+
+CÁCH MỞ (bằng tiếng Việt)
+   Nhấp đúp vào tệp  index.html  – trang web sẽ mở bằng Chrome hoặc Edge, không cần cài đặt, không cần mạng.
+
+HOW TO SHARE
+------------
+Copy the whole "v5" folder (or zip it) and send it. Whoever receives it just double-clicks index.html.
+(Later a single-file version will be added: Thi-nghiem-tat-ca-trong-1-file.html)
+
+WHAT IS INSIDE
+--------------
+index.html       the only file you need to open
+css/             colours, fonts and layout
+js/              the program
+  content/       ALL the Vietnamese texts (see below)
+  logic/         the rules of each experiment (see below)
+  models/        the 3D objects (pots, plants, tools…)
+  experiments/   how each experiment is put together
+vendor/          three.js (the free 3D library) – do not change
+tests/, tools/   for developers only – you can ignore them
+SPEC-NOTES.md    problems found in the specification file, and how they were handled
+
+TO CHANGE A TEXT
+----------------
+Open  js/content/exp1.vi.js  with Notepad (or any text editor). The texts are between quotation marks.
+Change the words, save, then refresh the page (F5).
+  • "md:"  = sentences copied word for word from your specification file.
+  • "app:" = small helper sentences that the specification does not contain.
+
+TO CHANGE THE TEMPERATURE RULES
+-------------------------------
+Open  js/logic/temperature-bands.js  – there is ONE small table (0–27, 28–31, 32–35, 36–39, 40–60 °C).
+It is currently exactly the table of your specification (which contradicts itself in places –
+see SPEC-NOTES.md). Change the numbers there and every experiment follows.
+
+IF THE 3D PICTURE DOES NOT APPEAR
+---------------------------------
+• Use the latest Google Chrome or Microsoft Edge.
+• On school computers, ask the administrator to make sure "hardware acceleration" / WebGL is enabled.
+• Tablets: hold the device sideways (landscape).
+
+SOUND
+-----
+Small gentle sounds (right / wrong / step done / all done). Use the speaker button at the top right to switch them off.

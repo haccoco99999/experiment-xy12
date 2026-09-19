@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#4caf50">
+  <title>Phòng thí nghiệm sân vườn</title>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body data-screen="home">
+<div id="app">
+
+  <!-- Trang chủ: chọn thí nghiệm -->
+  <main id="home" class="screen" aria-label="Chọn thí nghiệm"></main>
+
+  <!-- Phòng thí nghiệm (3D + giao diện) -->
+  <main id="lab" class="screen" hidden>
+    <div id="stage" aria-hidden="true"></div>
+    <div id="hud">
+      <header id="topbar">
+        <button id="btn-home" class="btn btn-ghost btn-icon" aria-label="Về trang chủ" title="Về trang chủ">🏠</button>
+        <h1 id="lab-title"></h1>
+        <div class="topbar-tools">
+          <button id="btn-help" class="btn btn-ghost btn-icon" aria-label="Hướng dẫn" title="Hướng dẫn">❓</button>
+          <button id="btn-sound" class="btn btn-ghost btn-icon" aria-label="Âm thanh" title="Âm thanh">🔊</button>
+        </div>
+      </header>
+      <nav id="progress" aria-label="Tiến trình thí nghiệm"></nav>
+      <aside id="tray" aria-label="Khay dụng cụ"></aside>
+      <aside id="panel" class="hidden"></aside>
+      <div id="labels"></div>
+      <div id="zones"></div>
+      <div id="toasts" aria-live="polite"></div>
+      <div id="caption"></div>
+      <button id="btn-reset" class="btn btn-orange btn-reset"><span class="ico">↺</span> LÀM LẠI THÍ NGHIỆM</button>
+    </div>
+  </main>
+
+  <div id="modal-root"></div>
+
+  <div id="fallback" class="overlay-msg" hidden>
+    <div class="overlay-card">
+      <div class="big">😕</div>
+      <h2>Máy chưa mở được màn hình 3D</h2>
+      <p>Em hãy nhờ thầy cô mở trang này bằng trình duyệt Google Chrome hoặc Microsoft Edge mới nhất nhé.</p>
+      <button class="btn" id="btn-fallback-home">Về trang chủ</button>
+    </div>
+  </div>
+
+  <div id="rotate-hint" class="overlay-msg">
+    <div class="overlay-card"><div class="big">📱↻</div><h2>Hãy xoay ngang màn hình</h2><p>Thí nghiệm hiển thị đẹp nhất khi màn hình nằm ngang.</p></div>
+  </div>
+</div>
+
+<script src="vendor/three.classic.js"></script>
+<script src="js/core/lab.js"></script>
+<script src="js/core/tween.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/three/mat.js"></script>
+<script src="js/three/prim.js"></script>
+<script src="js/three/stage.js"></script>
+<script src="js/three/env.js"></script>
+<script src="js/three/fx.js"></script>
+<script src="js/three/labels.js"></script>
+<script src="js/core/dragdrop.js"></script>
+<script src="js/core/ui.js"></script>
+<!-- 3D models -->
+<script src="js/models/plants.js"></script>
+<script src="js/models/tools.js"></script>
+<!-- logic + texts (pure, no 3D) -->
+<script src="js/logic/temperature-bands.js"></script>
+<script src="js/logic/exp1.js"></script>
+<script src="js/content/exp1.vi.js"></script>
+<!-- experiments -->
+<script src="js/experiments/exp1.js"></script>
+<script src="js/core/app.js"></script>
+</body>
+</html>

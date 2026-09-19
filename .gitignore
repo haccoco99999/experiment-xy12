@@ -1,0 +1,11 @@
+# Local tool settings (Claude Code preview server) – personal, not part of the website
+.claude/
+
+# Generated helper page – rebuild it with:  node tools/make-shots-page.mjs
+tests/shots.html
+
+# Operating-system / editor leftovers
+Thumbs.db
+.DS_Store
+desktop.ini
+node_modules/
