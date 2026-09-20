@@ -82,7 +82,7 @@ Done so far: Experiments 1 and 3. Next: 2 and 4 (two topics), then 5 to 8 (stage
 ## Git
 
 - Branch `main`. Commit only when the user asks. Never push unless the user asks. Never force-push.
-- Add files by name. Never use `git add -A`. Never add `docs/`: it holds the specification copy the user chose not to publish.
+- Add files by name. Never use `git add -A`. `docs/` holds the copy of the specification. The user decided on 2026-09-20 to publish it, so it is tracked like any other file.
 - Many experiments touch the same files (`index.html`, `css/app.css`, `HUONG-DAN.txt`, `SPEC-NOTES.md`, `HANDOFF.md`, `js/core`, `js/three`). This is why only one assistant works at a time.
 
 ## Skills
