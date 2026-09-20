@@ -83,6 +83,35 @@
     return { stop: function () { remove(); scene.remove(group); geo.dispose(); mat.dispose(); } };
   }
 
+  /* Little beads travelling again and again along a path (water and minerals up the plant, gases in and out).
+     o: {points:[Vector3…] in world space, color, size, count, speed (units per second), spread, opacity, seeThrough (drawn on top of solid things)}
+     Returns {setActive(bool), stop()}. It keeps the screen redrawing while it runs, so stop() it when it is not needed. */
+  function flow(scene, o) {
+    var curve = new T.CatmullRomCurve3(o.points, false, 'centripetal'), len = curve.getLength() || 1;
+    var n = o.count || 14, size = o.size || 0.07, spread = o.spread == null ? 0.08 : o.spread, R = U.rng((Math.random() * 1e6) | 0);
+    var geo = new T.SphereGeometry(1, 10, 8);
+    var mat = new T.MeshBasicMaterial({ color: o.color || 0x59bff2, transparent: true, opacity: o.opacity == null ? 0.95 : o.opacity, depthTest: !o.seeThrough, depthWrite: false, fog: false });
+    var im = new T.InstancedMesh(geo, mat, n); im.frustumCulled = false; im.renderOrder = o.seeThrough ? 12 : 3; im.userData.noPick = true;
+    var ph = [], sp = [], off = [], i;
+    for (i = 0; i < n; i++) { ph.push(i / n + R() * 0.03); sp.push(0.85 + R() * 0.3); off.push([(R() - 0.5) * spread, (R() - 0.5) * spread, (R() - 0.5) * spread]); }
+    scene.add(im);
+    var m = new T.Matrix4(), q = new T.Quaternion(), p = new T.Vector3(), s = new T.Vector3(), t0 = R() * 10, active = true, fade = 0;
+    var remove = Lab.loop.add(function (dt) {
+      t0 += dt; fade += ((active ? 1 : 0) - fade) * Math.min(1, dt * 4);
+      for (var j = 0; j < n; j++) {
+        var u = (ph[j] + t0 * (o.speed || 1) * sp[j] / len) % 1;
+        curve.getPointAt(u, p); p.x += off[j][0]; p.y += off[j][1]; p.z += off[j][2];
+        var k = size * fade * Math.min(1, u * 8, (1 - u) * 8) * (0.8 + 0.2 * Math.sin(t0 * 6 + j));
+        s.set(k, k, k); m.compose(p, q, s); im.setMatrixAt(j, m);
+      }
+      im.instanceMatrix.needsUpdate = true;
+    });
+    return {
+      setActive: function (b) { active = !!b; Lab.loop.wake(); },
+      stop: function () { remove(); scene.remove(im); geo.dispose(); mat.dispose(); }
+    };
+  }
+
   /* celebration confetti on a full-screen 2D canvas (removed by Lab.fx.clearAll or when finished) */
   function confetti(ms) {
     var cv = document.createElement('canvas'); cv.className = 'confetti';
@@ -99,5 +128,5 @@
   }
   function clearAll() { U.qsa('canvas.confetti').forEach(function (c) { c.parentNode.removeChild(c); }); }
 
-  Lab.fx = { pour: pour, ringPulse: ringPulse, sparkles: sparkles, ambient: ambient, confetti: confetti, clearAll: clearAll };
+  Lab.fx = { pour: pour, ringPulse: ringPulse, sparkles: sparkles, ambient: ambient, flow: flow, confetti: confetti, clearAll: clearAll };
 })(window.Lab);

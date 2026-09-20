@@ -220,6 +220,7 @@
   S.render = function (dt) {
     if (!S.ok || !S.scene) return;
     S.renderer.render(S.scene, S.camera);
+    if (S.afterRender) S.afterRender(S.renderer);          // the magnifier lens draws its picture on top (js/three/lens.js)
     if (Lab.labels) Lab.labels.update();
     if (Lab.drag && Lab.drag.updateZones) Lab.drag.updateZones();
   };

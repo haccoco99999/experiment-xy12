@@ -33,7 +33,8 @@
     },
 
     /* ----- progress bar: labels ['Đặt cây', …], states ['done'|'active'|'locked', …] ----- */
-    setProgress: function (labels, states) {
+    /* states: 'done' | 'active' | 'locked', or 'open' (can be started, not started yet). titles: optional {state: tooltip text} */
+    setProgress: function (labels, states, titles) {
       var ol = els.progress.firstChild;
       if (!ol || ol.children.length !== labels.length) {
         U.clear(els.progress);
@@ -49,6 +50,7 @@
         dot.textContent = s === 'done' ? '✓' : s === 'locked' ? '🔒' : String(i + 1);
         if (was.indexOf(s) < 0 && s === 'done') li.classList.add('just-done');
         li.setAttribute('aria-current', s === 'active' ? 'step' : 'false');
+        if (titles) li.title = s === 'open' ? '' : (titles[s] || '');
       });
     },
 

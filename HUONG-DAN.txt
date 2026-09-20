@@ -5,8 +5,12 @@ Phòng thí nghiệm sân vườn là trang web thí nghiệm khoa học cho h�
 Thí nghiệm hiện có
 
 Thí nghiệm 1 đã xong: các yếu tố cần thiết cho sự sống và phát triển của thực vật (cây đậu xanh).
+Thí nghiệm 2 đã xong: sự trao đổi khí, nước và chất khoáng của thực vật với môi trường (cây rau cải).
 Thí nghiệm 3 đã xong: 5 yếu tố cần thiết cho sự sống của động vật (gà con).
-Thí nghiệm 2 và thí nghiệm 4 đến 8 chưa làm. Trên trang chủ, các thẻ này ghi "Sắp có".
+Thí nghiệm 4 đã xong: sự trao đổi nước, không khí và thức ăn của động vật với môi trường (chuột bạch).
+Thí nghiệm 5 đã xong: cơ quan sinh sản của hoa, thụ phấn, thụ tinh, quả và hạt (hoa cà chua).
+Thí nghiệm 6 đã xong: sự hình thành cây con từ hạt, rễ, thân và lá (đậu xanh, khoai lang, khoai tây, thuốc bỏng).
+Thí nghiệm 7 và 8 chưa làm. Trên trang chủ, các thẻ này ghi "Sắp có".
 
 Cách mở
 
@@ -40,6 +44,22 @@ Nút "LÀM LẠI THÍ NGHIỆM" nằm ở góc dưới bên phải và dùng đ�
 
 Thanh trên cùng có ba nút: ngôi nhà về trang chủ, dấu hỏi mở hướng dẫn, chiếc loa bật hoặc tắt âm thanh.
 
+Cách chơi thí nghiệm 2
+
+Học sinh đặt một cây rau cải lên bàn rồi tìm hiểu hai nội dung: trao đổi khí, và trao đổi nước và chất khoáng. Làm nội dung nào trước cũng được.
+
+1. Kéo "Chậu cây rau cải" từ khay bên trái, thả lên bàn quan sát. Thả ngoài bàn thì chậu quay về khay kèm một lời nhắc. Khi chưa có cây, hai nút nội dung ở bảng bên phải bị khóa.
+2. Nhấp vào lá, thân hoặc đất của cây để đọc về từng bộ phận. Nhấp vào đất thì màn hình chuyển sang mặt cắt đất, thấy rõ bộ rễ. Nút "VỀ BÀN QUAN SÁT" ở dưới cùng đưa màn hình về như cũ.
+3. Bấm "TRAO ĐỔI KHÍ", rồi chọn "HÔ HẤP" hoặc "QUANG HỢP". Màn hình phóng lớn phần lá, quanh lá có các phân tử khí O₂ và CO₂. Hô hấp diễn ra trong bóng tối: kéo O₂ vào lá, rồi kéo CO₂ từ lá ra ngoài. Quang hợp diễn ra dưới ánh sáng: kéo CO₂ vào lá, rồi kéo O₂ từ lá ra ngoài. Kéo sai thì phân tử quay về chỗ cũ kèm một lời nhắc.
+4. Bấm "TRAO ĐỔI NƯỚC VÀ CHẤT KHOÁNG", rồi chọn "NƯỚC" hoặc "CHẤT KHOÁNG". Với nước, kéo "Bình tưới nước" vào đất. Với chất khoáng, kéo "Túi/khay đất có chất khoáng" vào đất, chỗ có rễ. Thả sai chỗ thì dụng cụ quay về khay kèm một lời nhắc. Túi chất khoáng được vẽ giống túi phân bón NPK.
+5. Khi xong cả hai nội dung, thanh tiến trình hiện "HOÀN THÀNH". Bảng bên phải hiện kết luận, bảng tổng kết kiến thức và nút "TƯƠNG TÁC TỔNG HỢP". Bấm nút này để xem mọi dòng chuyển động cùng lúc: khí vào ra, nước và chất khoáng đi từ đất lên lá.
+
+Kính phóng đại: kéo vào lá, thân hoặc đất để xem gần hơn. Nhấp vào kính để cất đi.
+
+Hộp trong suốt: kéo lên cây để xem các khí quanh cây. Nhấp vào hộp để nhấc ra. Hộp cũng tự nhấc ra khi học sinh chọn một nội dung.
+
+Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1. Cây có đất khô lúc đầu, và đất chuyển sang ẩm khi được tưới nước.
+
 Cách chơi thí nghiệm 3
 
 Có hai chuồng gà con. Chuồng 1 (viền xanh lá) là chuồng đối chứng: luôn có thức ăn, nước và đèn bật sáng, không có nắp, giữ 37°C. Học sinh chỉ quan sát chuồng 1. Học sinh thay đổi điều kiện của chuồng 2 (viền cam) rồi so sánh hai chuồng sau 7 ngày.
@@ -60,17 +80,65 @@ Cân nặng của chuồng 1 (65g lên 75g) lấy từ tài liệu đặc tả. 
 
 Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1.
 
+Cách chơi thí nghiệm 4
+
+Học sinh đặt một chuột bạch lên bàn rồi tìm hiểu hai nội dung: trao đổi khí, và trao đổi nước, thức ăn và chất thải. Làm nội dung nào trước cũng được. Thanh tiến trình có bốn bước: CHUỘT, LẤY VÀO, SỬ DỤNG, THẢI RA.
+
+1. Kéo "Chuột bạch" từ khay bên trái, thả lên bàn quan sát. Thả ngoài bàn thì chuột quay về khay kèm một lời nhắc. Khi chưa có chuột, hai nút nội dung ở bảng bên phải bị khóa, và khay thức ăn, bát nước, kính phóng đại chưa dùng được.
+2. Nhấp vào chuột, hoặc vào thẻ "Chuột bạch" trong khay, để xem bảng thông tin: loài, giai đoạn, tình trạng. Bấm "ĐÓNG" để đóng bảng.
+3. Bấm "TRAO ĐỔI KHÍ". Chuột quay ngang và trở nên trong suốt, thấy phổi và đường thở từ mũi. Quanh chuột có các phân tử O₂ và CO₂. Kéo một phân tử O₂ vào người chuột: nó đi qua mũi và đường hô hấp tới phổi. Sau đó một phân tử CO₂ hiện ra trong phổi: kéo nó ra ngoài người chuột. Kéo sai thì phân tử quay về chỗ cũ kèm một lời nhắc. Chuột là động vật nên thí nghiệm này không có quang hợp.
+4. Bấm "TRAO ĐỔI NƯỚC, THỨC ĂN VÀ CHẤT THẢI". Màn hình về góc nhìn bên ngoài. Kéo "Khay thức ăn" đặt gần chuột: chuột đi tới, ăn, và thức ăn trong khay vơi dần. Sau đó kéo "Bát nước" đặt gần chuột: chuột uống, nước trong bát giảm nhẹ. Phải cho ăn trước rồi mới cho uống. Đặt quá xa chuột, hoặc chưa chọn nội dung này, thì dụng cụ quay về khay kèm một lời nhắc. Trong lúc chuột đang đi hoặc ăn, dụng cụ thả thêm cũng quay về khay, kèm câu "Em chờ chuột một chút nhé."
+5. Khi chuột uống xong, màn hình hiện "MỘT KHOẢNG THỜI GIAN SAU..." và ánh sáng chớp sáng tối. Chuột lại trở nên trong suốt và trong bụng hiện chất cặn bã (vài viên nâu). Kéo chất cặn bã ra khỏi người chuột, hoặc nhấp vào nó. Kéo thả lại vào người chuột thì chất cặn bã quay về chỗ cũ kèm một lời nhắc. Sau đó đến nước tiểu (một giọt vàng), làm giống hệt. Khu vực "CHẤT CẶN BÃ" hiện trên bàn ở bước chất cặn bã, khu vực "NƯỚC TIỂU" hiện ở bước nước tiểu.
+6. Khi xong cả hai nội dung, màn hình hiện "THÍ NGHIỆM HOÀN THÀNH!". Chuột trở lại bình thường và nhảy nhẹ. Sáu dòng chuyển động chạy cùng lúc: O₂, nước, thức ăn đi vào; CO₂, chất cặn bã, nước tiểu đi ra. Bảng bên phải hiện sáu dòng đã tích, phần "KẾT QUẢ QUAN SÁT" (sáu mũi tên và sơ đồ), kết luận và "BẢNG TỔNG HỢP".
+7. Bấm "XEM LẠI TƯƠNG TÁC" để xem sáu dòng chạy lần lượt: O₂ vào, CO₂ ra, nước vào, thức ăn vào, chất cặn bã ra, nước tiểu ra. Các nút "DỪNG", "TIẾP TỤC" và "XEM LẠI" điều khiển phần này.
+
+Kính phóng đại: kéo lên chuột, hoặc lên khay thức ăn và bát nước đang có trên bàn, để xem gần hơn. Khi chuột trong suốt, kính hiện nhãn "PHỔI". Nhấp vào kính để cất đi.
+
+Ở màn hình nhìn vào trong cơ thể chuột và ở màn hình kết quả có nút "VỀ BÀN QUAN SÁT" ở dưới cùng, đưa màn hình về như cũ. Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1.
+
+Cách chơi thí nghiệm 5
+
+Học sinh làm việc với một bông hoa cà chua: xem cấu tạo, thụ phấn, theo dõi thụ tinh, rồi xem quả và hạt hình thành. Các bước đi theo đúng thứ tự, bước chưa mở thì khóa. Thanh tiến trình chỉ hiển thị tiến độ, không nhấp vào đó để nhảy bước. Bước cuối "Cây con" luôn khóa, vì tài liệu đặc tả không có thao tác nào ở bước đó.
+
+1. Kéo "Hoa cà chua" từ khay bên trái, thả lên bàn quan sát. Thả ngoài bàn thì hoa quay về khay kèm một lời nhắc. Kính lúp hoặc que lấy phấn thả trước khi có hoa cũng quay về khay, kèm câu "Hãy đặt hoa cà chua lên bàn trước."
+2. Nhấp vào hoa để xem bảng thông tin: loài, giai đoạn, màu hoa, trạng thái, nhị, nhụy. Bấm nút "X" để đóng bảng.
+3. Kéo "Kính lúp 3D" lên hoa. Phần giữa hoa được phóng to trong một vòng tròn, nhấp vào kính để cất đi. Khi kính đã đặt trên hoa, nút "QUAN SÁT CẤU TẠO HOA" hiện ở bảng bên phải. Bấm nút này.
+4. Hoa được cắt dọc thành hai nửa, một nửa trong suốt. Cạnh mỗi bộ phận có một chấm sáng. Nhấp vào chấm đang nhấp nháy, theo thứ tự: nhị, chỉ nhị, bao phấn, nhụy, đầu nhụy, vòi nhụy, bầu nhụy, noãn. Mỗi lần nhấp, bộ phận sáng lên, màn hình phóng to và hiện tên bộ phận. Nhấp sai thứ tự thì hiện lời nhắc bộ phận cần xem trước. Khi nhấp vào bầu nhụy, vỏ bầu nhụy trong hơn để thấy các noãn.
+5. Xem đủ 8 bộ phận thì nút "THỰC HIỆN THỤ PHẤN" mở. Bấm nút này: hoa trở lại nguyên vẹn, bao phấn sáng nhẹ, đầu nhụy có một vòng sáng.
+6. Kéo "Que lấy phấn" đến bao phấn: hoa rung nhẹ, hạt phấn rơi ra, một ít bám vào đầu que, và thẻ que ghi "CÓ PHẤN". Kéo que sai chỗ thì que quay về khay kèm một lời nhắc. Sau đó kéo que có phấn đến đầu nhụy: hạt phấn ở lại đầu nhụy, có tiếng "ting" và dòng chữ "Thụ phấn đã xảy ra." Thả que có phấn lên cánh hoa, vòi nhụy hay bầu nhụy thì chưa thụ phấn. Thả lên cánh hoa thì vài hạt rơi xuống, que vẫn còn phấn.
+7. Hoa lại được cắt dọc, camera phóng vào nhụy. Nhấp vào hạt phấn trên đầu nhụy: hạt phấn nảy mầm và mọc ra ống phấn. Kéo đầu ống phấn xuống dọc vòi nhụy tới bầu nhụy. Thả tay khi con trỏ ở xa vòi nhụy thì ống phấn dừng ở chỗ gần nhất kèm một lời nhắc. Ở bầu nhụy, kéo đầu ống phấn tới một noãn. Rồi kéo chấm sáng màu xanh nhạt (tế bào sinh dục đực) vào giữa noãn. Hai tế bào gặp nhau, mọi thứ dừng khoảng 2 giây, rồi hiện "THỤ TINH ĐÃ XẢY RA".
+8. Bấm "BẮT ĐẦU QUAN SÁT SỰ TẠO QUẢ VÀ HẠT". Thời gian chạy nhanh qua các mốc ở thẻ "THỜI GIAN": Ngày 0, 3, 7, 14, 21, 30. Cánh hoa héo và rụng. Ở Ngày 7 màn hình dừng: bầu nhụy thành quả xanh. Bấm "TIẾP TỤC TUA NHANH". Ở Ngày 14 màn hình dừng: nhấp vào quả xanh, quả trong suốt lên và các noãn lớn dần thành hạt. Bấm "TIẾP TỤC TUA NHANH". Ở Ngày 30 quả đã chín đỏ. Nhấp vào quả: quả được cắt đôi, thấy thịt quả, dịch nhầy và nhiều hạt, và một hạt được phóng to.
+9. Bảng bên phải hiện "HOÀN THÀNH", 9 kết luận, sơ đồ kiến thức và một dòng tóm tắt cuối.
+
+Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1.
+
+Cách chơi thí nghiệm 6
+
+Học sinh đặt 4 chậu, đặt 4 vật mẫu, tưới nước, rồi xem cây con hình thành từ hạt, rễ, thân và lá. Các bước đi theo thứ tự, bước chưa mở thì khóa. Thanh tiến trình có 8 bước và chỉ hiển thị tiến độ.
+
+1. Khay bên trái có 11 thẻ: 4 vật mẫu (hạt đậu xanh, rễ khoai lang, củ khoai tây có mắt, lá thuốc bỏng), 4 chậu, đất trồng, bình tưới nước và kính phóng đại. Cuộn khay để thấy hết các thẻ.
+2. Kéo từng chậu, thả vào đúng vị trí có nhãn trên bàn. Thả sai vị trí thì chậu quay về khay kèm câu "Hãy đặt chậu vào đúng vị trí."
+3. Khi đủ 4 chậu, kéo từng vật mẫu vào chậu của nó: hạt đậu xanh vào chậu 1, rễ khoai lang vào chậu 2, khoai tây vào chậu 3, lá thuốc bỏng vào chậu 4. Thả sai chậu thì vật mẫu quay về khay kèm lời nhắc chậu đúng. Các chậu đã có sẵn đất. Kéo thẻ "Đất trồng" lên chậu chỉ hiện câu "Chậu đã có đất rồi."
+4. Khi đủ 4 vật mẫu, kéo "Bình tưới nước" đến từng chậu. Nước chảy xuống và đất chuyển sang ẩm hơn. Thả bình ra ngoài chậu thì bình quay về khay kèm câu "Hãy tưới nước vào chậu cây." Mỗi chậu tưới một lần.
+5. Kính phóng đại kéo lên một chậu đã có vật mẫu sẽ cho nhìn gần và hiện tên vật mẫu. Nhấp vào kính để cất đi.
+6. Khi cả 4 chậu đã tưới, nút "▶ BẮT ĐẦU QUAN SÁT" mở. Bấm nút này: 4 chậu phát triển cùng lúc qua NGÀY 0, 2, 4, 7, 14, thẻ "THỜI GIAN" ghi ngày đang chạy. Ngày 2 hiện "Hạt bắt đầu nảy mầm." Nhấp vào một chậu để phóng to chậu đó và xem tên hình thành cây con. Nút "← QUAY LẠI QUAN SÁT 4 CHẬU" đưa màn hình về như cũ.
+7. Ngày 14 màn hình dừng: 4 cây con đã hình thành, hiện 4 câu "Cây con được hình thành từ ...". Khay đổi thành 4 thẻ HẠT, RỄ, THÂN, LÁ. Kéo mỗi thẻ vào đúng cây: hạt vào cây đậu xanh, rễ vào cây khoai lang, thân vào cây khoai tây, lá vào cây thuốc bỏng. Đúng thì thẻ được giữ lại và hiện "Chính xác!" Sai thì thẻ quay về kèm "Chưa đúng. Hãy quan sát lại thí nghiệm."
+8. Phân loại đủ 4 thẻ thì hiện nút "TIẾP TỤC TUA NHANH". Bấm nút này: các cây lớn dần rồi thành cây trưởng thành.
+9. Cuối cùng bảng bên phải hiện "KẾT QUẢ THÍ NGHIỆM" với 4 kết quả và một câu tóm tắt, cùng bảng so sánh, sơ đồ và kết luận. Thanh tiến trình đủ 8 bước. Trên bàn, mỗi chậu có một dòng ghi nguồn gốc cây con.
+
+Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1.
+
 Âm thanh
 
 Trang phát âm thanh nhẹ khi thả dụng cụ, đổi nhiệt độ, sang ngày mới và khi xong thí nghiệm. Thí nghiệm 3 có thêm tiếng gà con kêu khi gà vào chuồng và thỉnh thoảng trong lúc quan sát. Trình duyệt chỉ cho phép phát âm thanh sau lần bấm đầu tiên trên trang.
 
 Cách sửa chữ
 
-Chữ của từng thí nghiệm nằm trong thư mục js/content. Với thí nghiệm 1, mở tệp js/content/exp1.vi.js. Với thí nghiệm 3, mở tệp js/content/exp3.vi.js. Mở tệp bằng Notepad, sửa chữ nằm giữa hai dấu nháy, lưu tệp ở dạng UTF-8, rồi bấm F5 trong trình duyệt để xem kết quả.
+Chữ của từng thí nghiệm nằm trong thư mục js/content. Với thí nghiệm 1, mở tệp js/content/exp1.vi.js. Với thí nghiệm 2, mở tệp js/content/exp2.vi.js. Với thí nghiệm 3, mở tệp js/content/exp3.vi.js. Với thí nghiệm 4, mở tệp js/content/exp4.vi.js. Với thí nghiệm 5, mở tệp js/content/exp5.vi.js. Với thí nghiệm 6, mở tệp js/content/exp6.vi.js. Mở tệp bằng Notepad, sửa chữ nằm giữa hai dấu nháy, lưu tệp ở dạng UTF-8, rồi bấm F5 trong trình duyệt để xem kết quả.
 
 Tệp có hai nhóm. Nhóm "md" gồm các câu chép nguyên văn từ tài liệu đặc tả. Nhóm "app" gồm các câu phụ mà tài liệu đặc tả không có.
 
-Chữ ở trang chủ và ở các nút chung nằm trong js/core/app.js, js/core/ui.js và index.html. Một vài nhãn nhỏ khác nằm ngay trong js/experiments/exp1.js, js/experiments/exp3.js và js/models/tools.js.
+Chữ ở trang chủ và ở các nút chung nằm trong js/core/app.js, js/core/ui.js và index.html. Một vài nhãn nhỏ khác nằm ngay trong js/experiments/exp1.js, js/experiments/exp2.js, js/experiments/exp2-gas.js, js/experiments/exp3.js, js/experiments/exp4.js, js/experiments/exp5.js, js/experiments/exp6.js và js/models/tools.js.
 
 Cách đổi quy tắc nhiệt độ
 

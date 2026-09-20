@@ -199,7 +199,7 @@
     }
 
     var api = {
-      group: g, PAL: PAL, soilTopY: soilTop,
+      group: g, PAL: PAL, soilTopY: soilTop, plantGroup: plantG, rootMat: rootMat, rootsGroup: rootsG,
       get soilState() { return state; },
       setSoil: setSoil,
       /* p: {height(cm), leafScale, leafColor, stemColor, stem, droop, wilt, leafDrop, rot, root:{len,spread,thick,sparse,wave,color}} */

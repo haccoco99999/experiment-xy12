@@ -49,6 +49,7 @@
     if (app.current && app.current.inst && app.current.inst.dispose) { try { app.current.inst.dispose(); } catch (e) { console.error(e); } }
     app.current = null;
     Lab.tween.killAll(); Lab.loop.clearTickers();
+    Lab.lens.hide(); Lab.sceneDrag.clear();
     Lab.labels.clear(); Lab.drag.clear(); Lab.fx.clearAll(); UI.clearDynamic();
     if (Lab.stage.ok) Lab.stage.disposeScene();
   }
@@ -113,6 +114,7 @@
     var st = Lab.stage.stats ? Lab.stage.stats() : {};
     return {
       tweens: Lab.tween.count(), tickers: Lab.loop.tickerCount(), labels: Lab.labels.count(), zones: Lab.drag.zoneCount(),
+      sceneItems: Lab.sceneDrag.count(), lens: Lab.lens.active() ? 1 : 0,
       sceneChildren: Lab.stage.scene ? Lab.stage.scene.children.length : 0, geometries: st.geometries, textures: st.textures,
       toasts: UI.el.toasts.children.length, modals: UI.el['modal-root'].children.length, ghosts: document.querySelectorAll('.drag-ghost').length
     };

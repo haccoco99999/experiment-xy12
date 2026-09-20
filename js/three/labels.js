@@ -38,7 +38,7 @@
         var it = items[i]; if (it.hidden) continue;
         var w = worldOf(it); if (!w) continue;
         var p = Lab.stage.project(w);
-        it.el.style.transform = 'translate(' + (p.x - rc.left + it.dx).toFixed(1) + 'px,' + (p.y - rc.top + it.dy).toFixed(1) + 'px) translate(-50%,' + (it.anchor === 'top' ? '0' : '-100%') + ')';
+        it.el.style.transform = 'translate(' + (p.x - rc.left + it.dx).toFixed(1) + 'px,' + (p.y - rc.top + it.dy).toFixed(1) + 'px) translate(-50%,' + (it.anchor === 'top' ? '0' : it.anchor === 'center' ? '-50%' : '-100%') + ')';
         it.el.style.opacity = p.behind ? '0' : '';
       }
     },
