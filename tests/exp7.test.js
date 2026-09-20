@@ -133,3 +133,17 @@ test('progress bar, prompts and days follow the story', () => {
   L.applyLens(d, 'lensEggs'); L.startHatching(d); L.arriveDay(d, 3);
   assert.deepStrictEqual(L.dayStates(d), ['done', 'active', 'todo', 'todo', 'todo', 'todo']);
 });
+
+test('the texts have every sentence the logic can ask for, and the right number of steps, days and cards', () => {
+  global.window = global; global.Lab = { content: {} };
+  delete require.cache[require.resolve('../js/content/exp7.vi.js')];
+  require('../js/content/exp7.vi.js');
+  const C = global.Lab.content.exp7, has = (k) => typeof C.md.msg[k] === 'string' || typeof C.app[k] === 'string';
+  ['maleOff', 'femaleOff', 'femaleLeaf', 'maleFar', 'lensNothing', 'lensEggsOff', 'lensPupaOff', 'leafFar', 'rulerFar', 'partOff', 'sortWrong', 'locked'].forEach((k) => assert.ok(has(k), 'missing text: ' + k));
+  const states = [L.initialState(), placed(), fertilized(), laid(), larva(), grown(), pupa(), cut(), adult()];
+  states.forEach((s, i) => { const k = L.promptKey(s); if (k) assert.ok(has(k), 'state ' + i + ' asks for a missing text: ' + k); assert.strictEqual(L.stepStates(s).length, C.md.steps.length); });
+  assert.strictEqual(C.md.days.length, L.DAYS.length);
+  assert.strictEqual(C.md.sort.cards.length, 4); assert.strictEqual(C.md.sort.slots.length, 4);
+  L.PARTS.forEach((p) => assert.ok(C.md.parts[p], 'missing part name: ' + p));
+  assert.strictEqual(C.md.labels.moult.length, 3); assert.strictEqual(C.md.diagram.length, 10);
+});

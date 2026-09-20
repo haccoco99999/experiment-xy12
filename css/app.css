@@ -273,6 +273,34 @@ a.btn { display: block; text-align: center; text-decoration: none; line-height: 
 .xd-chain { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; justify-content: center; margin: 6px 0; }
 .xd-chip.mid { background: #e9f6ea; }
 
+/* ---------- experiment 7: fertilization diagram, butterfly tags, locked buttons ---------- */
+.tag3d.love { padding: 0; font-size: 30px; background: none; border: 0; box-shadow: none; animation: hotpulse 1s ease-in-out infinite; }
+.panel-btn.locked { filter: grayscale(.85); opacity: .6; }
+.fert { display: grid; gap: 8px; text-align: center; justify-items: center; }
+.fert-top { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.fert-box { padding: 8px 14px; border-radius: 14px; font-weight: 800; font-size: 16px; border: 3px solid; background: #fff; }
+.fert-box.male { color: #8a4b00; border-color: #ffab3d; }
+.fert-box.female { color: #0a5a9c; border-color: #3ea6ff; }
+.fert-plus, .fert-arrow { font-size: 26px; font-weight: 800; color: var(--tertiary); line-height: 1; }
+.fert-step { font-size: 20px; font-weight: 800; color: var(--primary); letter-spacing: .4px; }
+.fert-arena { position: relative; width: min(560px, 80vw); height: 130px; border-radius: 18px; background: radial-gradient(circle at 75% 50%, #eaf7ff, #f8fcff 70%); border: 2px solid #d3e6f0; overflow: hidden; }
+.fert-egg { position: absolute; right: 14%; top: 50%; width: 92px; height: 92px; margin-top: -46px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #fffbe6, #ffe9a6 70%, #f5cf6a); border: 3px solid #f0c04a; transition: box-shadow .5s, background .5s; }
+.fert-nucleus { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: #ffb86b; opacity: .85; }
+.fert-egg.joined { box-shadow: 0 0 0 8px rgba(255, 224, 102, .45), 0 0 28px 12px rgba(255, 210, 74, .8); background: radial-gradient(circle at 40% 35%, #fff8d0, #ffe066 75%, #ffc94a); }
+.fert-sperm { position: absolute; left: 4%; top: 50%; width: 74px; height: 18px; margin-top: -9px; display: flex; align-items: center; }
+.fert-head { width: 18px; height: 18px; border-radius: 50%; background: #3f8fe0; flex: none; }
+.fert-tail { flex: 1; height: 5px; margin-right: -2px; border-radius: 3px; background: linear-gradient(90deg, rgba(63, 143, 224, .15), #3f8fe0); }
+.fert-sperm.gone { display: none; }
+.fert-result, .fert-msg { opacity: 0; transition: opacity .5s; margin: 0; font-weight: 800; }
+.fert-result { font-size: 18px; color: var(--secondary); }
+.fert-msg { font-size: 15px; color: var(--ink-soft); max-width: 520px; }
+.fert-result.show, .fert-msg.show { opacity: 1; }
+.tag3d.place.ok { color: var(--primary); border-color: var(--primary-c); background: #e9f6ea; }
+.dg { display: grid; justify-items: center; gap: 2px; }
+.dg-item { display: grid; justify-items: center; gap: 1px; opacity: 0; transform: translateY(-6px); transition: opacity .45s, transform .45s; }
+.dg-item.show { opacity: 1; transform: none; }
+.dg-item .xd-arrow { font-size: 16px; }
+
 /* ---------- labels over the 3D scene ---------- */
 #labels { position: absolute; inset: 0; overflow: hidden; z-index: 8; }
 .tag3d { position: absolute; left: 0; top: 0; will-change: transform; white-space: nowrap; font-weight: 800; font-size: clamp(13px, 1.15vw, 17px);

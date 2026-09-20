@@ -10,7 +10,8 @@ Thí nghiệm 3 đã xong: 5 yếu tố cần thiết cho sự sống của đ�
 Thí nghiệm 4 đã xong: sự trao đổi nước, không khí và thức ăn của động vật với môi trường (chuột bạch).
 Thí nghiệm 5 đã xong: cơ quan sinh sản của hoa, thụ phấn, thụ tinh, quả và hạt (hoa cà chua).
 Thí nghiệm 6 đã xong: sự hình thành cây con từ hạt, rễ, thân và lá (đậu xanh, khoai lang, khoai tây, thuốc bỏng).
-Thí nghiệm 7 và 8 chưa làm. Trên trang chủ, các thẻ này ghi "Sắp có".
+Thí nghiệm 7 đã xong: sự sinh sản và vòng đời của bướm (bướm đực, bướm cái, trứng, sâu non, nhộng, bướm trưởng thành).
+Thí nghiệm 8 chưa làm. Trên trang chủ, thẻ này ghi "Sắp có".
 
 Cách mở
 
@@ -128,17 +129,38 @@ Học sinh đặt 4 chậu, đặt 4 vật mẫu, tưới nước, rồi xem câ
 
 Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1.
 
+Cách chơi thí nghiệm 7
+
+Học sinh cho bướm đực và bướm cái gặp nhau, xem thụ tinh, cho bướm cái đẻ trứng, rồi xem trứng nở thành sâu non, sâu hóa nhộng và nhộng thành bướm mới. Các bước đi theo thứ tự, bước chưa mở thì khóa. Thanh tiến trình có 8 bước và chỉ hiển thị tiến độ.
+
+1. Khay bên trái có 5 thẻ: bướm đực, bướm cái, kính lúp, lá cây và thước đo. Bảng bên phải ghi việc cần làm và giai đoạn hiện tại. Từ khi bướm cái đẻ trứng, bảng có thêm thẻ "THỜI GIAN" với các mốc NGÀY 0, 3, 7, 14, 18, 28.
+2. Kéo bướm đực và bướm cái vào khu vườn. Thả ra ngoài khu vườn thì bướm quay về khay kèm câu nhắc. Khi đủ hai con, chúng bay lại gần nhau và đậu trên cùng một cành.
+3. Nhấn giữ bướm đực trên cành rồi kéo đến gần bướm cái. Kéo quá xa thì bướm đực bay về chỗ cũ kèm câu "Hãy đưa bướm đực đến gần bướm cái." Đủ gần thì hai bướm giao phối và hiện nhãn "GIAO PHỐI".
+4. Màn hình thụ tinh hiện ra: tinh trùng bơi đến trứng rồi hai bên kết hợp. Bấm "▶ TIẾP TỤC" để quay lại khu vườn.
+5. Kéo thẻ "BƯỚM CÁI" lên chiếc lá lớn bên phải. Bướm cái bay xuống mặt dưới lá, đẻ một cụm trứng rồi bay đi, bướm đực cũng bay đi. Thả ra ngoài lá thì hiện câu "Hãy đặt bướm cái lên lá cây."
+6. Kéo kính lúp đến cụm trứng. Trứng hiện to và có dòng "ĐÃ QUAN SÁT TRỨNG ✓". Sau đó nút "▶ CHUYỂN SANG GIAI ĐOẠN NỞ" mở. Trước đó nút này bị khóa: bấm vào thì hiện "Hãy hoàn thành bước trước để tiếp tục." Nhấp vào kính lúp để cất đi.
+7. Bấm nút nở. NGÀY 3 trứng sẫm màu. NGÀY 7 vỏ trứng nứt, sâu non bò ra và lên mặt lá.
+8. Kéo thẻ "LÁ CÂY" đến gần sâu non. Sâu bò đến ăn, mép lá bị cắn khuyết dần. Sau lần ăn đầu, sâu tự lớn lên qua 3 lần lột xác, mỗi lần để lại lớp da cũ. Thẻ "SÂU NON LỚN LÊN" tô sáng LẦN 1, 2, 3.
+9. Từ khi sâu xuất hiện đến khi sâu hóa nhộng, kéo "THƯỚC ĐO" đến gần sâu. Thước nằm dọc thân sâu và ghi chiều dài bằng mm. Số đo đổi sau mỗi lần lột xác. Nhấp vào số đo để cất thước.
+10. Khi đủ lớn, sâu thôi ăn, bò lên thân cây rồi lên cành, treo mình và hóa nhộng. Hiện câu "Sâu non đã hóa thành nhộng."
+11. Kéo kính lúp đến nhộng, rồi bấm nút "[ MẶT CẮT 3D ]". Vỏ nhộng gần như trong suốt và hiện 4 chấm sáng. Nhấp lần lượt cả 4 chấm để xem cánh, mắt kép, chân khớp và vòi hút đang hình thành. Nhấp vào chỗ khác thì hiện câu nhắc.
+12. Xem đủ 4 bộ phận thì nút "▶ TUA NHANH THỜI GIAN VŨ HÓA" mở. Bấm nút này: vỏ nhộng sẫm lại, trong dần rồi nứt ra. Bướm mới bò ra với đôi cánh nhỏ và ướt, cánh mở rộng và khô, rồi bướm bay lên cành.
+13. Khay đổi thành 4 thẻ TRỨNG, SÂU NON, NHỘNG, BƯỚM TRƯỞNG THÀNH đặt lẫn thứ tự. Kéo mỗi thẻ vào VỊ TRÍ 1 đến 4 trên bàn theo đúng vòng đời. Đúng thì thẻ được giữ lại. Sai thì thẻ quay về khay kèm câu "Chưa đúng. Hãy kiểm tra lại thứ tự các giai đoạn phát triển." và dòng gợi ý.
+14. Xếp đúng cả 4 thẻ thì bảng bên phải hiện "HOÀN THÀNH THÍ NGHIỆM", sơ đồ tổng hợp sáng lên lần lượt từng bước và phần kết luận. Thanh tiến trình đủ 8 bước.
+
+Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1.
+
 Âm thanh
 
 Trang phát âm thanh nhẹ khi thả dụng cụ, đổi nhiệt độ, sang ngày mới và khi xong thí nghiệm. Thí nghiệm 3 có thêm tiếng gà con kêu khi gà vào chuồng và thỉnh thoảng trong lúc quan sát. Trình duyệt chỉ cho phép phát âm thanh sau lần bấm đầu tiên trên trang.
 
 Cách sửa chữ
 
-Chữ của từng thí nghiệm nằm trong thư mục js/content. Với thí nghiệm 1, mở tệp js/content/exp1.vi.js. Với thí nghiệm 2, mở tệp js/content/exp2.vi.js. Với thí nghiệm 3, mở tệp js/content/exp3.vi.js. Với thí nghiệm 4, mở tệp js/content/exp4.vi.js. Với thí nghiệm 5, mở tệp js/content/exp5.vi.js. Với thí nghiệm 6, mở tệp js/content/exp6.vi.js. Mở tệp bằng Notepad, sửa chữ nằm giữa hai dấu nháy, lưu tệp ở dạng UTF-8, rồi bấm F5 trong trình duyệt để xem kết quả.
+Chữ của từng thí nghiệm nằm trong thư mục js/content. Với thí nghiệm 1, mở tệp js/content/exp1.vi.js. Với thí nghiệm 2, mở tệp js/content/exp2.vi.js. Với thí nghiệm 3, mở tệp js/content/exp3.vi.js. Với thí nghiệm 4, mở tệp js/content/exp4.vi.js. Với thí nghiệm 5, mở tệp js/content/exp5.vi.js. Với thí nghiệm 6, mở tệp js/content/exp6.vi.js. Với thí nghiệm 7, mở tệp js/content/exp7.vi.js. Mở tệp bằng Notepad, sửa chữ nằm giữa hai dấu nháy, lưu tệp ở dạng UTF-8, rồi bấm F5 trong trình duyệt để xem kết quả.
 
 Tệp có hai nhóm. Nhóm "md" gồm các câu chép nguyên văn từ tài liệu đặc tả. Nhóm "app" gồm các câu phụ mà tài liệu đặc tả không có.
 
-Chữ ở trang chủ và ở các nút chung nằm trong js/core/app.js, js/core/ui.js và index.html. Một vài nhãn nhỏ khác nằm ngay trong js/experiments/exp1.js, js/experiments/exp2.js, js/experiments/exp2-gas.js, js/experiments/exp3.js, js/experiments/exp4.js, js/experiments/exp5.js, js/experiments/exp6.js và js/models/tools.js.
+Chữ ở trang chủ và ở các nút chung nằm trong js/core/app.js, js/core/ui.js và index.html. Một vài nhãn nhỏ khác nằm ngay trong js/experiments/exp1.js, js/experiments/exp2.js, js/experiments/exp2-gas.js, js/experiments/exp3.js, js/experiments/exp4.js, js/experiments/exp5.js, js/experiments/exp6.js, js/experiments/exp7-larva.js (đơn vị "mm" của thước đo) và js/models/tools.js.
 
 Cách đổi quy tắc nhiệt độ
 
