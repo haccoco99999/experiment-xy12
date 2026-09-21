@@ -301,6 +301,20 @@ a.btn { display: block; text-align: center; text-decoration: none; line-height: 
 .dg-item.show { opacity: 1; transform: none; }
 .dg-item .xd-arrow { font-size: 16px; }
 
+/* ---------- experiment 8: fade, info card, timeline bar ---------- */
+.veil { position: absolute; inset: 0; z-index: 30; background: #fff; opacity: 0; pointer-events: none; }
+.info-title { font-size: 20px; font-weight: 800; color: var(--primary); line-height: 1.15; }
+.info-sub { margin: 2px 0 6px; font-size: 15px; font-weight: 800; color: var(--secondary); }
+.tl-range { width: 100%; margin: 8px 0 4px; accent-color: #ffab3d; height: 28px; }
+.tl-marks { display: flex; justify-content: space-between; gap: 6px; }
+.tl-mark { flex: 1; display: grid; justify-items: center; gap: 3px; padding: 6px 2px; border: 2px solid #d5e2d5; border-radius: 12px; background: #f6faf6; font: inherit; font-size: 12px; font-weight: 800; color: var(--ink-soft); cursor: pointer; }
+.tl-mark .tl-dot { width: 22px; height: 22px; border-radius: 50%; background: #dfe8df; border: 3px solid #c9d7c9; display: grid; place-items: center; font-size: 11px; line-height: 1; color: #fff; }
+.tl-mark.done .tl-dot { background: var(--primary-c); border-color: var(--primary-c); }
+.tl-mark.open { border-color: #ffab3d; background: #fff4e0; color: #8a4b00; }
+.tl-mark.open .tl-dot { background: #ffab3d; border-color: #fff; box-shadow: 0 0 0 3px #ffab3d; }
+.tl-mark.locked { opacity: .6; cursor: not-allowed; }
+.tl-mark.current { outline: 3px solid rgba(76, 175, 80, .55); }
+
 /* ---------- labels over the 3D scene ---------- */
 #labels { position: absolute; inset: 0; overflow: hidden; z-index: 8; }
 .tag3d { position: absolute; left: 0; top: 0; will-change: transform; white-space: nowrap; font-weight: 800; font-size: clamp(13px, 1.15vw, 17px);
