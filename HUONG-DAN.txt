@@ -16,6 +16,14 @@ Cả 8 thí nghiệm đều mở được từ trang chủ.
 
 Cách mở
 
+Có hai cách mở trang.
+
+Cách 1: Mở qua mạng, không cần tải gì về máy.
+1. Vào địa chỉ https://haccoco99999.github.io/experiment-xy12/ bằng trình duyệt.
+2. Bấm nút "Bắt đầu" trên thẻ thí nghiệm để vào bàn thí nghiệm.
+Cách này cần có internet, dùng được trên máy tính, máy tính bảng và điện thoại.
+
+Cách 2: Mở trực tiếp từ máy, không cần internet.
 1. Mở thư mục chứa tệp index.html.
 2. Nhấp đúp vào index.html.
 3. Trang mở trong trình duyệt mặc định của máy và chạy được khi không có internet.
@@ -25,7 +33,9 @@ Nên dùng Google Chrome hoặc Microsoft Edge bản mới nhất. Trang đã đ
 
 Cách chia sẻ
 
-Sao chép cả thư mục chứa index.html, hoặc nén thành tệp .zip, rồi gửi cho người khác. Người nhận giải nén trước, sau đó nhấp đúp vào index.html. Nếu mở index.html khi nó còn nằm trong tệp .zip, trang chạy không đúng.
+Cách nhanh nhất là gửi địa chỉ https://haccoco99999.github.io/experiment-xy12/ cho người khác. Họ chỉ cần bấm vào link, không cần tải hay cài gì.
+
+Nếu muốn chia sẻ để dùng khi không có internet, sao chép cả thư mục chứa index.html, hoặc nén thành tệp .zip, rồi gửi cho người khác. Người nhận giải nén trước, sau đó nhấp đúp vào index.html. Nếu mở index.html khi nó còn nằm trong tệp .zip, trang chạy không đúng.
 
 Cách chơi thí nghiệm 1
 
