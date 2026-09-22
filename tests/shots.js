@@ -158,6 +158,174 @@
     finale: async function (api) { await S6.classify(api); click('.panel-btn'); await adv(12); document.getElementById('caption').innerHTML = ''; document.getElementById('toasts').innerHTML = ''; }
   };
 
+  /* ---- helpers for the long playthroughs (Experiments 7 and 8) ---- */
+  /* wait (on the virtual clock) until `test` is true; `label` says which step timed out */
+  async function until(label, test, max) {
+    var t = 0;
+    while (!test()) {
+      if (t > (max || 90)) throw new Error('timeout: ' + label);
+      await adv(1 / 30); t += 1 / 30;
+    }
+    await adv(0.2);
+  }
+  function found(id) { var hit = null; Lab.stage.scene.traverse(function (o) { if (!hit && o.userData && o.userData.pick === id && o.visible) hit = o; }); return hit; }
+  function at(obj) { var p = Lab.stage.project(new THREE.Box3().setFromObject(obj).getCenter(new THREE.Vector3())); return { x: p.x, y: p.y }; }
+  function world(x, y, z) { var p = Lab.stage.project(new THREE.Vector3(x, y, z)); return { x: p.x, y: p.y }; }
+  async function tap(pt) { ev('pointerdown', pt.x, pt.y, Lab.stage.canvas); await adv(0.05); ev('pointerup', pt.x, pt.y, Lab.stage.canvas); await adv(0.6); }
+  /* a screen point where a click really lands on the object (its centre can be hidden behind another part) */
+  function pickPoint(id) {
+    var list = [], fallback = null;
+    Lab.stage.scene.traverse(function (o) { if (o.visible && o.userData && o.userData.pick === id) list.push(o); });
+    for (var n = 0; n < list.length; n++) {
+      var o = list[n], pts = [new THREE.Box3().setFromObject(o).getCenter(new THREE.Vector3())];
+      o.traverse(function (c) {
+        var pos = c.geometry && c.geometry.attributes && c.geometry.attributes.position; if (!pos) return;
+        var step = Math.max(1, Math.floor(pos.count / 12));
+        for (var i = 0; i < pos.count; i += step) pts.push(c.localToWorld(new THREE.Vector3().fromBufferAttribute(pos, i)));
+      });
+      for (var k = 0; k < pts.length; k++) {
+        var p = Lab.stage.project(pts[k]), hit = Lab.stage.pick(p.x, p.y);
+        if (hit && hit.id === id) return { x: p.x, y: p.y };
+        if (!fallback && k === 0) fallback = { x: p.x, y: p.y };
+      }
+    }
+    return fallback;
+  }
+  async function tapPick(id) { var pt = pickPoint(id); if (!pt) throw new Error('cannot click: ' + id); await tap(pt); }
+  function panelBtn() { var b = document.querySelectorAll('#panel .panel-btn:not(.locked)'); return b[b.length - 1]; }
+  async function pressPanel(api, label) { var b = panelBtn(); if (!b) throw new Error('no panel button: ' + label); b.click(); await adv(0.4); }
+
+  /* Experiment 7: the butterfly, from the two butterflies to the four sorted cards. */
+  var S7 = {
+    start: async function () { },
+    pair: async function (api) {
+      api.drop('male', 'garden'); await until('male placed', function () { return api.state().malePlaced && !api.X.busy; }, 30);
+      api.drop('female', 'garden'); await until('pair on the branch', function () { return api.state().femalePlaced && !api.X.busy && Lab.sceneDrag.count() > 0; }, 40);
+    },
+    mated: async function (api) {
+      await S7.pair(api);
+      var m = api.X.bf[0].group, f = api.X.bf[1].group;
+      await dragMol(at(m), world(f.position.x - 0.25, f.position.y, f.position.z));
+      await until('mating', function () { return api.state().mated; }, 30);
+      await until('the fertilization button', function () { var b = document.querySelector('#modal-root .panel-btn'); return b && !b.hidden; }, 40);
+      document.querySelector('#modal-root .panel-btn').click();
+      await until('back in the garden', function () { return api.state().continued && !api.X.busy; }, 30);
+    },
+    laid: async function (api) { await S7.mated(api); api.drop('female', 'leaf'); await until('eggs laid', function () { return api.state().eggLaid && !api.X.busy; }, 90); },
+    eggs: async function (api) { await S7.laid(api); api.drop('lens', 'eggs'); await until('eggs under the glass', function () { return api.state().eggObserved; }, 20); },
+    larva: async function (api) { await S7.eggs(api); await pressPanel(api, 'hatch'); await until('the caterpillar', function () { return api.state().larvaAppeared && !api.X.busy; }, 90); },
+    fed: async function (api) {
+      await S7.larva(api);
+      api.drop('ruler', 'larva'); await adv(2);
+      api.drop('leaf', 'larva'); await until('first meal', function () { return api.state().larvaFed; }, 60);
+    },
+    pupa: async function (api) {
+      await S7.fed(api);
+      await until('three moults and the pupa', function () { return api.state().pupaFormed && !api.X.busy && !api.X.growing; }, 180);
+      api.drop('lens', 'pupa'); await until('pupa under the glass', function () { return api.state().pupaObserved; }, 20);
+    },
+    cut: async function (api) {
+      await S7.pupa(api); await pressPanel(api, '3D cut');
+      await until('the cut is open', function () { return api.state().cutaway && !api.X.busy; }, 30);
+      var dots = Array.prototype.slice.call(document.querySelectorAll('.tag3d.hot'));
+      for (var i = 0; i < dots.length; i++) { dots[i].click(); await adv(1.4); }
+      await until('the four parts', function () { return api.state().cutawayObserved; }, 20);
+    },
+    adult: async function (api) { await S7.cut(api); await pressPanel(api, 'emerge'); await until('the new butterfly', function () { return api.state().adult && !api.X.busy; }, 180); },
+    finale: async function (api) {
+      await S7.adult(api);
+      for (var i = 0; i < 4; i++) { api.drop('c' + i, 'slot' + i); await adv(1.2); }
+      await until('sorted', function () { return api.state().complete; }, 30);
+      await adv(9);
+      document.getElementById('caption').innerHTML = ''; document.getElementById('toasts').innerHTML = '';
+    }
+  };
+
+  /* Experiment 8: the cat, from the two cats to the eight sorted cards. */
+  async function nextPhase(api, to) {
+    await until('the button to phase ' + to, function () { return !api.X.busy && !(api.X.tl && api.X.tl.busy) && !!panelBtn(); }, 40);
+    await pressPanel(api, 'phase ' + to);
+    await until('phase ' + to, function () { return api.state().phase >= to && !api.X.busy; }, 40);
+  }
+  async function marks(api, tl, n) {
+    for (var i = 0; i < n; i++) {
+      await until('mark ' + i + ' of ' + tl, function () { return !api.X.busy && api.X.tl && !api.X.tl.busy; }, 40);
+      document.querySelectorAll('#panel .tl-mark')[i].click();
+      await until('arrived at mark ' + i + ' of ' + tl, (function (k) { return function () { return api.state().tl[tl][k] && !api.X.tl.busy; }; })(i), 40);
+    }
+  }
+  var S8 = {
+    start: async function () { },
+    place: async function (api) {
+      api.drop('male', 'table'); await until('male cat', function () { return api.state().malePlaced && !api.X.busy; }, 30);
+      api.drop('female', 'table'); await until('female cat', function () { return api.state().femalePlaced && !api.X.busy; }, 30);
+      await pressPanel(api, 'start'); await until('phase identify', function () { return api.state().phase === 1 && !api.X.busy; }, 30);
+    },
+    identify: async function (api) {
+      await S8.place(api);
+      await tapPick('male'); await tapPick('female');
+      await until('both named', function () { return api.state().maleIdentified && api.state().femaleIdentified && !api.X.busy; }, 30);
+      await nextPhase(api, 2);
+    },
+    cells: async function (api) {
+      await S8.identify(api);
+      await until('sperm and egg are there', function () { return !!found('sperm') && !!found('egg') && !api.X.busy; }, 40);
+      await tapPick('sperm'); await tapPick('egg');
+      await dragMol(at(found('sperm')), world(-3.0, 2.1, 0.3)); await until('sperm in the male area', function () { return api.state().spermPlaced && !api.X.busy; }, 40);
+      await dragMol(at(found('egg')), world(3.0, 2.1, 0.3)); await until('egg in the female area', function () { return api.state().eggPlaced && !api.X.busy; }, 40);
+      await nextPhase(api, 3);
+    },
+    fert: async function (api) {
+      await S8.cells(api);
+      await until('the big egg', function () { return !!found('sperm') && !!found('egg') && !api.X.busy; }, 40);
+      await dragMol(at(found('sperm')), at(found('egg')));
+      await until('fertilized', function () { return api.state().fertilized; }, 40);
+      await until('the zygote phase', function () { return api.state().phase >= 4 && !api.X.busy; }, 60);
+    },
+    zygote: async function (api) {
+      await S8.fert(api);
+      api.drop('lens', 'zygote'); await until('zygote under the glass', function () { return api.state().zygoteObserved && !api.X.busy; }, 30);
+      api.X.closeLens(); await tapPick('egg');                        // the zygote is the egg after the fertilization
+      await until('zygote clicked', function () { return api.state().zygoteClicked; }, 30);
+      await nextPhase(api, 5);
+    },
+    embryo: async function (api) {
+      await S8.zygote(api); await marks(api, 'embryo', 4);
+      api.drop('lens', 'embryo'); await until('embryo under the glass', function () { return api.state().embryoObserved && !api.X.busy; }, 30);
+      api.X.closeLens(); await nextPhase(api, 6);
+    },
+    fetus: async function (api) {
+      await S8.embryo(api); await marks(api, 'fetus', 3);
+      var parts = ['fetus:head', 'fetus:body', 'fetus:legs', 'fetus:tail'];
+      for (var i = 0; i < parts.length; i++) { await tapPick(parts[i]); }
+      await until('the four parts', function () { return api.state().fetusObserved || Lab.logic.exp8.partsDone(api.state()); }, 40);
+      api.drop('lens', 'fetus'); await until('fetus under the glass', function () { return api.state().fetusObserved && !api.X.busy; }, 30);
+      api.X.closeLens(); await nextPhase(api, 7);
+    },
+    kitten: async function (api) {
+      await S8.fetus(api);
+      await until('the newborn kitten', function () { return !!found('kitten') && !api.X.busy; }, 60);
+      await tapPick('kitten'); await until('kitten clicked', function () { return api.state().kittenClicked && !api.X.busy; }, 30);
+      api.drop('lens', 'kitten'); await until('kitten under the glass', function () { return api.state().kittenObserved && !api.X.busy; }, 30);
+      api.X.closeLens(); await nextPhase(api, 8);
+    },
+    growth: async function (api) {
+      await S8.kitten(api); await marks(api, 'growth', 4);
+      await until('three kittens', function () { return !!found('kitten0') && !api.X.busy; }, 60);
+      for (var i = 0; i < 3; i++) { await tapPick('kitten' + i); await adv(1.2); }
+      await until('compared', function () { return api.state().compared.every(Boolean) && !api.X.busy; }, 40);
+      await nextPhase(api, 9);
+    },
+    adultCat: async function (api) { await S8.growth(api); await marks(api, 'adult', 3); await nextPhase(api, 10); },
+    finale: async function (api) {
+      await S8.adultCat(api);
+      for (var i = 0; i < 8; i++) { api.drop('c' + i, 'slot' + i); await adv(1.2); }
+      await until('sorted', function () { return api.state().complete; }, 40);
+      await adv(10);
+      document.getElementById('caption').innerHTML = ''; document.getElementById('toasts').innerHTML = '';
+    }
+  };
+
   var S = {
     start: async function () { },
     setup: async function (api) { api.drop('potA', 'bench'); api.drop('potB', 'bench'); await adv(2); api.drop('water', 'potB'); await adv(5); },
@@ -182,7 +350,7 @@
     var t0 = Date.now();
     while (!(Lab.app && Lab.app.current && Lab.app.current.inst) && Date.now() - t0 < 8000) await new Promise(function (r) { setTimeout(r, 50); });
     var api = Lab.app.current && Lab.app.current.inst && Lab.app.current.inst.api;
-    var list = exp === 'exp6' ? S6 : exp === 'exp5' ? S5 : exp === 'exp4' ? S4 : exp === 'exp3' ? S3 : exp === 'exp2' ? S2 : S;
+    var list = exp === 'exp8' ? S8 : exp === 'exp7' ? S7 : exp === 'exp6' ? S6 : exp === 'exp5' ? S5 : exp === 'exp4' ? S4 : exp === 'exp3' ? S3 : exp === 'exp2' ? S2 : S;
     try { if (list[scenario]) await list[scenario](api, {}); } catch (e) { console.error(e); document.title = 'ERROR ' + e.message; }
     await adv(0.1);
     document.body.dataset.ready = '1';
