@@ -15,7 +15,7 @@ Keep the last 5 entries. Delete older ones; git history keeps them.
 
 ## Where things stand
 
-- Done: all 8 experiments: 1 (mung bean), 2 (a potted plant, no kind named since 2026-11-10), 3 (chicks), 4 (lab rat), 5 (tomato flower), 6 (new plants from four parts), 7 (butterfly life cycle) and 8 (reproduction and life cycle; a cat in the md, a pig since 2026-11-10 on branch `feature/exp-8-pig`, not merged yet). Experiments 2, 4, 5, 6 and 7 are committed and pushed; Experiment 8 was built on 2026-09-21 and committed and pushed when the user asked for it. `main` is in sync with `origin` (private repo `haccoco99999/experiment-xy12`) after that push. On 2026-11-10 four fixes from the user's Word file (Experiments 1, 2, 4, 5) were committed on branch `feature/exp-2` and merged into `main` through PR #1 (merge commit `575b549`); the live site was rebuilt from it. A branch `feature/exp-1` was also made from `main`; see the log.
+- Done: all 8 experiments: 1 (mung bean), 2 (a potted plant, no kind named since 2026-11-10), 3 (chicks), 4 (lab rat), 5 (tomato flower), 6 (new plants from four parts), 7 (butterfly life cycle) and 8 (reproduction and life cycle; a cat in the md, a pig since 2026-11-10, merged into `main` through PR #2). Experiments 2, 4, 5, 6 and 7 are committed and pushed; Experiment 8 was built on 2026-09-21 and committed and pushed when the user asked for it. `main` is in sync with `origin` (private repo `haccoco99999/experiment-xy12`) after that push. On 2026-11-10 four fixes from the user's Word file (Experiments 1, 2, 4, 5) were committed on branch `feature/exp-2` and merged into `main` through PR #1 (merge commit `575b549`); the live site was rebuilt from it. A branch `feature/exp-1` was also made from `main`; see the log.
 - Not built: nothing. The home page has 8 open cards. The plan still lists polish and a single-file export (`Thi-nghiem-tat-ca-trong-1-file.html`); ask the user before starting either.
 - An earlier Experiment 8 build (commit `701178a`, local branch `exp8`) was deleted at the user's request on 2026-09-20 and was not used.
 
@@ -43,7 +43,7 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 
 ## Log (newest first)
 
-### 2026-11-10 (later), Claude: Experiment 8 changed from a cat to a pig (branch `feature/exp-8-pig`, committed, not pushed)
+### 2026-11-10 (later), Claude: Experiment 8 changed from a cat to a pig (merged into `main`, PR #2)
 
 - The user wrote "kiểm tra ở thí nghiệm số 8: con mèo đổi thành con heo" and, asked with a screenshot, chose "Đổi sang con heo" (change the animal), not "the cat looks like a pig".
 - New model `js/models/pig.js` (`Mo.pig`, same API as the old `Mo.cat`); `js/models/cat.js` removed (`git rm`), script tag in `index.html` changed, `Mo.cat(` → `Mo.pig(` in `js/experiments/exp8*.js`. The fetus in `js/models/cells.js` got a snout. Internal ids (`kitten`, `cats`, `showCatInfo`, `decideCat`) were left as they are.
@@ -53,7 +53,7 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 - Tests: `node --test "tests/*.test.js"`: 116 tests, all pass. Browser (dev server, 800x600 pane, scripted scenarios): `identify`, `kitten`, `growth`, `finale` render with pigs and no "mèo" on screen; home card shows the pig. After `finale` + reset (twice) the snapshot equals a fresh start (geometries 33, textures 10). No console errors from the new code.
 - Not tested: `file://` (only a script tag name changed), real hand dragging, phone sizes, sound. The pig facts were not checked by the user.
 - `HUONG-DAN.txt` updated (Exp 8 line in the list, a note at the top of "Cách chơi thí nghiệm 8", marks, the newborn's open eyes).
-- Committed on `feature/exp-8-pig` when the user asked (2026-11-11). Not pushed. Next: the user decides on push, PR and merge. Open question for the user: are the pig facts and the new day marks acceptable?
+- Committed on `feature/exp-8-pig` (`adde541`), pushed, PR haccoco99999/experiment-xy12#2 opened and merged into `main` on 2026-11-11, all at the user's request (merge commit `f226c9e`). Tests on `main` after the merge: 116, all pass. GitHub Pages started rebuilding from it. The branch is kept. Open question for the user: are the pig facts and the new day marks acceptable?
 
 ### 2026-11-10, Claude: four fixes from the user's Word file (Experiments 1, 2, 4 and 5), merged into `main` (PR #1)
 
