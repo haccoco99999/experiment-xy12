@@ -15,7 +15,7 @@ Keep the last 5 entries. Delete older ones; git history keeps them.
 
 ## Where things stand
 
-- Done: all 8 experiments: 1 (mung bean), 2 (a potted plant, no kind named since 2026-11-10), 3 (chicks), 4 (lab rat), 5 (tomato flower), 6 (new plants from four parts), 7 (butterfly life cycle) and 8 (cat reproduction and life cycle). Experiments 2, 4, 5, 6 and 7 are committed and pushed; Experiment 8 was built on 2026-09-21 and committed and pushed when the user asked for it. `main` is in sync with `origin` (private repo `haccoco99999/experiment-xy12`) after that push. On 2026-11-10 four fixes from the user's Word file (Experiments 1, 2, 4, 5) are committed on branch `feature/exp-2` (not pushed, not merged into `main`). A branch `feature/exp-1` was also made from `main`; see the log.
+- Done: all 8 experiments: 1 (mung bean), 2 (a potted plant, no kind named since 2026-11-10), 3 (chicks), 4 (lab rat), 5 (tomato flower), 6 (new plants from four parts), 7 (butterfly life cycle) and 8 (cat reproduction and life cycle). Experiments 2, 4, 5, 6 and 7 are committed and pushed; Experiment 8 was built on 2026-09-21 and committed and pushed when the user asked for it. `main` is in sync with `origin` (private repo `haccoco99999/experiment-xy12`) after that push. On 2026-11-10 four fixes from the user's Word file (Experiments 1, 2, 4, 5) were committed on branch `feature/exp-2` and merged into `main` through PR #1 (merge commit `575b549`); the live site was rebuilt from it. A branch `feature/exp-1` was also made from `main`; see the log.
 - Not built: nothing. The home page has 8 open cards. The plan still lists polish and a single-file export (`Thi-nghiem-tat-ca-trong-1-file.html`); ask the user before starting either.
 - An earlier Experiment 8 build (commit `701178a`, local branch `exp8`) was deleted at the user's request on 2026-09-20 and was not used.
 
@@ -43,7 +43,7 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 
 ## Log (newest first)
 
-### 2026-11-10, Claude: four fixes from the user's Word file (Experiments 1, 2, 4 and 5), committed on branch `feature/exp-2` (not pushed)
+### 2026-11-10, Claude: four fixes from the user's Word file (Experiments 1, 2, 4 and 5), merged into `main` (PR #1)
 
 - Source: `C:\Users\ADMIN\Downloads\fix lỗi thí nghiệm.docx` (4 requests and a picture of a whole tomato plant with roots). The user confirmed: Exp 4 gas exchange keeps dragging; the four lines show while the rat excretes; Exp 5 keeps the clicks on the fruit (days 14 and 30); the plant shows its roots like the picture.
 - Exp 1: NPK bag removed (logic `js/logic/exp1.js`, texts, tray, `doNpk` in `js/experiments/exp1.js`, tests in `tests/logic.test.js`). `Mo.npkBag` is kept for Exp 2.
@@ -54,7 +54,7 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 - Docs: `HUONG-DAN.txt` (Exp 1 step 2, Exp 2 intro and step 1, Exp 4 step 5, Exp 5 steps 8 to 11) and a new first table in `SPEC-NOTES.md` listing every change that differs from the md.
 - Tests: `node --test "tests/*.test.js"`: 115 tests, all pass. Browser (dev server, 800x600 pane, scripted scenarios): Exp 1 tray without NPK, Exp 2 placed plant, Exp 4 `wfwGo` and `finale`, Exp 5 `d7`, `seeds`, `d30`, `finale&cut=1`, `finale`: all render, no console errors from the new code. Leak check: after `finale` + reset, Exp 4 and Exp 5 give the same snapshot as the code before these changes (geometries 33, textures 9; the 9th texture is a shared cache, the old code gives 9 too).
 - Not tested: opening `index.html` from `file://` (the browser pane shows file:// only as a static snapshot, and headless Edge on this machine no longer writes screenshots, even for https://example.com; the change only adds one classic `<script>` tag, no fetch), a full hand playthrough with real dragging, phone or tablet sizes, sound.
-- Next: the user checks the changes on `feature/exp-2`. Ask before pushing or merging into `main`.
+- Done after review: the user asked for the commit on `feature/exp-2`, a branch `feature/exp-1` from the old `main`, a PR and the merge. PR haccoco99999/experiment-xy12#1 was merged on 2026-11-10 (commit `575b549`); GitHub Pages rebuilt and the live Experiment 1 tray has no NPK. Both feature branches are kept. Next: nothing open.
 
 ### 2026-09-22 (later), Claude: deployed the site to GitHub Pages (free), at the user's request
 
