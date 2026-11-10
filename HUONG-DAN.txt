@@ -11,7 +11,7 @@ Thí nghiệm 4 đã xong: sự trao đổi nước, không khí và thức ăn 
 Thí nghiệm 5 đã xong: cơ quan sinh sản của hoa, thụ phấn, thụ tinh, quả và hạt (hoa cà chua).
 Thí nghiệm 6 đã xong: sự hình thành cây con từ hạt, rễ, thân và lá (đậu xanh, khoai lang, khoai tây, thuốc bỏng).
 Thí nghiệm 7 đã xong: sự sinh sản và vòng đời của bướm (bướm đực, bướm cái, trứng, sâu non, nhộng, bướm trưởng thành).
-Thí nghiệm 8 đã xong: sự sinh sản và vòng đời của mèo (mèo đực, mèo cái, tinh trùng, trứng, hợp tử, phôi, thai, mèo con, mèo trưởng thành).
+Thí nghiệm 8 đã xong: sự sinh sản và vòng đời của heo (heo đực, heo cái, tinh trùng, trứng, hợp tử, phôi, thai, heo con, heo trưởng thành).
 Cả 8 thí nghiệm đều mở được từ trang chủ.
 
 Cách mở
@@ -170,20 +170,22 @@ Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giốn
 
 Cách chơi thí nghiệm 8
 
-Học sinh đặt mèo đực và mèo cái, rồi theo dõi từ tinh trùng và trứng đến khi mèo con lớn thành mèo trưởng thành. Thanh tiến trình có 9 bước và chỉ hiển thị tiến độ. Xong mỗi giai đoạn, bảng bên phải hiện "Em đã hoàn thành giai đoạn này." và nút "▶ TIẾP TỤC" nằm ngay dưới tên giai đoạn.
+Thí nghiệm này lúc đầu dùng con mèo như tài liệu đặc tả. Ngày 10/11/2026, theo yêu cầu của người dùng, con vật được đổi thành con heo. Các mốc thời gian của phôi và thai cũng đổi theo thời gian mang thai của heo (khoảng 114 ngày).
 
-1. Khay bên trái có 3 thẻ: mèo đực, mèo cái và kính phóng đại. Chạm nhẹ vào thẻ mèo (không kéo) thì hiện bảng thông tin của con mèo đó.
-2. Kéo mèo đực và mèo cái lên bàn. Thả ra ngoài bàn thì mèo quay về khay kèm câu nhắc. Khi cả hai đã ở trên bàn, nút "▶ BẮT ĐẦU QUAN SÁT SỰ SINH SẢN VÀ VÒNG ĐỜI" sáng lên. Bấm khi nút còn mờ thì hiện lời nhắc đặt đủ hai con mèo.
-3. Giai đoạn 1: nhấp vào mèo đực rồi mèo cái. Mỗi lần nhấp đúng, mèo sáng lên, hiện nhãn và bảng thông tin. Nhấp vào chỗ khác thì hiện "Hãy quan sát và xác định đúng mèo đực hoặc mèo cái."
-4. Giai đoạn 2: màn hình chuyển sang nền tím mềm, như nhìn vào bên trong cơ thể. Hai con mèo đứng hai bên, ở giữa là một khay có vài tinh trùng và một quả trứng. Nhấn vào tinh trùng và vào trứng để xem tên. Kéo một tinh trùng vào khu vực MÈO ĐỰC, kéo trứng vào khu vực MÈO CÁI. Kéo sai thì quay về kèm câu nhắc. Cần đủ bốn việc: xem tinh trùng, xem trứng, kéo tinh trùng đúng, kéo trứng đúng.
+Học sinh đặt heo đực và heo cái, rồi theo dõi từ tinh trùng và trứng đến khi heo con lớn thành heo trưởng thành. Thanh tiến trình có 9 bước và chỉ hiển thị tiến độ. Xong mỗi giai đoạn, bảng bên phải hiện "Em đã hoàn thành giai đoạn này." và nút "▶ TIẾP TỤC" nằm ngay dưới tên giai đoạn.
+
+1. Khay bên trái có 3 thẻ: heo đực, heo cái và kính phóng đại. Chạm nhẹ vào thẻ heo (không kéo) thì hiện bảng thông tin của con heo đó.
+2. Kéo heo đực và heo cái lên bàn. Thả ra ngoài bàn thì heo quay về khay kèm câu nhắc. Khi cả hai đã ở trên bàn, nút "▶ BẮT ĐẦU QUAN SÁT SỰ SINH SẢN VÀ VÒNG ĐỜI" sáng lên. Bấm khi nút còn mờ thì hiện lời nhắc đặt đủ hai con heo.
+3. Giai đoạn 1: nhấp vào heo đực rồi heo cái. Mỗi lần nhấp đúng, heo sáng lên, hiện nhãn và bảng thông tin. Nhấp vào chỗ khác thì hiện "Hãy quan sát và xác định đúng heo đực hoặc heo cái."
+4. Giai đoạn 2: màn hình chuyển sang nền tím mềm, như nhìn vào bên trong cơ thể. Hai con heo đứng hai bên, ở giữa là một khay có vài tinh trùng và một quả trứng. Nhấn vào tinh trùng và vào trứng để xem tên. Kéo một tinh trùng vào khu vực HEO ĐỰC, kéo trứng vào khu vực HEO CÁI. Kéo sai thì quay về kèm câu nhắc. Cần đủ bốn việc: xem tinh trùng, xem trứng, kéo tinh trùng đúng, kéo trứng đúng.
 5. Giai đoạn 3: một quả trứng lớn ở giữa, 10 tinh trùng bơi xung quanh. Nhấp vào trứng thì hiện lời nhắc chọn tinh trùng. Kéo một tinh trùng đến gần trứng: tinh trùng bơi vào, trứng phát sáng, hai tế bào kết hợp và hiện "THỤ TINH ĐÃ XẢY RA". Kéo ra xa thì tinh trùng quay về kèm "Hãy đưa tinh trùng đến trứng."
 6. Giai đoạn 4: hợp tử hiện ở giữa màn hình. Kéo kính phóng đại đến hợp tử. Nhấp vào vòng kính để cất kính, rồi nhấp vào hợp tử. Nút "▶ THEO DÕI HỢP TỬ PHÁT TRIỂN" hiện ở đầu bảng.
-7. Giai đoạn 5: thanh thời gian có 4 mốc Ngày 0, Ngày 15, Ngày 30, Ngày 45. Một mốc mở khi đã xem mốc trước. Nhấp vào mốc hoặc kéo thanh trượt. Kéo quá mốc còn khóa thì thanh trượt bật lại và hiện "Hãy hoàn thành mốc trước để tiếp tục quan sát." Tế bào phân chia dần thành phôi. Đến Ngày 45, kéo kính phóng đại đến phôi.
-8. Giai đoạn 6: thanh thời gian có 3 mốc Ngày 45, Ngày 60, Gần ngày sinh. Thai nằm trong một bong bóng hồng, tượng trưng cho cơ thể mèo mẹ. Nhấp vào đầu, thân, chân và đuôi của thai, bảng ghi dấu ✓ cho từng bộ phận (tai cũng nhấp được nhưng không bắt buộc). Sau mốc Gần ngày sinh, dùng kính phóng đại để quan sát thai.
-9. Giai đoạn 7: camera lùi ra, màn hình mờ đi rồi hiện khu vườn với mèo mẹ và mèo con mới sinh. Nhấp vào mèo con. Nhấp chỗ khác thì hiện "Hãy nhấp vào mèo con để quan sát." Sau đó kéo kính phóng đại đến mèo con: mắt, tai, chân và thân lần lượt sáng lên.
-10. Giai đoạn 8: thanh thời gian 1 tuần, 2 tuần, 1 tháng, 2 tháng. Mèo con lớn dần, mở mắt và đi lại nhiều hơn. Sau mốc 2 tháng, ba mèo con (mới sinh, 1 tháng, 2 tháng) đứng cạnh nhau. Nhấp vào từng con: con đó to lên, có khung viền kích thước và câu thông tin. Cần nhấp đủ cả ba.
-11. Giai đoạn 9: thanh thời gian 2 tháng, 6 tháng, 1 năm. Mèo con lớn thành mèo trưởng thành đứng cạnh mèo mẹ, mỗi mốc có vài đặc điểm ghi bên phải.
-12. Cuối cùng khay đổi thành 8 thẻ xếp lộn xộn. Kéo mỗi thẻ vào ô số 1 đến 8 trên bàn theo đúng thứ tự từ TINH TRÙNG + TRỨNG đến MÈO TRƯỞNG THÀNH. Thẻ đúng được giữ lại. Thẻ sai quay về khay kèm câu "Chưa đúng. Hãy quan sát lại trình tự từ thụ tinh đến khi mèo trưởng thành."
+7. Giai đoạn 5: thanh thời gian có 4 mốc Ngày 0, Ngày 10, Ngày 20, Ngày 30. Một mốc mở khi đã xem mốc trước. Nhấp vào mốc hoặc kéo thanh trượt. Kéo quá mốc còn khóa thì thanh trượt bật lại và hiện "Hãy hoàn thành mốc trước để tiếp tục quan sát." Tế bào phân chia dần thành phôi. Đến Ngày 30, kéo kính phóng đại đến phôi.
+8. Giai đoạn 6: thanh thời gian có 3 mốc Ngày 30, Ngày 70, Gần ngày sinh. Thai nằm trong một bong bóng hồng, tượng trưng cho cơ thể heo mẹ. Nhấp vào đầu, thân, chân và đuôi của thai, bảng ghi dấu ✓ cho từng bộ phận (tai cũng nhấp được nhưng không bắt buộc). Sau mốc Gần ngày sinh, dùng kính phóng đại để quan sát thai.
+9. Giai đoạn 7: camera lùi ra, màn hình mờ đi rồi hiện khu vườn với heo mẹ và heo con mới sinh. Heo con mới sinh đã mở mắt. Nhấp vào heo con. Nhấp chỗ khác thì hiện "Hãy nhấp vào heo con để quan sát." Sau đó kéo kính phóng đại đến heo con: mắt, tai, chân và thân lần lượt sáng lên.
+10. Giai đoạn 8: thanh thời gian 1 tuần, 2 tuần, 1 tháng, 2 tháng. Heo con lớn dần, đi lại vững hơn và bắt đầu tập ăn. Sau mốc 2 tháng, ba heo con (mới sinh, 1 tháng, 2 tháng) đứng cạnh nhau. Nhấp vào từng con: con đó to lên, có khung viền kích thước và câu thông tin. Cần nhấp đủ cả ba.
+11. Giai đoạn 9: thanh thời gian 2 tháng, 6 tháng, 1 năm. Heo con lớn thành heo trưởng thành đứng cạnh heo mẹ, mỗi mốc có vài đặc điểm ghi bên phải.
+12. Cuối cùng khay đổi thành 8 thẻ xếp lộn xộn. Kéo mỗi thẻ vào ô số 1 đến 8 trên bàn theo đúng thứ tự từ TINH TRÙNG + TRỨNG đến HEO TRƯỞNG THÀNH. Thẻ đúng được giữ lại. Thẻ sai quay về khay kèm câu "Chưa đúng. Hãy quan sát lại trình tự từ thụ tinh đến khi heo trưởng thành."
 13. Đúng đủ 8 thẻ thì các mũi tên sáng lên nối các ô, bảng bên phải hiện "HOÀN THÀNH THÍ NGHIỆM!", sơ đồ tổng quát sáng lên từng bước và phần kết luận. Nút "XEM LẠI THÍ NGHIỆM" cho đọc lại từng giai đoạn. Chỉ để đọc, tiến trình không đổi.
 
 Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1.

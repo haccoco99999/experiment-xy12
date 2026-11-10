@@ -296,6 +296,9 @@
       await S8.embryo(api); await marks(api, 'fetus', 3);
       var parts = ['fetus:head', 'fetus:body', 'fetus:legs', 'fetus:tail'];
       for (var i = 0; i < parts.length; i++) { await tapPick(parts[i]); }
+      for (var j = 0; j < 3 && !Lab.logic.exp8.partsDone(api.state()); j++) {          // a tap can land while a part is still glowing: tap the missed ones again
+        for (i = 0; i < parts.length; i++) if (!api.state().fetusParts[parts[i].slice(6)]) { await adv(1); await tapPick(parts[i]); }
+      }
       await until('the four parts', function () { return api.state().fetusObserved || Lab.logic.exp8.partsDone(api.state()); }, 40);
       api.drop('lens', 'fetus'); await until('fetus under the glass', function () { return api.state().fetusObserved && !api.X.busy; }, 30);
       api.X.closeLens(); await nextPhase(api, 7);

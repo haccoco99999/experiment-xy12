@@ -5,6 +5,81 @@
 (function (Lab) {
   'use strict';
   Lab.content.exp8 = {
+    /* `user` = sentences of the md changed at the user's request (2026-11-10: "con mèo đổi thành con heo", so the animal is a pig, not a cat).
+       They are merged over `md` by js/experiments/exp8.js and are not checked against the md file. Lists are replaced whole. See SPEC-NOTES.md.
+       Pig facts used: about 114 days in the mother (the embryo becomes a fetus near day 30), piglets are born with open eyes and can stand soon after birth,
+       start to eat solid food at about 2 weeks and stop drinking milk at about 1 to 2 months. */
+    user: {
+      title: 'TÌM HIỂU SỰ SINH SẢN VÀ VÒNG ĐỜI CỦA ĐỘNG VẬT ĐẺ CON – HEO',
+      steps: ['HEO ĐỰC + HEO CÁI', 'TINH TRÙNG + TRỨNG', 'THỤ TINH', 'HỢP TỬ', 'PHÔI', 'THAI', 'HEO CON', 'HEO CON LỚN DẦN', 'HEO TRƯỞNG THÀNH'],
+      stageTitles: ['GIAI ĐOẠN 1: HEO ĐỰC VÀ HEO CÁI', 'GIAI ĐOẠN 2: TINH TRÙNG VÀ TRỨNG', 'GIAI ĐOẠN 3: THỤ TINH', 'GIAI ĐOẠN 4: HỢP TỬ', 'GIAI ĐOẠN 5: HỢP TỬ PHÁT TRIỂN THÀNH PHÔI',
+        'GIAI ĐOẠN 6: PHÔI PHÁT TRIỂN THÀNH THAI', 'GIAI ĐOẠN 7: HEO CON', 'GIAI ĐOẠN 8: HEO CON LỚN DẦN', 'GIAI ĐOẠN 9: HEO TRƯỞNG THÀNH'],
+      tools: { male: 'HEO ĐỰC', female: 'HEO CÁI' },
+      info: { species: ['Loài', 'Heo'] },
+      labels: { male: 'HEO ĐỰC', female: 'HEO CÁI', kittenNew: 'HEO CON MỚI SINH', compare: ['HEO CON MỚI SINH', 'HEO CON 1 THÁNG', 'HEO CON 2 THÁNG'] },
+      msg: {
+        placeMaleTask: 'Hãy kéo heo đực vào khu vực quan sát.',
+        placeFemaleTask: 'Hãy kéo heo cái lên bàn quan sát và đặt cạnh heo đực.',
+        maleOff: 'Hãy đặt heo đực vào khu vực quan sát.',
+        femaleOff: 'Hãy đặt heo cái vào khu vực quan sát.',
+        identifyTask: 'Hãy xác định heo đực và heo cái.',
+        identifyWrong: 'Hãy quan sát và xác định đúng heo đực hoặc heo cái.',
+        cellsTask: 'Hãy đưa tinh trùng vào khu vực HEO ĐỰC và trứng vào khu vực HEO CÁI.',
+        spermWrong: 'Chưa đúng. Hãy đưa tinh trùng vào khu vực heo đực.',
+        eggWrong: 'Chưa đúng. Hãy đưa trứng vào khu vực heo cái.',
+        kittenTask: 'Hãy nhấp vào heo con để quan sát.',
+        kittenOff: 'Hãy nhấp vào heo con để quan sát.',
+        kittenLensTask: 'Hãy dùng kính phóng đại để quan sát heo con.',
+        sortTask: 'Hãy kéo các thẻ và sắp xếp theo đúng trình tự sinh sản và phát triển của heo.',
+        sortWrong: 'Chưa đúng. Hãy quan sát lại trình tự từ thụ tinh đến khi heo trưởng thành.'
+      },
+      right: {
+        male: 'Đã đặt heo đực.',
+        female: 'Đã đặt heo cái.',
+        bothPlaced: 'Đã đặt heo cái. Hai con heo đã được đặt đúng vị trí.',
+        intro: 'Trong sinh sản, heo đực tạo ra tế bào sinh dục đực, còn heo cái tạo ra tế bào sinh dục cái.',
+        maleId: 'Heo đực tạo ra tế bào sinh dục đực.',
+        femaleId: 'Heo cái tạo ra tế bào sinh dục cái.',
+        spermInfo: 'Heo đực tạo ra tinh trùng.',
+        eggInfo: 'Heo cái tạo ra trứng.',
+        kittenBorn: 'Sau khi thai phát triển đầy đủ trong cơ thể heo mẹ, heo con được sinh ra.',
+        kittenLens: 'Heo con mới sinh có kích thước nhỏ và khả năng vận động còn yếu.',
+        compareInfo: 'Heo con 2 tháng tuổi có kích thước lớn hơn và khả năng vận động tốt hơn heo con mới sinh.',
+        compareAll: 'Qua từng giai đoạn, heo con tăng kích thước và khả năng vận động ngày càng hoàn thiện.',
+        adultAll: 'Heo con tiếp tục lớn lên, cơ thể phát triển hoàn thiện và trở thành heo trưởng thành.'
+      },
+      marks: { embryo: ['Ngày 0', 'Ngày 10', 'Ngày 20', 'Ngày 30'], fetus: ['Ngày 30', 'Ngày 70', 'Gần ngày sinh'] },
+      markInfo: {
+        fetus: [
+          { msg: 'Cơ thể còn nhỏ.', lines: ['Các cấu trúc bắt đầu rõ.'] },
+          { msg: 'Các bộ phận cơ thể rõ hơn.', lines: ['Có thể nhận biết:', 'đầu', 'thân', 'chân', 'tai', 'đuôi'] },
+          { msg: 'Phôi tiếp tục phát triển, các bộ phận cơ thể dần hình thành và thai lớn lên trong cơ thể heo mẹ.', lines: ['Thai lớn hơn.', 'Hình dạng cơ thể rõ hơn.'] }
+        ],
+        growth: [
+          { msg: 'Heo con bắt đầu lớn lên và vận động nhiều hơn.', lines: ['lớn hơn một chút', 'đi lại vững hơn', 'vẫn phụ thuộc chủ yếu vào sữa mẹ'] },
+          { msg: 'Heo con lớn nhanh và bắt đầu tập ăn.', lines: ['cơ thể lớn hơn', 'chạy theo heo mẹ', 'vẫn bú sữa mẹ', 'bắt đầu tập ăn thức ăn phù hợp'] },
+          { msg: 'Heo con ăn thêm thức ăn và hoạt động độc lập hơn.', lines: ['cơ thể lớn rõ rệt', 'đi lại tốt hơn', 'chơi', 'ăn thêm thức ăn phù hợp'] },
+          { msg: 'Heo con ngày càng lớn và tự lập hơn.', lines: ['cơ thể lớn hơn', 'chạy nhảy tốt hơn', 'ăn thức ăn phù hợp', 'ít phụ thuộc vào sữa mẹ hơn'] }
+        ],
+        adult: [
+          { msg: 'cơ thể còn nhỏ', lines: ['hoạt động nhanh nhẹn', 'có thể tự ăn thức ăn phù hợp'] },
+          { msg: 'cơ thể lớn hơn', lines: ['chân phát triển', 'thân phát triển', 'cơ thể nặng hơn nhiều', 'vận động linh hoạt'] },
+          { msg: 'cơ thể đạt kích thước gần trưởng thành', lines: ['vận động hoàn thiện', 'có thể tự kiếm ăn', 'có khả năng sinh sản khi trưởng thành'] }
+        ]
+      },
+      newborn: ['kích thước nhỏ', 'mắt đã mở', 'tai nhỏ', 'chân còn yếu', 'vận động hạn chế', 'phụ thuộc vào heo mẹ', 'bú sữa mẹ'],
+      sort: {
+        title: 'SẮP XẾP QUÁ TRÌNH SINH SẢN VÀ PHÁT TRIỂN CỦA HEO',
+        cards: ['TINH TRÙNG + TRỨNG', 'THỤ TINH', 'HỢP TỬ', 'PHÔI', 'THAI', 'HEO CON', 'HEO CON LỚN DẦN', 'HEO TRƯỞNG THÀNH'],
+        right: 'Chính xác! Em đã xác định đúng quá trình sinh sản và các giai đoạn phát triển của heo.'
+      },
+      finish: {
+        line: 'Em đã tìm hiểu được quá trình sinh sản và vòng đời của heo.',
+        conclusion: 'Heo sinh sản bằng cách sinh con. Heo đực tạo ra tinh trùng, heo cái tạo ra trứng. Khi tinh trùng kết hợp với trứng sẽ xảy ra thụ tinh và hình thành hợp tử. Hợp tử phát triển thành phôi, phôi tiếp tục phát triển thành thai trong cơ thể heo mẹ. Khi phát triển đầy đủ, heo con được sinh ra. Sau khi sinh, heo con lớn dần, kích thước cơ thể tăng lên, khả năng vận động và tự ăn ngày càng hoàn thiện, cuối cùng phát triển thành heo trưởng thành.',
+        endLine: 'Em đã tìm hiểu được sự sinh sản và vòng đời của heo.'
+      }
+    },
+
     md: {
       title: 'TÌM HIỂU SỰ SINH SẢN VÀ VÒNG ĐỜI CỦA ĐỘNG VẬT ĐẺ CON – MÈO',
       /* the progress bar (md section VII) */
@@ -117,40 +192,40 @@
     app: {
       titlePrefix: 'THÍ NGHIỆM 8: ',
       help: [
-        'Kéo mèo đực và mèo cái từ khay bên trái lên bàn quan sát, rồi bấm BẮT ĐẦU QUAN SÁT. Nhấp vào từng con mèo để xác định mèo đực và mèo cái.',
-        'Nhấp vào tinh trùng và trứng, rồi kéo tinh trùng vào khu vực mèo đực, kéo trứng vào khu vực mèo cái. Ở giai đoạn thụ tinh, kéo một tinh trùng đến gần trứng.',
-        'Kéo kính phóng đại đến hợp tử, phôi, thai và mèo con để quan sát. Kính chỉ dùng để nhìn, không làm đổi thí nghiệm.',
+        'Kéo heo đực và heo cái từ khay bên trái lên bàn quan sát, rồi bấm BẮT ĐẦU QUAN SÁT. Nhấp vào từng con heo để xác định heo đực và heo cái.',
+        'Nhấp vào tinh trùng và trứng, rồi kéo tinh trùng vào khu vực heo đực, kéo trứng vào khu vực heo cái. Ở giai đoạn thụ tinh, kéo một tinh trùng đến gần trứng.',
+        'Kéo kính phóng đại đến hợp tử, phôi, thai và heo con để quan sát. Kính chỉ dùng để nhìn, không làm đổi thí nghiệm.',
         'Ở các thanh thời gian, nhấp hoặc kéo đến mốc tiếp theo. Mốc chưa mở thì bị khóa. Sau mỗi giai đoạn, bấm TIẾP TỤC.',
         'Cuối cùng kéo 8 thẻ vào đúng thứ tự. Bấm LÀM LẠI THÍ NGHIỆM bất cứ lúc nào để chơi lại từ đầu.'
       ],
       busy: 'Em chờ một chút nhé.',
       zone: 'BÀN QUAN SÁT',
-      maleArea: 'KHU VỰC MÈO ĐỰC',
-      femaleArea: 'KHU VỰC MÈO CÁI',
+      maleArea: 'KHU VỰC HEO ĐỰC',
+      femaleArea: 'KHU VỰC HEO CÁI',
       startTask: 'Bấm nút BẮT ĐẦU QUAN SÁT.',
-      startLocked: 'Hãy đặt cả mèo đực và mèo cái lên bàn quan sát trước.',
+      startLocked: 'Hãy đặt cả heo đực và heo cái lên bàn quan sát trước.',
       zygoteClickTask: 'Hãy nhấp vào hợp tử.',
       markTask: 'Hãy nhấp mốc tiếp theo trên thanh thời gian.',
       fetusPartsTask: 'Hãy nhấp vào đầu, thân, chân và đuôi của thai.',
       fetusLensTask: 'Hãy dùng kính phóng đại để quan sát thai.',
-      compareTask: 'Hãy nhấp vào từng mèo con để so sánh.',
-      lensEmbryoEarly: 'Hãy theo dõi đến Ngày 45 rồi dùng kính để quan sát phôi.',
+      compareTask: 'Hãy nhấp vào từng heo con để so sánh.',
+      lensEmbryoEarly: 'Hãy theo dõi đến Ngày 30 rồi dùng kính để quan sát phôi.',
       lensFetusEarly: 'Hãy theo dõi đến mốc Gần ngày sinh rồi dùng kính để quan sát thai.',
-      kittenFirst: 'Hãy nhấp vào mèo con trước, rồi dùng kính.',
+      kittenFirst: 'Hãy nhấp vào heo con trước, rồi dùng kính.',
       lensOn: 'Kính phóng đại đang cho em nhìn gần hơn. Nhấp vào kính để cất đi.',
       next: '▶ TIẾP TỤC',
       infoTitle: 'THÔNG TIN QUAN SÁT',
       timeTitle: 'THANH THỜI GIAN',
       stageTitle: 'GIAI ĐOẠN',
       prepTitle: 'CHUẨN BỊ',
-      compareInfo: ['Mèo con mới sinh nhỏ và vận động còn yếu.', 'Mèo con 1 tháng tuổi lớn hơn mèo mới sinh và đi lại tốt hơn.'],
+      compareInfo: ['Heo con mới sinh nhỏ và vận động còn yếu.', 'Heo con 1 tháng tuổi lớn hơn heo mới sinh và đi lại tốt hơn.'],
       diagramTitle: 'SƠ ĐỒ TỔNG QUÁT',
       reviewNote: 'Đang xem lại. Thí nghiệm giữ nguyên, em không phải làm lại nhiệm vụ nào.',
       reviewBack: 'QUAY LẠI',
       reviewClose: 'XONG',
       cardsTitle: 'THẺ GIAI ĐOẠN',
       slotNumber: 'VỊ TRÍ',
-      motherLabel: 'MÈO MẸ'
+      motherLabel: 'HEO MẸ'
     }
   };
 })(window.Lab);

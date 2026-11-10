@@ -98,6 +98,7 @@
     var head = pick(new T.Mesh(new T.SphereGeometry(0.46, 20, 14), mats.head), 'head'); head.position.set(0.95, 0.36, 0.04); g.add(head);
     var eyeM = M.std(0x2a1d22, { roughness: 0.4 });
     [-1, 1].forEach(function (s) { var e = ell(0.07, 0.014, 0.05, eyeM); e.position.set(0.4, 0.06, s * 0.19); e.rotation.y = s * 0.5; e.userData.noPick = true; head.add(e); });
+    var snout = new T.Mesh(new T.CylinderGeometry(0.15, 0.18, 0.2, 16), mats.head); snout.rotation.z = -Math.PI / 2; snout.position.set(0.48, -0.1, 0); snout.userData.pick = 'fetus:head'; head.add(snout);   // a pig's snout (2026-11-10)
     var ears = [-1, 1].map(function (s) { var e = pick(new T.Mesh(new T.ConeGeometry(0.16, 0.34, 4), mats.ears), 'ears'); e.position.set(0.88, 0.84, s * 0.26); e.rotation.x = s * 0.3; g.add(e); return e; });
     var legs = [[0.55, -0.42, 0.3, 0.5], [0.55, -0.42, -0.3, 0.5], [-0.55, -0.4, 0.34, -0.4], [-0.55, -0.4, -0.34, -0.4]].map(function (p) {
       var l = pick(new T.Mesh(new T.CylinderGeometry(0.085, 0.07, 0.5, 8), mats.legs), 'legs'); l.position.set(p[0], p[1], p[2]); l.rotation.z = p[3]; g.add(l); return l;

@@ -166,3 +166,18 @@ test('the texts have every sentence the logic can ask for, and the right number 
   L.PARTS.forEach((p) => assert.ok(C.md.parts[p], 'missing part name: ' + p));
   assert.strictEqual(C.md.stageTitles.length, 9);
 });
+
+test('the user changed the cat into a pig (2026-11-10): after the merge no text says "mèo", and the lists keep their lengths', () => {
+  global.window = global; global.Lab = { content: {} };
+  delete require.cache[require.resolve('../js/content/exp8.vi.js')];
+  require('../js/content/exp8.vi.js');
+  const C = global.Lab.content.exp8;
+  const merge = (a, b) => { const o = Object.assign({}, a); for (const k in b) o[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k]) ? merge(a[k], b[k]) : b[k]; return o; };
+  const MD = merge(C.md, C.user), all = JSON.stringify([MD, C.app]);
+  assert.ok(!/mèo/i.test(all), 'a text still says mèo: ' + (all.match(/.{30}mèo.{30}/i) || [''])[0]);
+  assert.ok(/HEO/.test(MD.title));
+  assert.strictEqual(MD.steps.length, 9); assert.strictEqual(MD.stageTitles.length, 9); assert.strictEqual(MD.sort.cards.length, L.CARDS);
+  Object.keys(L.TL).forEach((tl) => { assert.strictEqual(MD.marks[tl].length, L.TL[tl], tl + ' labels'); assert.strictEqual(MD.markInfo[tl].length, L.TL[tl], tl + ' texts'); });
+  assert.strictEqual(MD.marks.embryo[MD.marks.embryo.length - 1], MD.marks.fetus[0], 'the fetus timeline starts where the embryo one ends');
+  assert.ok(MD.newborn.includes('mắt đã mở'), 'piglets are born with open eyes');
+});

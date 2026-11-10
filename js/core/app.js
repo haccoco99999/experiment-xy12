@@ -13,7 +13,7 @@
     { n: 5, id: 'exp5', group: 'plant', emoji: '🍅', title: 'Cơ quan sinh sản của thực vật có hoa và quá trình tạo quả, hạt', sub: 'Hoa cà chua' },
     { n: 6, id: 'exp6', group: 'plant', emoji: '🌿', title: 'Sự hình thành cây con từ hạt, rễ, thân và lá của thực vật', sub: 'Đậu xanh · khoai lang · khoai tây · thuốc bỏng' },
     { n: 7, id: 'exp7', group: 'animal', emoji: '🦋', title: 'Sinh sản và vòng đời của động vật đẻ trứng', sub: 'Bướm' },
-    { n: 8, id: 'exp8', group: 'animal', emoji: '🐱', title: 'Sinh sản và vòng đời của mèo', sub: 'Động vật đẻ con' }
+    { n: 8, id: 'exp8', group: 'animal', emoji: '🐷', title: 'Sinh sản và vòng đời của heo', sub: 'Động vật đẻ con' }
   ];
 
   var app = Lab.app = { current: null, catalog: CATALOG };
