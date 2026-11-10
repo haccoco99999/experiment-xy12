@@ -35,7 +35,7 @@
   };
   function placeCat(sex, both) {
     X.busy++; Lab.audio.play('pop');
-    var c = cats[sex] = Mo.cat({ sex: sex }), g = c.group, spot = SPOT[sex], from = V(sex === 'male' ? -6.5 : 6.5, 3.6, 1.6);
+    var c = cats[sex] = Mo.pig({ sex: sex }), g = c.group, spot = SPOT[sex], from = V(sex === 'male' ? -6.5 : 6.5, 3.6, 1.6);
     g.position.copy(from); g.rotation.y = YAW[sex]; g.userData.pick = sex; X.scene.add(g);
     var ring = rings[sex] = new T.Mesh(new T.RingGeometry(0.95, 1.1, 40), new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55, depthWrite: false, fog: false }));
     ring.rotation.x = -Math.PI / 2; ring.position.set(spot.x, 0.012, spot.z); ring.userData.noPick = true; X.scene.add(ring);
@@ -93,7 +93,7 @@
     X.fade(function () {
       clearTable(); X.setSet('inside'); X.shot('cells', 0);
       ['male', 'female'].forEach(function (sex) {
-        var c = show[sex] = Mo.cat({ sex: sex }), x = sex === 'male' ? -3.7 : 3.7; c.group.position.set(x, 0, 0); c.group.rotation.y = sex === 'male' ? 0 : Math.PI; X.scene.add(c.group);
+        var c = show[sex] = Mo.pig({ sex: sex }), x = sex === 'male' ? -3.7 : 3.7; c.group.position.set(x, 0, 0); c.group.rotation.y = sex === 'male' ? 0 : Math.PI; X.scene.add(c.group);
         var pad = new T.Mesh(new T.CircleGeometry(1.4, 40), new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.28, depthWrite: false, fog: false })); pad.rotation.x = -Math.PI / 2; pad.position.set(x, 0.01, 0.1); pad.userData.noPick = true; X.scene.add(pad); cell.areas.push(pad);
         cell.areas.push(X.tag(sex === 'male' ? APP.maleArea : APP.femaleArea, V(x, 2.45, 0), 'place'));
       });

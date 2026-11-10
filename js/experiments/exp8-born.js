@@ -28,8 +28,8 @@
       return X.fade(function () {
         [X.grow.womb(), X.fetus && X.fetus.group, X.embryo && X.embryo.group, X.zygote() && X.zygote().group].forEach(function (o) { if (o) X.dispose(o); });
         X.setSet('garden'); X.shot('yard', 0);
-        mother = Mo.cat({ sex: 'female', pose: 'lie' }); mother.group.position.set(-2.4, 0, 0.3); mother.group.rotation.y = -0.35; X.scene.add(mother.group);
-        kit = Mo.cat({ sex: 'kitten', age: 0, pose: 'lie' }); kit.group.position.copy(BASE); kit.group.rotation.y = -1.0; kit.group.userData.pick = 'kitten'; addProxy(kit.group, 0.7, 0.4);
+        mother = Mo.pig({ sex: 'female', pose: 'lie' }); mother.group.position.set(-2.4, 0, 0.3); mother.group.rotation.y = -0.35; X.scene.add(mother.group);
+        kit = Mo.pig({ sex: 'kitten', age: 0, pose: 'lie' }); kit.group.position.copy(BASE); kit.group.rotation.y = -1.0; kit.group.userData.pick = 'kitten'; addProxy(kit.group, 0.7, 0.4);
         kit.group.scale.setScalar(0.001); X.scene.add(kit.group);
       });
     }).then(function () {
@@ -80,7 +80,7 @@
     if (cmpStarted || state.phase !== PH.growth) return;
     cmpStarted = true; X.busy++; X.tlEnd(); X.closeLens(); if (markTag) { markTag.remove(); markTag = null; } kit.group.visible = false;
     [0, 1, 2].forEach(function (i) {
-      var c = Mo.cat({ sex: 'kitten', age: [0, 1, 2][i], pose: i === 0 ? 'lie' : 'stand' }), x = -1.9 + 2.1 * i, g = c.group;
+      var c = Mo.pig({ sex: 'kitten', age: [0, 1, 2][i], pose: i === 0 ? 'lie' : 'stand' }), x = -1.9 + 2.1 * i, g = c.group;
       g.position.set(x, 0, 1.1); g.rotation.y = -0.9; g.userData.pick = 'kitten' + i; addProxy(g, 0.75, 0.4); g.scale.setScalar(0.001); X.scene.add(g);
       cmp.push({ cat: c, x: x }); cmpTags.push(X.tag(MD.labels.compare[i], function () { return V(x, 1.35, 1.1); }, 'place'));
       X.targets['kitten' + i] = function () { return state.phase === PH.growth && cmpStarted ? boxAt(V(x, 0.45, 1.1), 0.85) : null; }; X.lensPoint['kitten' + i] = function () { return V(x, 0.4, 1.1); }; X.lensSize['kitten' + i] = 1.8;

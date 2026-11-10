@@ -6,7 +6,13 @@
 (function (Lab) {
   'use strict';
   var T = window.THREE, U = Lab.util, UI = Lab.ui, L = Lab.logic.exp8, Mo = Lab.models;
-  var CT = Lab.content.exp8, MD = CT.md, APP = CT.app, PH = L.PH;
+  var CT = Lab.content.exp8, MD = merge(CT.md, CT.user), APP = CT.app, PH = L.PH;     // `user` = the pig sentences (2026-11-10), merged over the md
+  function merge(a, b) {                              // b over a; nested plain objects merge, arrays and strings replace
+    var o = {}, k;
+    for (k in a) o[k] = a[k];
+    for (k in b) o[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k]) ? merge(a[k], b[k]) : b[k];
+    return o;
+  }
   var CARDS = ['male', 'female', 'lens'];
   var TARGETS = ['male', 'female', 'sperm', 'egg', 'zygote', 'embryo', 'fetus', 'kitten', 'kitten0', 'kitten1', 'kitten2'];      // things the magnifier can be put on
   var SHOTS = {
@@ -79,8 +85,8 @@
     /* ------------------------------------------------------------------ tray */
     function thumb(fn, o) { return Lab.stage.bakeThumb(function (h) { h.add(fn()); }, o); }
     var th = {
-      male: thumb(function () { return Mo.cat({ sex: 'male' }).group; }, { yaw: 0.7, pitch: 0.18 }),
-      female: thumb(function () { return Mo.cat({ sex: 'female' }).group; }, { yaw: 0.7, pitch: 0.18 }),
+      male: thumb(function () { return Mo.pig({ sex: 'male' }).group; }, { yaw: 0.7, pitch: 0.18 }),
+      female: thumb(function () { return Mo.pig({ sex: 'female' }).group; }, { yaw: 0.7, pitch: 0.18 }),
       lens: thumb(function () { return Mo.magnifier(); }, { yaw: 0.3, pitch: 0.3 })
     };
     X.trayItems = function (ids) { return ids.map(function (id) { return { id: id, label: MD.tools[id], thumb: th[id] }; }); };
