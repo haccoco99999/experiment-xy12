@@ -66,11 +66,11 @@ test('food, water, waste, urine: strictly in this order; each wrong drop has its
   assert.strictEqual(E4.wfwStep(s), 'digest'); assert.deepStrictEqual(E4.promptKeys(s), []);
   assert.strictEqual(E4.decideExcrete(s, 'waste', 'out').ok, false, 'waste waits for the time to pass');
   assert.ok(E4.markDigested(s)); assert.strictEqual(E4.markDigested(s), false, 'only once');
-  assert.strictEqual(E4.wfwStep(s), 'waste'); assert.deepStrictEqual(E4.promptKeys(s), ['wasteTask']);
+  assert.strictEqual(E4.wfwStep(s), 'waste'); assert.deepStrictEqual(E4.promptKeys(s), [], 'waste comes out by itself');
   assert.strictEqual(E4.decideExcrete(s, 'urine', 'out').ok, false, 'urine waits for the waste');
   assert.strictEqual(E4.decideExcrete(s, 'waste', 'in').msg, 'wasteWrong');
   assert.strictEqual(s.wasteOut, false);
-  excrete(s, 'waste'); assert.strictEqual(E4.wfwStep(s), 'urine'); assert.deepStrictEqual(E4.promptKeys(s), ['urineTask']);
+  excrete(s, 'waste'); assert.strictEqual(E4.wfwStep(s), 'urine'); assert.deepStrictEqual(E4.promptKeys(s), [], 'urine comes out by itself');
   assert.strictEqual(E4.decideExcrete(s, 'urine', 'in').msg, 'urineWrong');
   const out = excrete(s, 'urine');
   assert.strictEqual(out.wfwDone, true); assert.strictEqual(s.wfwDone, true); assert.strictEqual(E4.wfwStep(s), null);

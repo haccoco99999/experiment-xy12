@@ -10,7 +10,6 @@
   var SHOTS = {
     overview: { cx: 0, cy: 1.0, cz: 0.3, w: 6.8, h: 3.7, pitch: 0.3, fov: 34 },
     air: { cx: 0, cy: 0.95, cz: 0.3, w: 4.6, h: 2.65, pitch: 0.06, fov: 34 },
-    waste: { cx: 0.95, cy: 0.7, cz: 0.6, w: 5.6, h: 3.2, pitch: 0.25, fov: 34 },
     result: { cx: 0.2, cy: 0.95, cz: 0.5, w: 5.5, h: 3.4, pitch: 0.2, fov: 34 }
   };
 
@@ -95,6 +94,9 @@
       if (X.finaleShown && X.finale) X.finale.render(stack);
       stack.appendChild(U.el('div', { class: 'panel-card' }, U.el('div', { class: 'panel-title', text: APP.chooseTopic }), topicButton('air'), topicButton('wfw')));
       if (state.topic) stack.appendChild(U.el('div', { class: 'panel-card' }, marks(state.topic === 'air' ? ['o2', 'co2'] : ['food', 'water', 'waste', 'urine'])));
+      var nf = X.bodyFlows ? X.bodyFlows() : 0;                            // the four lines about the inside of the body (exp4-wfw.js)
+      if (nf && state.topic === 'wfw' && !X.finaleShown) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, U.el('div', { class: 'panel-title', text: APP.bodyTitle }),
+        APP.bodyFlows.slice(0, nf).map(function (t) { return U.el('p', { class: 'task-text', text: t }); })));
       var keys = L.promptKeys(state);
       if (state.placed && keys.length && !X.finaleShown && !X.busy) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, keys.map(function (k) { return U.el('p', { class: 'task-text', text: MD.prompt[k] }); }), X.extra || null));
       else if (!state.placed) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, U.el('p', { class: 'task-text', text: MD.msg.mouseFirst })));
@@ -184,12 +186,7 @@
     X.leaveHooks.push(function () { Lab.lens.hide(); });
     Lab.stage.onPick(function (hit) {
       if (!state.placed || X.busy) return; X.touch();
-      if (hit.id === 'waste' || hit.id === 'urine') X.wfw.excrete(hit.id, 'out');
-      else if (hit.id === 'rat') {
-        var kind = X.wfw.pending();                                         // the fur is hit first: a tap over the belly means the waste or urine inside
-        if (kind && X.wfw.isNear(kind, hit.point)) X.wfw.excrete(kind, 'out');
-        else if (X.rat.xray < 0.3) showInfo();
-      }
+      if (hit.id === 'rat' && X.rat.xray < 0.3) showInfo();
     });
 
     back = U.el('button', { class: 'btn btn-blue mode-back', text: '↩ ' + APP.backToTable, hidden: true });

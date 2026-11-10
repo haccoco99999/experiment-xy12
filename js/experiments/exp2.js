@@ -1,11 +1,17 @@
-/* Experiment 2 – "Tìm hiểu sự trao đổi khí, nước và chất khoáng của thực vật với môi trường" (cây rau cải).
+/* Experiment 2 – "Tìm hiểu sự trao đổi khí, nước và chất khoáng của thực vật với môi trường" (một cây trong chậu).
    This file: the scene, the tool tray, the side panel, placing the plant, clicking its parts and the cameras.
    The rest lives in exp2-gas.js, exp2-water.js, exp2-tools.js and exp2-finale.js; each adds itself to Lab.exp2mods and
    receives the shared object `X` (state, helpers, the plant) when the experiment is created. */
 (function (Lab) {
   'use strict';
   var T = window.THREE, U = Lab.util, UI = Lab.ui, L = Lab.logic.exp2, Mo = Lab.models;
-  var CT = Lab.content.exp2, MD = CT.md, APP = CT.app;
+  var CT = Lab.content.exp2, MD = merge(CT.md, CT.user), APP = CT.app;
+  function merge(a, b) {                              // b over a; nested plain objects merge, arrays and strings replace
+    var o = {}, k;
+    for (k in a) o[k] = a[k];
+    for (k in b) o[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k]) ? merge(a[k], b[k]) : b[k];
+    return o;
+  }
   var POS = { x: 0, z: 0.3 };
   var CARDS = ['pot', 'water', 'minerals', 'magnifier', 'box'];
 

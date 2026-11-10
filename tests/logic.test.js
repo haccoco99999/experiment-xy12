@@ -24,7 +24,7 @@ test('initial state matches the md (28 °C, empty bench, nothing placed, water n
 
 test('other tools before the pots are placed → "placePotsFirst", state untouched', () => {
   const s = E1.initialState();
-  ['water', 'gravel', 'npk', 'blackBin', 'clearBin'].forEach((tool) => {
+  ['water', 'gravel', 'blackBin', 'clearBin'].forEach((tool) => {
     const r = E1.decideDrop(s, tool, 'potB');
     assert.strictEqual(r.ok, false); assert.strictEqual(r.msg, 'placePotsFirst');
   });
@@ -48,25 +48,23 @@ test('tools: wrong place → the md message key; pot A (control) is never change
   assert.strictEqual(E1.decideDrop(s, 'gravel', null).msg, 'gravel');
   assert.strictEqual(E1.decideDrop(s, 'blackBin', null).msg, 'blackBin');
   assert.strictEqual(E1.decideDrop(s, 'clearBin', null).msg, 'clearBin');
-  ['water', 'gravel', 'npk', 'blackBin', 'clearBin'].forEach((t) => {
+  ['water', 'gravel', 'blackBin', 'clearBin'].forEach((t) => {
     const r = E1.decideDrop(s, t, 'potA'); assert.strictEqual(r.ok, false); assert.strictEqual(r.msg, 'toolOnControl');
   });
 });
 
-test('conditions follow the md: water needs a drop; gravel removes minerals; NPK restores them; bins remove light / air', () => {
+test('conditions follow the md: water needs a drop; gravel removes minerals; bins remove light / air', () => {
   const s = setup();
   assert.deepStrictEqual(s.B, { water: false, minerals: true, air: true, light: true, temperature: 28 });
   E1.apply(s, E1.decideDrop(s, 'water', 'potB').action); assert.strictEqual(s.B.water, true);
   E1.apply(s, E1.decideDrop(s, 'gravel', 'potB').action); assert.strictEqual(s.B.minerals, false);
-  E1.apply(s, E1.decideDrop(s, 'npk', 'potB').action); assert.strictEqual(s.B.minerals, true);
   E1.apply(s, E1.decideDrop(s, 'blackBin', 'potB').action); assert.strictEqual(s.B.light, false);
   E1.apply(s, E1.decideDrop(s, 'clearBin', 'potB').action); assert.strictEqual(s.B.air, false);
   assert.strictEqual(E1.decideDrop(s, 'blackBin', 'potB').ok, false, 'the bin is already on');
 });
 
-test('NPK on soil that already has minerals is accepted with a friendly note (no state change needed)', () => {
-  const s = setup(); const r = E1.decideDrop(s, 'npk', 'potB');
-  assert.ok(r.ok); assert.strictEqual(r.note, 'alreadyRich');
+test('the NPK bag was removed by request of the user (2026-11-10): no tray card, no state', () => {
+  assert.strictEqual('npkUsed' in E1.initialState().tools, false);
 });
 
 test('thermostat: locked before both pots, 1 °C steps, clamped to 0–60, locked after start', () => {
@@ -83,7 +81,7 @@ test('thermostat: locked before both pots, 1 °C steps, clamped to 0–60, locke
 test('after START everything is locked; drops are refused with "locked"', () => {
   const s = setup(); assert.ok(E1.start(s));
   assert.strictEqual(s.phase, 'experimentRunning');
-  ['water', 'gravel', 'npk', 'blackBin', 'clearBin'].forEach((t) => assert.strictEqual(E1.decideDrop(s, t, 'potB').msg, 'locked'));
+  ['water', 'gravel', 'blackBin', 'clearBin'].forEach((t) => assert.strictEqual(E1.decideDrop(s, t, 'potB').msg, 'locked'));
   assert.deepStrictEqual(E1.stepStates(s), ['done', 'done', 'active', 'locked']);
   assert.ok(E1.finish(s)); assert.deepStrictEqual(E1.stepStates(s), ['done', 'done', 'done', 'active']);
 });

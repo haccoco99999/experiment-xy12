@@ -7,7 +7,7 @@
 
   var CATALOG = [
     { n: 1, id: 'exp1', group: 'plant', emoji: '🌱', title: 'Các yếu tố cần thiết cho sự sống và phát triển của thực vật', sub: 'Cây đậu xanh · 5 yếu tố' },
-    { n: 2, id: 'exp2', group: 'plant', emoji: '🥬', title: 'Trao đổi khí, nước và chất khoáng của thực vật với môi trường', sub: 'Cây rau cải' },
+    { n: 2, id: 'exp2', group: 'plant', emoji: '🥬', title: 'Trao đổi khí, nước và chất khoáng của thực vật với môi trường', sub: 'Cây xanh trong chậu' },
     { n: 3, id: 'exp3', group: 'animal', emoji: '🐥', title: '5 yếu tố cần thiết cho sự sống của động vật', sub: 'Gà con' },
     { n: 4, id: 'exp4', group: 'animal', emoji: '🐭', title: 'Trao đổi nước, không khí và thức ăn của động vật với môi trường', sub: 'Chuột bạch' },
     { n: 5, id: 'exp5', group: 'plant', emoji: '🍅', title: 'Cơ quan sinh sản của thực vật có hoa và quá trình tạo quả, hạt', sub: 'Hoa cà chua' },

@@ -83,14 +83,11 @@
     food: async function (api) { await S4.placed(api); click('.topic-btn[data-topic=wfw]'); await adv(1.5); api.drop('food', 'near'); await adv(4.2); },
     water: async function (api) { await S4.food(api); await adv(2.2); api.drop('water', 'near'); await adv(3.6); },
     later: async function (api) { await S4.water(api); await adv(1.2); },
-    waste: async function (api) { await S4.water(api); await adv(9); },
-    wfwGo: async function (api) {
-      await S4.waste(api); api.X.wfw.excrete('waste', 'out'); await adv(4); api.X.wfw.excrete('urine', 'out'); await adv(4);
-    },
+    waste: async function (api) { await S4.water(api); await adv(15); },
+    wfwGo: async function (api) { await S4.water(api); await adv(24); },
     finale: async function (api) {
       await S4.airGo(api); click('.topic-btn[data-topic=wfw]'); await adv(1.5);
-      api.drop('food', 'near'); await adv(6.5); api.drop('water', 'near'); await adv(24);
-      api.X.wfw.excrete('waste', 'out'); await adv(4); api.X.wfw.excrete('urine', 'out'); await adv(14);
+      api.drop('food', 'near'); await adv(6.5); api.drop('water', 'near'); await adv(24 + 24);
       document.getElementById('caption').innerHTML = ''; document.getElementById('toasts').innerHTML = '';
     },
     replay: async function (api) { await S4.finale(api); click('.synth-btn'); await adv(1.5); }
@@ -140,6 +137,7 @@
     finale: async function (api) {
       await S5.d30(api); var X = api.X, p = Lab.stage.project(X.scene.children.filter(function (o) { return o.userData && o.userData.pick === 'fruit'; })[0].position);
       ev('pointerdown', p.x, p.y, Lab.stage.canvas); ev('pointerup', p.x, p.y, Lab.stage.canvas); await adv(12);
+      if (!q.get('cut')) { click('.panel-btn'); await adv(3); }               // ?cut=1 stops at the cut fruit and the magnifier
       document.getElementById('caption').innerHTML = ''; document.getElementById('toasts').innerHTML = '';
     }
   };

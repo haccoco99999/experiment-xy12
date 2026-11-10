@@ -1,6 +1,7 @@
 /* Experiment 4 – pure logic (no 3D, no DOM): the lab rat, two topics in any order.
    Air: O₂ goes in, then CO₂ goes out (breathing only, no photosynthesis, md sections 16–23, 45).
    Water, food and waste: food, then water, then (after a short time) waste, then urine, strictly in this order (sections 24–37, 46).
+   The student does food and water; the program does waste and urine by itself (user's request, 2026-11-10).
    Runs in the browser and in Node (tests). */
 (function (root, factory) {
   var api = factory();
@@ -118,8 +119,7 @@
     var step = wfwStep(s);
     if (step === 'food') return ['foodTask'];
     if (step === 'water') return ['waterTask'];
-    if (step === 'waste') return ['wasteTask'];
-    if (step === 'urine') return ['urineTask'];
+    // waste and urine come out by themselves (user's request, 2026-11-10), so there is no task to show for them
     return [];
   }
   /* the small marks: 'locked' | 'active' | 'done' for o2, co2, food, water, waste, urine */

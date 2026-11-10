@@ -47,7 +47,7 @@
         ripe: 'Quả cà chua đã chín. Nhấp vào quả để quan sát các hạt bên trong.',
         manySeeds: 'Quả cà chua chứa nhiều hạt.'
       },
-      labels: { pollen: 'HẠT PHẤN', tube: 'ỐNG PHẤN', male: 'TẾ BÀO SINH DỤC ĐỰC', female: 'TẾ BÀO SINH DỤC CÁI', fruit: 'QUẢ', seed: 'HẠT', arrow: 'BẦU NHỤY → QUẢ' },
+      labels: { pollen: 'HẠT PHẤN', tube: 'ỐNG PHẤN', male: 'TẾ BÀO SINH DỤC ĐỰC', female: 'TẾ BÀO SINH DỤC CÁI', fruit: 'QUẢ', seed: 'HẠT', arrow: 'BẦU NHỤY → QUẢ', flesh: 'Thịt quả', jelly: 'Phần dịch nhầy' },
       days: ['Ngày 0', 'Ngày 3', 'Ngày 7', 'Ngày 14', 'Ngày 21', 'Ngày 30'],
       finish: { title: 'HOÀN THÀNH', chain: 'NHỊ → HẠT PHẤN → THỤ PHẤN → ỐNG PHẤN → NOÃN → THỤ TINH → BẦU NHỤY THÀNH QUẢ → NOÃN THÀNH HẠT → QUẢ CHÍN CÓ HẠT.' },
       result: {
@@ -101,7 +101,8 @@
       timeTitle: 'THỜI GIAN',
       keepGoing: 'TIẾP TỤC TUA NHANH',
       tapFruit: 'Nhấp vào quả.',
-      results: 'KẾT LUẬN'
+      results: 'KẾT LUẬN',
+      seeResults: 'XEM KẾT QUẢ'
     }
   };
 })(window.Lab);
