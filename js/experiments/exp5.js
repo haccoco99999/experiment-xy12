@@ -15,7 +15,9 @@
     pollen: { cx: 0, cy: 2.45, cz: 0.3, w: 2.8, h: 2.0, pitch: 0.4, fov: 34 },
     fert: { cx: 0, cy: 2.35, cz: 0.3, w: 2.5, h: 1.8, pitch: 0.04, fov: 34 },
     fruit: { cx: 0, cy: 1.8, cz: 0.3, w: 4.4, h: 3.2, pitch: 0.3, fov: 34 },
-    halves: { cx: 0, cy: 1.9, cz: 0.3, w: 5.8, h: 3.4, pitch: 0.02, fov: 34 }
+    plant: { cx: 0, cy: 2.45, cz: 0.3, w: 4.2, h: 5.3, pitch: 0.12, fov: 34 },
+    halves: { cx: -0.5, cy: 1.0, cz: 0.4, w: 5.6, h: 3.0, pitch: 0.12, fov: 34 },
+    halvesEnd: { cx: 0.6, cy: 1.0, cz: 0.4, w: 8.4, h: 3.6, pitch: 0.12, fov: 34 }
   };
 
   Lab.experiments.exp5 = { id: 'exp5', number: 5, title: APP.titlePrefix + MD.title, help: APP.help, create: create };
@@ -86,8 +88,10 @@
     }
     function renderPanel() {
       var stack = el('div', { class: 'panel-stack' }), key = L.promptKey(state);
-      if (state.finished && X.finale) X.finale.render(stack);
-      else {
+      if (state.finished && X.finale && X.finaleShown) X.finale.render(stack);
+      else if (state.finished) {                                             // the cut fruit and the magnifier first; the results when the student is ready
+        stack.appendChild(el('div', { class: 'panel-card task-card' }, el('p', { class: 'task-text', text: MD.right.manySeeds }), X.busy ? null : button(APP.seeResults, 'btn-orange', function () { X.finale.begin(); })));
+      } else {
         if (!state.placed) stack.appendChild(el('div', { class: 'panel-card task-card' }, el('p', { class: 'task-text', text: APP.dragFlower })));
         else if (!state.cut) {
           var canOpen = L.canOpenStructure(state);
@@ -192,7 +196,7 @@
 
     X.refresh(); Lab.loop.wake();
     return {
-      dispose: function () { clearInterval(hintTimer); Lab.stage.onPick(null); X.stopFx(); Lab.stage.afterRender = null; },
+      dispose: function () { clearInterval(hintTimer); Lab.stage.onPick(null); X.stopFx(); Lab.stage.afterRender = null; if (X.veil) X.veil.remove(); },
       api: { state: function () { return state; }, X: X, drop: handleDrop, busy: function () { return X.busy; } }
     };
   }

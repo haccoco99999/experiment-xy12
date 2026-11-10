@@ -86,7 +86,7 @@
         'Kéo chuột bạch từ khay bên trái, thả lên bàn quan sát. Hai nội dung sẽ được mở khóa.',
         'Nhấp vào chuột để xem thông tin.',
         'Chọn TRAO ĐỔI KHÍ hoặc TRAO ĐỔI NƯỚC, THỨC ĂN VÀ CHẤT THẢI. Em có thể làm nội dung nào trước cũng được.',
-        'Làm theo yêu cầu trên màn hình: kéo khí vào hoặc ra khỏi cơ thể chuột, đặt thức ăn và bát nước gần chuột, đưa chất cặn bã và nước tiểu ra ngoài.',
+        'Làm theo yêu cầu trên màn hình: kéo khí vào hoặc ra khỏi cơ thể chuột, đặt thức ăn và bát nước gần chuột. Sau một lúc, chuột tự thải chất cặn bã và nước tiểu.',
         'Kéo kính phóng đại đến chuột hoặc các vật xung quanh để nhìn rõ hơn. Bấm LÀM LẠI THÍ NGHIỆM bất cứ lúc nào để chơi lại từ đầu.'
       ],
       chooseTopic: 'CHỌN NỘI DUNG',
@@ -96,7 +96,14 @@
       tapMouse: 'Nhấp vào chuột để xem thông tin.',
       nextAir: 'Hãy tiếp tục tìm hiểu sự trao đổi khí của chuột.',
       nextWfw: 'Hãy tiếp tục tìm hiểu sự trao đổi nước, thức ăn và chất thải của chuột.',
-      tapWaste: 'Nhấp vào chất cặn bã hoặc kéo ra khu vực thải.',
+      /* shown one by one after "MỘT KHOẢNG THỜI GIAN SAU..." (the user's own wording, 2026-11-10; not in the md) */
+      bodyTitle: 'BÊN TRONG CƠ THỂ CHUỘT',
+      bodyFlows: [
+        'Thức ăn → hệ tiêu hóa → chất dinh dưỡng → máu → tế bào',
+        'Không khí → phổi → oxygen → máu → tế bào',
+        'Tế bào → carbon dioxide → máu → phổi → môi trường',
+        'Máu → thận → nước tiểu → ngoài cơ thể'
+      ],
       backToTable: 'VỀ BÀN QUAN SÁT',
       learnedTitle: 'BẢNG TỔNG HỢP',
       conclusionTitle: 'KẾT LUẬN',

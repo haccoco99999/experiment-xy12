@@ -5,16 +5,23 @@
 (function (Lab) {
   'use strict';
   Lab.content.exp2 = {
+    /* `user` = sentences of the md changed at the user's request (2026-11-10: "không xác định loại cây", so no "rau cải").
+       They are merged over `md` by js/experiments/exp2.js and are not checked against the md file. See SPEC-NOTES.md. */
+    user: {
+      steps: ['CHẬU CÂY', 'TRAO ĐỔI KHÍ', 'TRAO ĐỔI NƯỚC VÀ CHẤT KHOÁNG', 'HOÀN THÀNH'],
+      tray: { pot: 'Chậu cây' },
+      placed: 'Đã đặt chậu cây. Hãy chọn nội dung em muốn quan sát.',
+      msg: { potOff: 'Hãy đặt chậu cây lên bàn quan sát.' },
+      conclusion: 'Cây luôn trao đổi chất với môi trường. Trong hô hấp, cây lấy khí ôxi và thải khí cacbonic. Trong quang hợp, cây lấy khí cacbonic, sử dụng ánh sáng và nước để tạo chất dinh dưỡng, đồng thời thải khí ôxi. Rễ cây hấp thụ nước và chất khoáng từ đất, sau đó nước và chất khoáng được vận chuyển đến các bộ phận của cây.',
+    },
+
     md: {
       title: 'TÌM HIỂU SỰ TRAO ĐỔI KHÍ, NƯỚC VÀ CHẤT KHOÁNG CỦA THỰC VẬT VỚI MÔI TRƯỜNG',
-      steps: ['CÂY RAU CẢI', 'TRAO ĐỔI KHÍ', 'TRAO ĐỔI NƯỚC VÀ CHẤT KHOÁNG', 'HOÀN THÀNH'],
       stateNames: { locked: 'Chưa mở', active: 'Đang thực hiện', done: 'Đã hoàn thành' },
-      tray: { pot: 'Chậu cây rau cải', water: 'Bình tưới nước', minerals: 'Túi/khay đất có chất khoáng', magnifier: 'Kính phóng đại', box: 'Hộp trong suốt' },
+      tray: { water: 'Bình tưới nước', minerals: 'Túi/khay đất có chất khoáng', magnifier: 'Kính phóng đại', box: 'Hộp trong suốt' },
       topics: { air: 'TRAO ĐỔI KHÍ', water: 'TRAO ĐỔI NƯỚC VÀ CHẤT KHOÁNG' },
       subs: { resp: 'HÔ HẤP', photo: 'QUANG HỢP', water: 'NƯỚC', minerals: 'CHẤT KHOÁNG' },
-      placed: 'Đã đặt cây rau cải. Hãy chọn nội dung em muốn quan sát.',
       msg: {
-        potOff: 'Hãy đặt cây rau cải lên bàn quan sát.',
         respWrongIn: 'Chưa đúng. Khi hô hấp, cây lấy khí ôxi từ môi trường.',
         respWrongOut: 'Chưa đúng. Hãy xác định khí cây thải ra khi hô hấp.',
         waterWrong: 'Hãy tưới nước vào đất để cây có thể hấp thụ nước.',
@@ -65,7 +72,6 @@
         photo: 'Quang hợp', photoFlow: 'MÔI TRƯỜNG → CO₂ → LÁ → O₂ → MÔI TRƯỜNG',
         water: 'Trao đổi nước', minerals: 'Trao đổi chất khoáng', soilFlow: 'ĐẤT → RỄ → THÂN → LÁ'
       },
-      conclusion: 'Cây rau cải luôn trao đổi chất với môi trường. Trong hô hấp, cây lấy khí ôxi và thải khí cacbonic. Trong quang hợp, cây lấy khí cacbonic, sử dụng ánh sáng và nước để tạo chất dinh dưỡng, đồng thời thải khí ôxi. Rễ cây hấp thụ nước và chất khoáng từ đất, sau đó nước và chất khoáng được vận chuyển đến các bộ phận của cây.',
       summary: {
         head: ['Quá trình', 'Cây lấy vào', 'Cây thải ra / vận chuyển'],
         rows: [
@@ -87,7 +93,7 @@
     app: {
       titlePrefix: 'THÍ NGHIỆM 2: ',
       help: [
-        'Kéo chậu cây rau cải từ khay bên trái, thả lên bàn quan sát. Hai nội dung sẽ được mở khóa.',
+        'Kéo chậu cây từ khay bên trái, thả lên bàn quan sát. Hai nội dung sẽ được mở khóa.',
         'Nhấp vào lá, thân hoặc đất của cây để tìm hiểu từng bộ phận.',
         'Chọn TRAO ĐỔI KHÍ hoặc TRAO ĐỔI NƯỚC VÀ CHẤT KHOÁNG. Em có thể làm nội dung nào trước cũng được.',
         'Làm theo yêu cầu trên màn hình: kéo khí vào hoặc ra khỏi lá, tưới nước vào đất, đưa chất khoáng đến rễ.',

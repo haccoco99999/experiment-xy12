@@ -50,11 +50,11 @@
       phase: 'initial',                                  // initial → plantPlacement → conditionSetup → experimentRunning → observation
       placed: { A: false, B: false },
       B: { water: false, minerals: true, air: true, light: true, temperature: DEFAULT_TEMP },
-      tools: { watered: false, gravelUsed: false, npkUsed: false, blackBin: false, clearBin: false }
+      tools: { watered: false, gravelUsed: false, blackBin: false, clearBin: false }
     };
   }
 
-  var WRONG = { water: 'water', gravel: 'gravel', npk: 'npk', blackBin: 'blackBin', clearBin: 'clearBin' };
+  var WRONG = { water: 'water', gravel: 'gravel', blackBin: 'blackBin', clearBin: 'clearBin' };
 
   /* Decides what dropping `item` on `zone` ('potA' | 'potB' | 'bench' | null) does. Never changes the state. */
   function decideDrop(state, item, zone) {
@@ -70,9 +70,7 @@
     if (zone !== 'potB') return { ok: false, msg: WRONG[item] || 'water' };
     if (item === 'blackBin' && state.tools.blackBin) return { ok: false, msg: null };
     if (item === 'clearBin' && state.tools.clearBin) return { ok: false, msg: null };
-    var res = { ok: true, action: item };
-    if (item === 'npk' && state.B.minerals) res.note = 'alreadyRich';
-    return res;
+    return { ok: true, action: item };
   }
 
   function apply(state, action) {
@@ -82,7 +80,6 @@
       case 'placeB': s.placed.B = true; break;
       case 'water': s.B.water = true; s.tools.watered = true; break;
       case 'gravel': s.B.minerals = false; s.tools.gravelUsed = true; break;
-      case 'npk': s.B.minerals = true; s.tools.npkUsed = true; break;
       case 'blackBin': s.B.light = false; s.tools.blackBin = true; break;
       case 'clearBin': s.B.air = false; s.tools.clearBin = true; break;
       default: break;

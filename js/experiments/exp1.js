@@ -38,7 +38,6 @@
       pot: Lab.stage.bakeThumb(function (h) { h.add(Mo.beanPot().group); }, { yaw: 0.35, pitch: 0.2 }),
       water: Lab.stage.bakeThumb(function (h) { h.add(Mo.wateringCan()); }, { yaw: -0.45, pitch: 0.2 }),
       gravel: Lab.stage.bakeThumb(function (h) { h.add(Mo.gravelPot()); }, { yaw: 0.3, pitch: 0.42 }),
-      npk: Lab.stage.bakeThumb(function (h) { h.add(Mo.npkBag()); }, { yaw: 0.4, pitch: 0.15 }),
       black: Lab.stage.bakeThumb(function (h) { h.add(Mo.blackBin()); }, { yaw: 0.3, pitch: 0.2 }),
       clear: Lab.stage.bakeThumb(function (h) { h.add(Mo.clearBin()); }, { yaw: 0.3, pitch: 0.2 })
     };
@@ -47,7 +46,6 @@
       { id: 'potB', label: MD.tray.potB, thumb: th.pot, badge: 'B' },
       { id: 'water', label: MD.tray.water, thumb: th.water },
       { id: 'gravel', label: MD.tray.gravel, thumb: th.gravel },
-      { id: 'npk', label: MD.tray.npk, thumb: th.npk },
       { id: 'blackBin', label: MD.tray.blackBin, thumb: th.black },
       { id: 'clearBin', label: MD.tray.clearBin, thumb: th.clear }
     ], { onClick: function (item) { if (item.id === 'potA' || item.id === 'potB') showInfo(); } });
@@ -97,7 +95,6 @@
         case 'placeB': placePot('B'); break;
         case 'water': doWater(); break;
         case 'gravel': doGravel(); break;
-        case 'npk': doNpk(r.note); break;
         case 'blackBin': doBin('black'); break;
         case 'clearBin': doBin('clear'); break;
       }
@@ -114,7 +111,7 @@
       startBtn.firstChild.textContent = canStart ? '▶' : '🔒';
       UI.setCard('potA', { ghost: state.placed.A }); UI.setCard('potB', { ghost: state.placed.B });
       UI.setCard('blackBin', { ghost: state.tools.blackBin }); UI.setCard('clearBin', { ghost: state.tools.clearBin });
-      UI.setCard('water', { used: state.tools.watered }); UI.setCard('gravel', { used: state.tools.gravelUsed }); UI.setCard('npk', { used: state.tools.npkUsed });
+      UI.setCard('water', { used: state.tools.watered }); UI.setCard('gravel', { used: state.tools.gravelUsed });
       renderPlacard('B');
       Lab.loop.wake();
     }
@@ -209,22 +206,6 @@
       toolEnd('gravel');
     }
 
-    async function doNpk(note) {
-      toolStart('npk');
-      var pot = pots.B, bag = Mo.npkBag(), tilt = -2.5, off = tipOffset(bag, tilt), soil = pot.soilPoint();
-      await flyIn(bag, { x: soil.x - off.x, y: 2.6 - off.y, z: soil.z + 0.15 }, { x: soil.x - off.x - 3, y: 6.2, z: soil.z + 0.15 });
-      await Lab.tween.to(bag.rotation, { z: tilt }, 0.6, { ease: 'inOutCubic' }).promise;
-      Lab.audio.play('pour');
-      var from = worldOf(bag.userData.tip);
-      [0x4aa3ff, 0xff9f43, 0xffffff].forEach(function (c) { Lab.fx.pour(scene, { from: from, to: soil, color: c, size: 0.045, count: 16, duration: 1.4, spread: 0.22, rough: 0.5, flight: 0.5 }); });
-      Lab.tween.wait(0.6).promise.then(function () { pot.setSoil(L.setupSoil(state.B), true); });
-      await Lab.tween.wait(1.6).promise;
-      await Lab.tween.to(bag.rotation, { z: 0 }, 0.35).promise;
-      await flyAway(bag, 3.4, 3);
-      if (note === 'alreadyRich') UI.toast(APP.alreadyRich, { type: 'info' }); else UI.toast(MD.status.minerals[0], { type: 'ok' });
-      toolEnd('npk');
-    }
-
     async function doBin(which) {
       var id = which === 'black' ? 'blackBin' : 'clearBin';
       busy++; refreshUI();
@@ -250,7 +231,7 @@
       if (!L.canStart(state)) { UI.toast(MD.msg.placePotsFirst, { type: 'warn' }); Lab.audio.play('wrong'); return; }
       L.start(state);
       Lab.drag.setEnabled(false);
-      ['potA', 'potB', 'water', 'gravel', 'npk', 'blackBin', 'clearBin'].forEach(function (id) { UI.setCard(id, { disabled: true }); });
+      ['potA', 'potB', 'water', 'gravel', 'blackBin', 'clearBin'].forEach(function (id) { UI.setCard(id, { disabled: true }); });
       thermo.setLocked(true);
       startBtn.classList.add('is-locked'); startBtn.firstChild.textContent = '🔒';
       UI.setProgress(MD.steps, L.stepStates(state));

@@ -230,22 +230,51 @@
     }
     seedGrow(0);
 
-    /* the two halves of the ripe fruit: a hemisphere of red skin and a flat face showing the flesh, the jelly and the seeds */
-    var cv = document.createElement('canvas'); cv.width = cv.height = 512; var c = cv.getContext('2d');
-    c.fillStyle = '#e0503c'; c.fillRect(0, 0, 512, 512); c.fillStyle = '#f08a6c'; c.beginPath(); c.arc(256, 256, 226, 0, 6.283); c.fill();
-    c.fillStyle = '#fbe4d0'; c.beginPath(); c.arc(256, 256, 34, 0, 6.283); c.fill();
-    for (i = 0; i < 3; i++) { var an = i * 2.094 + 0.5, cx = 256 + Math.cos(an) * 106, cy = 256 + Math.sin(an) * 106, gr = c.createRadialGradient(cx, cy, 8, cx, cy, 78); gr.addColorStop(0, '#f6c85a'); gr.addColorStop(1, '#e79a3a'); c.fillStyle = gr; c.beginPath(); c.ellipse(cx, cy, 82, 66, an, 0, 6.283); c.fill(); }
-    var faceTex = new T.CanvasTexture(cv); faceTex.colorSpace = T.SRGBColorSpace || faceTex.colorSpace; faceTex.userData.own = true;     // freed with the fruit
-    var skinRed = M.std(0xe0301e, { roughness: 0.3 }), faceMat = M.std(0xffffff, { map: faceTex, roughness: 0.6 });
+    /* the two halves of the ripe fruit: a hemisphere of red skin and a flat face that shows, like a real cut tomato, the thin skin, the thick
+       red flesh with its walls, the light core in the middle, four chambers of yellow-green jelly (Phần dịch nhầy) and the pale seeds in the
+       jelly. The face is drawn on a canvas; the same seed spots also get small 3D seeds so they stand out. */
+    var S = 1024, H = S / 2, cv = document.createElement('canvas'); cv.width = cv.height = S; var c = cv.getContext('2d');
+    var LOC = [0.78, 2.35, 3.92, 5.5], seedSpots = [], fr = U.rng(17);
+    function xy(r, a) { return [H + Math.cos(a) * r * H, H - Math.sin(a) * r * H]; }
+    c.fillStyle = '#b81f14'; c.fillRect(0, 0, S, S);                                          // skin (the edge of the circle)
+    var gFlesh = c.createRadialGradient(H, H, H * 0.2, H, H, H * 0.98); gFlesh.addColorStop(0, '#f47a5e'); gFlesh.addColorStop(0.7, '#e8452e'); gFlesh.addColorStop(1, '#d4321f');
+    c.fillStyle = gFlesh; c.beginPath(); c.arc(H, H, H * 0.965, 0, 6.283); c.fill();         // the flesh (Thịt quả)
+    for (i = 0; i < 70; i++) {                                                                  // small light dots of the veins in the flesh
+      var va = fr() * 6.283, vr = 0.8 + fr() * 0.12, vp = xy(vr, va); c.fillStyle = 'rgba(255,190,160,0.55)'; c.beginPath(); c.arc(vp[0], vp[1], 3 + fr() * 3, 0, 6.283); c.fill();
+    }
+    LOC.forEach(function (a0) {                                                                 // four chambers with jelly
+      var half = 0.52, r0 = 0.24, r1 = 0.74;
+      c.beginPath();
+      for (var t = 0; t <= 24; t++) { var aa = a0 - half + 2 * half * t / 24, rr = r1 - 0.06 * Math.pow(Math.abs(t - 12) / 12, 3) * 2; var q = xy(rr, aa); if (t) c.lineTo(q[0], q[1]); else c.moveTo(q[0], q[1]); }
+      for (t = 24; t >= 0; t--) { var ab = a0 - half * 0.8 + 1.6 * half * t / 24, q2 = xy(r0 + 0.05 * Math.pow(Math.abs(t - 12) / 12, 2), ab); c.lineTo(q2[0], q2[1]); }
+      c.closePath();
+      var m0 = xy(0.5, a0), gj = c.createRadialGradient(m0[0], m0[1], 10, m0[0], m0[1], H * 0.3);
+      gj.addColorStop(0, 'rgba(236,214,92,1)'); gj.addColorStop(0.6, 'rgba(226,170,70,1)'); gj.addColorStop(1, 'rgba(232,112,62,1)');
+      c.fillStyle = gj; c.fill();
+      c.strokeStyle = 'rgba(160,30,20,0.35)'; c.lineWidth = 4; c.stroke();
+      for (var g2 = 0; g2 < 12; g2++) {                                                       // shiny bubbles in the jelly
+        var ba = a0 + (fr() - 0.5) * half * 1.4, br = 0.34 + fr() * 0.34, bp = xy(br, ba); c.fillStyle = 'rgba(255,250,200,0.35)'; c.beginPath(); c.arc(bp[0], bp[1], 4 + fr() * 7, 0, 6.283); c.fill();
+      }
+      for (var k = 0; k < 8; k++) seedSpots.push({ r: 0.32 + 0.3 * fr(), a: a0 + (fr() - 0.5) * half * 1.3, rot: fr() * 3 });
+    });
+    var gCore = c.createRadialGradient(H, H, 4, H, H, H * 0.3); gCore.addColorStop(0, '#fde0cc'); gCore.addColorStop(1, '#f59a7e');
+    c.fillStyle = gCore; c.beginPath(); c.arc(H, H, H * 0.25, 0, 6.283); c.fill();             // the light core
+    seedSpots.forEach(function (sd) {                                                           // the seeds: pale yellow with a soft rim
+      var q = xy(sd.r, sd.a); c.save(); c.translate(q[0], q[1]); c.rotate(sd.rot);
+      c.fillStyle = 'rgba(255,248,214,0.6)'; c.beginPath(); c.ellipse(0, 0, 22, 28, 0, 0, 6.283); c.fill();   // the clear jelly coat around a seed
+      c.fillStyle = '#f2df9a'; c.strokeStyle = '#c9a85a'; c.lineWidth = 3; c.beginPath(); c.ellipse(0, 0, 13, 18, 0, 0, 6.283); c.fill(); c.stroke(); c.restore();
+    });
+    var faceTex = new T.CanvasTexture(cv); faceTex.colorSpace = T.SRGBColorSpace || faceTex.colorSpace; faceTex.anisotropy = 4; faceTex.userData.own = true;     // freed with the fruit
+    var skinRed = M.std(0xe0301e, { roughness: 0.3 }), faceMat = M.std(0xffffff, { map: faceTex, roughness: 0.45 });
     function half(mirror) {
       var h = new T.Group(), inner = new T.Group(); h.add(inner);
       var shellMesh = new T.Mesh(new T.SphereGeometry(1, 44, 22, 0, Math.PI * 2, 0, Math.PI / 2), skinRed); shellMesh.rotation.x = -Math.PI / 2; shellMesh.scale.set(1, 1, 0.9); shellMesh.material.side = T.DoubleSide; shellMesh.castShadow = true; inner.add(shellMesh);
       var face = new T.Mesh(new T.CircleGeometry(1, 48), faceMat); face.scale.set(1, 0.9, 1); face.position.z = 0.002; inner.add(face);
-      var hs = new T.InstancedMesh(new T.SphereGeometry(1, 8, 6), M.std(0xf1dc8a, { roughness: 0.5 }), 27), hr = U.rng(mirror ? 3 : 4);
-      for (var j = 0; j < 27; j++) {
-        var an2 = (j % 3) * 2.094 + 0.5, ch = Math.floor(j / 3), ax = 256 + Math.cos(an2) * 106, ay = 256 + Math.sin(an2) * 106, ux = (ax - 256) / 256 + Math.cos(hr() * 6.283) * 0.13 * hr(), uy = -(ay - 256) / 256 + Math.sin(hr() * 6.283) * 0.1 * hr();
-        eu.set(0, 0, hr() * 3); qq.setFromEuler(eu); mm.compose(new T.Vector3(ux, uy * 0.9, 0.025), qq, sc.set(0.05, 0.065, 0.018)); hs.setMatrixAt(j, mm);
-      }
+      var hs = new T.InstancedMesh(new T.SphereGeometry(1, 10, 8), M.std(0xf2df9a, { roughness: 0.45 }), seedSpots.length);
+      seedSpots.forEach(function (sd, j) {
+        eu.set(0, 0, -sd.rot); qq.setFromEuler(eu);
+        mm.compose(new T.Vector3(Math.cos(sd.a) * sd.r, Math.sin(sd.a) * sd.r * 0.9, 0.012), qq, sc.set(0.024, 0.032, 0.012)); hs.setMatrixAt(j, mm);
+      });
       inner.add(hs); h.scale.x = mirror ? -1 : 1; h.visible = false; return h;
     }
     var halves = [half(false), half(true)]; halves.forEach(function (h) { g.add(h); });
@@ -266,7 +295,15 @@
         });
         Lab.loop.wake();
       },
-      world: function (v) { g.updateMatrixWorld(true); return g.localToWorld(v.clone()); }
+      world: function (v) { g.updateMatrixWorld(true); return g.localToWorld(v.clone()); },
+      /* a point on the cut face of half i (0 or 1): r = 0 centre … 1 edge, a = angle; 'flesh' | 'jelly' | 'seed' are named spots */
+      locules: LOC, seedSpots: seedSpots,                           // the angles of the four jelly chambers and where the seeds are drawn
+      facePoint: function (i, r, a) {
+        var named = { flesh: [0.86, 0.2], jelly: [0.5, LOC[0]], seed: [seedSpots[0].r, seedSpots[0].a] }[r];
+        if (named) { a = named[1]; r = named[0]; }
+        g.updateMatrixWorld(true);
+        return halves[i].children[0].localToWorld(new T.Vector3(Math.cos(a) * r, Math.sin(a) * r * 0.9, 0.02));
+      }
     };
     api.ripen(0); api.setSize(1);
     return api;

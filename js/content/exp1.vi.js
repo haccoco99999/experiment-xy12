@@ -9,7 +9,7 @@
       title: 'THÍ NGHIỆM 1: TÌM HIỂU CÁC YẾU TỐ CẦN THIẾT CHO SỰ SỐNG VÀ PHÁT TRIỂN CỦA THỰC VẬT',
       steps: ['Đặt cây', 'Thiết lập điều kiện', 'Bắt đầu thí nghiệm', 'Quan sát kết quả'],
       tray: {
-        potA: 'Chậu cây A', potB: 'Chậu cây B', water: 'Bình tưới nước', gravel: 'Chậu đất sỏi rửa sạch', npk: 'Phân NPK',
+        potA: 'Chậu cây A', potB: 'Chậu cây B', water: 'Bình tưới nước', gravel: 'Chậu đất sỏi rửa sạch',
         blackBin: 'Thùng nhựa đen che sáng', clearBin: 'Thùng trong suốt có viền được dán kín'
       },
       msg: {
@@ -101,15 +101,13 @@
       help: [
         'Kéo chậu cây A và chậu cây B từ khay bên trái, thả lên bàn thí nghiệm.',
         'Chậu A là chậu đối chứng, chỉ để em quan sát. Em thay đổi điều kiện cho chậu B.',
-        'Kéo bình tưới, đất sỏi, phân NPK, thùng đen hoặc thùng trong suốt thả vào chậu B. Em có thể làm theo bất kỳ thứ tự nào.',
+        'Kéo bình tưới, đất sỏi, thùng đen hoặc thùng trong suốt thả vào chậu B. Em có thể làm theo bất kỳ thứ tự nào.',
         'Dùng nút − và + để chỉnh nhiệt độ của chậu B.',
         'Bấm BẮT ĐẦU THÍ NGHIỆM rồi quan sát cây sau 14 ngày và so sánh hai chậu.',
         'Bấm LÀM LẠI THÍ NGHIỆM bất cứ lúc nào để chơi lại từ đầu.'
       ],
       toolOnControl: 'Chậu A là chậu đối chứng, em hãy thử với chậu B nhé.',
       potOffTable: 'Hãy đặt chậu cây lên bàn thí nghiệm.',
-      npk: 'Hãy đổ phân NPK vào chậu B.',
-      alreadyRich: 'Đất đã có chất khoáng rồi.',
       placedA: 'Đã đặt chậu A – chậu đối chứng.',
       placedBoth: 'Đã đặt hai chậu. Em hãy thay đổi điều kiện của chậu B rồi bấm BẮT ĐẦU THÍ NGHIỆM nhé!',
       compareTitle: 'So sánh hai chậu',
