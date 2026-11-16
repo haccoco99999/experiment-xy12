@@ -1,9 +1,8 @@
 /* Cell-stage models for Experiment 8 (drawn far bigger than life, in soft colours, nothing scary).
    • Mo.sperm(): a head and a tail that waves; the nose points to +x; api.update(time) waves the tail.
    • Mo.egg(): a big round egg with a clear shell and a nucleus; setGlow(k) lights it, setZygote(k) turns it into the zygote (k = 1): brighter shell, bigger nucleus.
-   • Mo.embryo(): setT(t), t = 0 one small cell (day 0), 1 a few cells (day 15), 2 a ball of many cells (day 30), 3 a curled body with a head (day 45).
-   • Mo.fetus(): setStage(k), k = 0 (day 45) … 1 (day 60, the parts are clear) … 2 (near birth). The parts (head, body, legs, tail, ears) have userData.pick = 'fetus:<part>';
-     highlight(part) makes one glow. */
+   • Mo.embryo(): setT(t), t = 0 one small cell … 3 a curled body with a head (day 35).
+   • Mo.fetus(): setStage(k), k = 0 (day 45) … 2 (day 110). Shows a simple whole-piglet model without internal organs. */
 (function (Lab) {
   'use strict';
   var T = window.THREE, M = Lab.mat, P = Lab.prim, U = Lab.util, Mo = Lab.models;
@@ -91,33 +90,25 @@
   /* ---------------------------------------------------------------- fetus */
   Mo.fetus = function () {
     var g = new T.Group(); g.name = 'fetus';
-    var names = ['head', 'body', 'legs', 'tail', 'ears'], mats = {}, base = new T.Color(0xf2b5b0), fur = new T.Color(0xe3b9a4);
-    names.forEach(function (n) { mats[n] = M.std(0xf2b5b0, { roughness: 0.7 }); });
-    function pick(m, part) { m.userData.pick = 'fetus:' + part; m.castShadow = true; return m; }
-    var body = pick(ell(0.85, 0.5, 0.5, mats.body), 'body'); body.rotation.z = 0.22; g.add(body);
-    var head = pick(new T.Mesh(new T.SphereGeometry(0.46, 20, 14), mats.head), 'head'); head.position.set(0.95, 0.36, 0.04); g.add(head);
+    var skin = M.std(0xf2b5b0, { roughness: 0.7 });
+    var body = ell(0.85, 0.5, 0.5, skin); body.rotation.z = 0.22; body.castShadow = true; g.add(body);
+    var head = new T.Mesh(new T.SphereGeometry(0.46, 20, 14), skin); head.position.set(0.95, 0.36, 0.04); head.castShadow = true; g.add(head);
     var eyeM = M.std(0x2a1d22, { roughness: 0.4 });
     [-1, 1].forEach(function (s) { var e = ell(0.07, 0.014, 0.05, eyeM); e.position.set(0.4, 0.06, s * 0.19); e.rotation.y = s * 0.5; e.userData.noPick = true; head.add(e); });
-    var snout = new T.Mesh(new T.CylinderGeometry(0.15, 0.18, 0.2, 16), mats.head); snout.rotation.z = -Math.PI / 2; snout.position.set(0.48, -0.1, 0); snout.userData.pick = 'fetus:head'; head.add(snout);   // a pig's snout (2026-11-10)
-    var ears = [-1, 1].map(function (s) { var e = pick(new T.Mesh(new T.ConeGeometry(0.16, 0.34, 4), mats.ears), 'ears'); e.position.set(0.88, 0.84, s * 0.26); e.rotation.x = s * 0.3; g.add(e); return e; });
+    var snout = new T.Mesh(new T.CylinderGeometry(0.15, 0.18, 0.2, 16), skin); snout.rotation.z = -Math.PI / 2; snout.position.set(0.48, -0.1, 0); head.add(snout);
+    var ears = [-1, 1].map(function (s) { var e = new T.Mesh(new T.ConeGeometry(0.16, 0.34, 4), skin); e.position.set(0.88, 0.84, s * 0.26); e.rotation.x = s * 0.3; e.castShadow = true; g.add(e); return e; });
     var legs = [[0.55, -0.42, 0.3, 0.5], [0.55, -0.42, -0.3, 0.5], [-0.55, -0.4, 0.34, -0.4], [-0.55, -0.4, -0.34, -0.4]].map(function (p) {
-      var l = pick(new T.Mesh(new T.CylinderGeometry(0.085, 0.07, 0.5, 8), mats.legs), 'legs'); l.position.set(p[0], p[1], p[2]); l.rotation.z = p[3]; g.add(l); return l;
+      var l = new T.Mesh(new T.CylinderGeometry(0.085, 0.07, 0.5, 8), skin); l.position.set(p[0], p[1], p[2]); l.rotation.z = p[3]; l.castShadow = true; g.add(l); return l;
     });
     var tc = new T.CatmullRomCurve3([V(-0.8, 0.06, 0), V(-1.1, -0.02, 0.05), V(-1.3, -0.3, 0.1), V(-1.2, -0.62, 0.05)]), tube = new P.TubeGeo(10, 8);
     tube.update(tc.getPoints(10), function (t) { return 0.09 - 0.05 * t; });
-    var tail = pick(new T.Mesh(tube.geometry, mats.tail), 'tail'); g.add(tail);
-    var parts = { head: [head], body: [body], legs: legs, tail: [tail], ears: ears };
+    var tail = new T.Mesh(tube.geometry, skin); g.add(tail);
     var api = {
-      group: g, parts: parts, mats: mats, stage: 0,
+      group: g, stage: 0,
       setStage: function (k) {
         api.stage = k; var s = 0.6 + 0.4 * ss(0, 2, k), fine = ss(0, 1, k);
         g.scale.setScalar(s); ears.forEach(function (e) { e.scale.setScalar(0.15 + 0.85 * ss(0.2, 1.1, k)); });
         legs.forEach(function (l) { l.scale.set(1, 0.4 + 0.6 * fine, 1); }); tail.scale.setScalar(0.45 + 0.55 * ss(0, 1.6, k));
-        names.forEach(function (n) { mats[n].color.copy(base).lerp(fur, ss(0.8, 2, k)); });
-        Lab.loop.wake();
-      },
-      highlight: function (part) {
-        names.forEach(function (n) { var on = n === part; mats[n].emissive.setHex(on ? 0xffd84a : 0x000000); mats[n].emissiveIntensity = on ? 0.8 : 0; });
         Lab.loop.wake();
       }
     };

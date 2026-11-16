@@ -55,9 +55,10 @@
   /* ---------------- mating (md 7): the male comes close, they face each other, a short animation with a heart between them ---------------- */
   async function mate() {
     X.busy++; X.touch(); L.applyMating(state); X.refresh();
-    var target = female.group.position.clone().add(V(-0.65, 0.02, 0));
-    await Promise.all([X.fly(male, [male.group.position.clone(), target.clone().add(V(-0.3, 0.35, 0.2)), target], 1.1, 'perch'), X.turn(female, Math.PI, 0.5)]);
-    X.turn(male, 0, 0.3); male.mode = female.mode = 'tremble';
+    var target = female.group.position.clone().add(V(-1.4, 0.02, 0));
+    await X.fly(male, [male.group.position.clone(), target.clone().add(V(-0.3, 0.35, 0.2)), target], 1.1, 'perch');
+    await Promise.all([X.turn(male, Math.PI, 0.5), X.turn(female, 0, 0.5)]);
+    male.mode = female.mode = 'tremble';
     tags.pair.setVisible(false);
     X.tag(MD.labels.mating, function () { return mid().add(V(0, 1.0, 0)); }, 'place', 3600); X.tag('💞', function () { return mid().add(V(0, 0.6, 0)); }, 'love', 3600);
     Lab.fx.sparkles(X.scene, mid().add(V(0, 0.3, 0)), 0xff8fb8, 14); Lab.audio.play('ok'); X.toast(MD.right.mate, { type: 'ok', ms: 5600 });

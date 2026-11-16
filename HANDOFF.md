@@ -43,6 +43,12 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 
 ## Log (newest first)
 
+### 2026-11-16, Copilot: chép 15 tệp từ bản tải xuống
+
+- Đã chép 15 tệp được yêu cầu vào source. Giữ `HANDOFF.md` hiện tại theo lựa chọn của người dùng; không đụng tới tệp ZIP vốn đã bị xóa trong git.
+- `node --test "tests/*.test.js"`: 135/135 đạt. Chưa mở trang trên trình duyệt.
+- Còn lại: không có. Câu hỏi mở: không có.
+
 ### 2026-11-15 (end), Claude: backup of `main`, PR #3 merged
 
 - At the user's request ("tạo 1 nhánh backup cho master hiện tại, backup số ngày nay", the repo has no `master`, so `main`): branch `backup/main-2026-11-15` = old `main` `3b85fa1`, pushed to `origin`, no upstream (it never follows `main`).
