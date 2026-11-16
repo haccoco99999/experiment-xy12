@@ -1,12 +1,12 @@
-/* Experiment 8 – "Tìm hiểu sự sinh sản và vòng đời của động vật đẻ con – Mèo".
+/* Experiment 8 – "Tìm hiểu sự sinh sản và vòng đời của heo".
    This file: the two places the story happens in (the garden table, and a soft "inside" backdrop for the cells and the fetus), the tool tray (male, female, magnifier),
    the side panel, the timeline bar every growing stage uses, the magnifier, click routing and the buttons that start and continue. The stages add themselves through
    Lab.exp8mods and share the object `X`: exp8-cells.js (place, identify, sperm and egg, fertilization, zygote), exp8-grow.js (embryo, fetus),
-   exp8-born.js (newborn kitten, growing kitten, adult), exp8-finale.js (sorting, the end, review). Logic: js/logic/exp8.js. */
+   exp8-born.js (newborn piglet, growing piglet, adult), exp8-finale.js (sorting, the end, review). Logic: js/logic/exp8.js. */
 (function (Lab) {
   'use strict';
   var T = window.THREE, U = Lab.util, UI = Lab.ui, L = Lab.logic.exp8, Mo = Lab.models;
-  var CT = Lab.content.exp8, MD = merge(CT.md, CT.user), APP = CT.app, PH = L.PH;     // `user` = the pig sentences (2026-11-10), merged over the md
+  var CT = Lab.content.exp8, MD = merge(CT.md, CT.user), APP = CT.app, PH = L.PH;     // scenario-specific pig wording and milestones override the original cat text
   function merge(a, b) {                              // b over a; nested plain objects merge, arrays and strings replace
     var o = {}, k;
     for (k in a) o[k] = a[k];
@@ -14,7 +14,7 @@
     return o;
   }
   var CARDS = ['male', 'female', 'lens'];
-  var TARGETS = ['male', 'female', 'sperm', 'egg', 'zygote', 'embryo', 'fetus', 'kitten', 'kitten0', 'kitten1', 'kitten2'];      // things the magnifier can be put on
+  var TARGETS = ['male', 'female', 'sperm', 'egg', 'zygote', 'embryo', 'fetus', 'kitten'];      // things the magnifier can be put on
   var SHOTS = {
     table: { cx: 0, cy: 1.0, cz: 0.4, w: 6.8, h: 3.6, pitch: 0.34, fov: 34 },
     cells: { cx: 0, cy: 1.25, cz: 0, w: 9.4, h: 4.8, pitch: 0.05, fov: 34 },
@@ -180,9 +180,9 @@
     X.closeLens = function () { Lab.lens.hide(); clearLensTag(); };
     X.drops.lens = function (id, zid) {
       if (X.busy) return { ok: false, message: APP.busy };
-      var t = zid && X.targets[zid] && X.targets[zid]() ? zid : null, lt = t && /^kitten\d$/.test(t) ? 'kitten' : t, r = L.decideLens(state, lt);
+      var t = zid && X.targets[zid] && X.targets[zid]() ? zid : null, r = L.decideLens(state, t);
       if (!r.ok) return { ok: false, message: X.msgFor(r.msg) };
-      var early = L.lensEarly(state, lt), res = L.applyLens(state, lt);
+      var early = L.lensEarly(state, t), res = L.applyLens(state, t);
       showLens(t); if (res.credit && X.lensHooks[res.credit]) X.lensHooks[res.credit](res.credit); else if (X.lensHooks[t]) X.lensHooks[t](null, early);
       if (early && !res.credit) X.toast(X.msgFor(early), { type: 'info', ms: 5200 });
       X.refresh(); return { ok: true };

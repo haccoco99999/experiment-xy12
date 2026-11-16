@@ -1,7 +1,7 @@
 /* Pig model for Experiment 8 (the user asked on 2026-11-10 to change the cat into a pig), built from simple shapes (1 unit = 10 cm, drawn much smaller than
    real size so two pigs fit on the table). Mo.pig({sex:'male'|'female'|'kitten', age: months, pose:'stand'|'lie'}): 'kitten' is a piglet (the program keeps the
    old id). The snout points to +x, up is +y, feet on y = 0.
-   api.setAge(months) changes the proportions (newborn 0 … 1 year and older = adult): smaller body, bigger head, shorter legs. Piglets are born with open eyes.
+   api.setAge(months) changes the proportions (newborn 0 … 1 year and older = adult): smaller body, bigger head, shorter legs. Newborn eyes open gradually by about two weeks.
    api.update(time) breathes, wags the curly tail and turns the head a little. api.highlight('eyes'|'ears'|'legs'|'body'|null) makes one region glow. */
 (function (Lab) {
   'use strict';
@@ -50,11 +50,11 @@
     var cheek = ell(0.2, 0.17, 0.22, headMat); cheek.position.set(0.14, -0.06, 0); headG.add(cheek);
     var snout = new T.Mesh(new T.CylinderGeometry(0.11, 0.13, 0.16, 18), snoutMat); snout.rotation.z = -Math.PI / 2; snout.position.set(0.32, -0.07, 0); snout.castShadow = true; headG.add(snout);
     [-1, 1].forEach(function (s) { var n = ell(0.012, 0.03, 0.02, dark); n.position.set(0.405, -0.07, s * 0.045); headG.add(n); });
-    var ears = [], eyes = [];
+    var ears = [], eyes = [], eyeShines = [];
     [-1, 1].forEach(function (s) {
       var ear = new T.Mesh(new T.ConeGeometry(0.12, 0.24, 3), earMat); ear.position.set(0.0, 0.25, s * 0.15); ear.rotation.set(s * 0.45, 0, -0.55); ear.scale.set(1, 1, 0.35); ear.castShadow = true; headG.add(ear); ears.push(ear);
       var eye = new T.Mesh(new T.SphereGeometry(0.04, 12, 8), eyeMat); eye.position.set(0.2, 0.08, s * 0.15); headG.add(eye); eyes.push(eye);
-      var shine = new T.Mesh(new T.SphereGeometry(0.012, 6, 4), M.std(0xffffff, { roughness: 0.2 })); shine.position.set(0.03, 0.015, 0); eye.add(shine);
+      var shine = new T.Mesh(new T.SphereGeometry(0.012, 6, 4), M.std(0xffffff, { roughness: 0.2 })); shine.position.set(0.03, 0.015, 0); eye.add(shine); eyeShines.push(shine);
     });
 
     var legs = [];
@@ -75,6 +75,9 @@
       setAge: function (a) {
         api.age = a; var r = rowAt(a), S = r[1], H = r[2], Lg = r[3] * (pose === 'lie' ? 0.35 : 1), Tl = r[4], er = r[5], legH = 0.36 * Lg, by = legH + 0.3;
         root.scale.setScalar(S); bodyG.position.y = by; headG.position.set(0.72, by + 0.06, 0); headG.scale.setScalar(H);
+        var eyesOpen = Math.max(0, Math.min(1, a / 0.5));
+        eyes.forEach(function (eye) { eye.scale.y = 0.12 + 0.88 * eyesOpen; });
+        eyeShines.forEach(function (shine) { shine.visible = eyesOpen > 0.6; });
         legs.forEach(function (l) { l.g.scale.y = Lg; l.g.position.set(l.x, 0, l.z); });
         tailG.position.set(-0.68, by + 0.12, 0); tailG.scale.setScalar(Tl * 1.4);
         ears.forEach(function (e) { e.scale.set(er, er, 0.35 * er); });

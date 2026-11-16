@@ -4,7 +4,7 @@
 (Lab.exp7mods = Lab.exp7mods || []).push(function (X) {
   'use strict';
   var T = X.T, L = X.L, MD = X.MD, APP = X.APP, UI = X.UI, state = X.state, V = X.V, Mo = X.Mo;
-  X.LEN = [0.3, 0.55, 0.85, 1.2, 1.55];                              // how long the caterpillar looks after hatching, each moult and when it is big enough (L.LENGTH_MM has the real numbers)
+  X.LEN = [0.3, 0.5, 0.67, 2.5 / 3, 2.5 / 3];                     // three smaller growth stages; the last is one-third of the 2.5-unit plant leaf
   X.larva = null;
 
   /* ---------------- where the magnifier and the leaf and the ruler can be dropped ---------------- */
