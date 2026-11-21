@@ -63,7 +63,7 @@ Học sinh đặt một chậu cây lên bàn rồi tìm hiểu hai nội dung: 
 1. Kéo "Chậu cây" từ khay bên trái, thả lên bàn quan sát. Thả ngoài bàn thì chậu quay về khay kèm một lời nhắc. Khi chưa có cây, hai nút nội dung ở bảng bên phải bị khóa.
 2. Nhấp vào lá, thân hoặc đất của cây để đọc về từng bộ phận. Nhấp vào đất thì màn hình chuyển sang mặt cắt đất, thấy rõ bộ rễ. Nút "VỀ BÀN QUAN SÁT" ở dưới cùng đưa màn hình về như cũ.
 3. Bấm "TRAO ĐỔI KHÍ", rồi chọn "HÔ HẤP" hoặc "QUANG HỢP". Màn hình phóng lớn phần lá, quanh lá có các phân tử khí O₂ và CO₂. Hô hấp diễn ra trong bóng tối: kéo O₂ vào lá, rồi kéo CO₂ từ lá ra ngoài. Quang hợp diễn ra dưới ánh sáng: kéo CO₂ vào lá, rồi kéo O₂ từ lá ra ngoài. Kéo sai thì phân tử quay về chỗ cũ kèm một lời nhắc.
-4. Bấm "TRAO ĐỔI NƯỚC VÀ CHẤT KHOÁNG", rồi chọn "NƯỚC" hoặc "CHẤT KHOÁNG". Với nước, kéo "Bình tưới nước" vào đất. Với chất khoáng, kéo "Túi/khay đất có chất khoáng" vào đất, chỗ có rễ. Thả sai chỗ thì dụng cụ quay về khay kèm một lời nhắc. Túi chất khoáng được vẽ giống túi phân bón NPK.
+4. Bấm "TRAO ĐỔI NƯỚC VÀ CHẤT KHOÁNG", rồi chọn "NƯỚC" hoặc "CHẤT KHOÁNG". Với nước, kéo "Bình tưới nước" vào đất. Với chất khoáng, kéo "Đất có chất khoáng" vào đất, chỗ có rễ. Thả sai chỗ thì dụng cụ quay về khay kèm một lời nhắc. Túi chất khoáng được vẽ giống túi phân bón NPK.
 5. Khi xong cả hai nội dung, thanh tiến trình hiện "HOÀN THÀNH". Bảng bên phải hiện kết luận, bảng tổng kết kiến thức và nút "TƯƠNG TÁC TỔNG HỢP". Bấm nút này để xem mọi dòng chuyển động cùng lúc: khí vào ra, nước và chất khoáng đi từ đất lên lá.
 
 Kính phóng đại: kéo vào lá, thân hoặc đất để xem gần hơn. Nhấp vào kính để cất đi.
@@ -98,18 +98,16 @@ Học sinh đặt một chuột bạch lên bàn rồi tìm hiểu hai nội dun
 
 1. Kéo "Chuột bạch" từ khay bên trái, thả lên bàn quan sát. Thả ngoài bàn thì chuột quay về khay kèm một lời nhắc. Khi chưa có chuột, hai nút nội dung ở bảng bên phải bị khóa, và khay thức ăn, bát nước, kính phóng đại chưa dùng được.
 2. Nhấp vào chuột, hoặc vào thẻ "Chuột bạch" trong khay, để xem bảng thông tin: loài, giai đoạn, tình trạng. Bấm "ĐÓNG" để đóng bảng.
-3. Bấm "TRAO ĐỔI KHÍ". Chuột quay ngang và trở nên trong suốt, thấy phổi và đường thở từ mũi. Quanh chuột có các phân tử O₂ và CO₂. Kéo một phân tử O₂ vào người chuột: nó đi qua mũi và đường hô hấp tới phổi. Sau đó một phân tử CO₂ hiện ra trong phổi: kéo nó ra ngoài người chuột. Kéo sai thì phân tử quay về chỗ cũ kèm một lời nhắc. Chuột là động vật nên thí nghiệm này không có quang hợp.
+3. Bấm "TRAO ĐỔI KHÍ". Chuột quay ngang, vẫn giữ hình dáng bình thường. Quanh chuột có các phân tử O₂ và CO₂. Kéo một phân tử O₂ vào người chuột, rồi kéo phân tử CO₂ hiện ra từ chuột ra ngoài. Chỉ sau khi kéo CO₂ ra ngoài, bảng bên phải mới hiện "O₂ VÀO ✓", "CO₂ RA ✓" và dòng "Khí ô-xi -> Chuột -> Khí các-bô- níc.". Kéo sai thì phân tử quay về chỗ cũ kèm một lời nhắc. Chuột là động vật nên thí nghiệm này không có quang hợp.
 4. Bấm "TRAO ĐỔI NƯỚC, THỨC ĂN VÀ CHẤT THẢI". Màn hình về góc nhìn bên ngoài. Kéo "Khay thức ăn" đặt gần chuột: chuột đi tới, ăn, và thức ăn trong khay vơi dần. Sau đó kéo "Bát nước" đặt gần chuột: chuột uống, nước trong bát giảm nhẹ. Phải cho ăn trước rồi mới cho uống. Đặt quá xa chuột, hoặc chưa chọn nội dung này, thì dụng cụ quay về khay kèm một lời nhắc. Trong lúc chuột đang đi hoặc ăn, dụng cụ thả thêm cũng quay về khay, kèm câu "Em chờ chuột một chút nhé."
 5. Khi chuột uống xong, màn hình hiện "MỘT KHOẢNG THỜI GIAN SAU..." và ánh sáng chớp sáng tối. Phần còn lại tự chạy, học sinh không cần làm gì. Bảng bên phải hiện thẻ "BÊN TRONG CƠ THỂ CHUỘT" và lần lượt từng dòng:
-   Thức ăn → hệ tiêu hóa → chất dinh dưỡng → máu → tế bào
-   Không khí → phổi → oxygen → máu → tế bào
-   Tế bào → carbon dioxide → máu → phổi → môi trường
-   Máu → thận → nước tiểu → ngoài cơ thể
+   Các chất hữu cơ trong thức ăn -> Chuột -> Các chất thải.
+   Nước -> Chuột -> Nước tiểu.
    Sau dòng thứ ba, chuột tự thải chất cặn bã (vài viên nâu) xuống bàn phía sau. Sau dòng thứ tư, chuột tự thải nước tiểu (một vũng nhỏ màu vàng). Mỗi chỗ có nhãn "CHẤT CẶN BÃ" hoặc "NƯỚC TIỂU". Chuột không chuyển sang trong suốt ở phần này.
 6. Khi xong cả hai nội dung, màn hình hiện "THÍ NGHIỆM HOÀN THÀNH!". Chuột trở lại bình thường và nhảy nhẹ. Sáu dòng chuyển động chạy cùng lúc: O₂, nước, thức ăn đi vào; CO₂, chất cặn bã, nước tiểu đi ra. Bảng bên phải hiện sáu dòng đã tích, phần "KẾT QUẢ QUAN SÁT" (sáu mũi tên và sơ đồ), kết luận và "BẢNG TỔNG HỢP".
 7. Bấm "XEM LẠI TƯƠNG TÁC" để xem sáu dòng chạy lần lượt: O₂ vào, CO₂ ra, nước vào, thức ăn vào, chất cặn bã ra, nước tiểu ra. Các nút "DỪNG", "TIẾP TỤC" và "XEM LẠI" điều khiển phần này.
 
-Kính phóng đại: kéo lên chuột, hoặc lên khay thức ăn và bát nước đang có trên bàn, để xem gần hơn. Khi chuột trong suốt, kính hiện nhãn "PHỔI". Nhấp vào kính để cất đi.
+Kính phóng đại: kéo lên chuột, hoặc lên khay thức ăn và bát nước đang có trên bàn, để xem gần hơn. Nhấp vào kính để cất đi.
 
 Ở màn hình trao đổi khí và ở màn hình kết quả có nút "VỀ BÀN QUAN SÁT" ở dưới cùng, đưa màn hình về như cũ. Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giống thí nghiệm 1.
 
@@ -170,7 +168,7 @@ Nút "LÀM LẠI THÍ NGHIỆM" và ba nút trên thanh trên cùng dùng giốn
 
 Cách chơi thí nghiệm 8
 
-Thí nghiệm này lúc đầu dùng con mèo như tài liệu đặc tả. Ngày 10/11/2026, theo yêu cầu của người dùng, con vật được đổi thành con heo. Các mốc thời gian của phôi và thai cũng đổi theo thời gian mang thai của heo (khoảng 114 ngày).
+Thí nghiệm này lúc đầu dùng con mèo như tài liệu đặc tả. Ngày 10/11/2026, theo yêu cầu của người dùng, con vật được đổi thành con heo. Theo kịch bản chi tiết mới, thời gian mang thai khoảng 114 ngày; các mốc phát triển phôi, thai, heo con và heo trưởng thành được cập nhật theo các giai đoạn dưới đây.
 
 Học sinh đặt heo đực và heo cái, rồi theo dõi từ tinh trùng và trứng đến khi heo con lớn thành heo trưởng thành. Thanh tiến trình có 9 bước và chỉ hiển thị tiến độ. Xong mỗi giai đoạn, bảng bên phải hiện "Em đã hoàn thành giai đoạn này." và nút "▶ TIẾP TỤC" nằm ngay dưới tên giai đoạn.
 
@@ -180,11 +178,11 @@ Học sinh đặt heo đực và heo cái, rồi theo dõi từ tinh trùng và 
 4. Giai đoạn 2: màn hình chuyển sang nền tím mềm, như nhìn vào bên trong cơ thể. Hai con heo đứng hai bên, ở giữa là một khay có vài tinh trùng và một quả trứng. Nhấn vào tinh trùng và vào trứng để xem tên. Kéo một tinh trùng vào khu vực HEO ĐỰC, kéo trứng vào khu vực HEO CÁI. Kéo sai thì quay về kèm câu nhắc. Cần đủ bốn việc: xem tinh trùng, xem trứng, kéo tinh trùng đúng, kéo trứng đúng.
 5. Giai đoạn 3: một quả trứng lớn ở giữa, 10 tinh trùng bơi xung quanh. Nhấp vào trứng thì hiện lời nhắc chọn tinh trùng. Kéo một tinh trùng đến gần trứng: tinh trùng bơi vào, trứng phát sáng, hai tế bào kết hợp và hiện "THỤ TINH ĐÃ XẢY RA". Kéo ra xa thì tinh trùng quay về kèm "Hãy đưa tinh trùng đến trứng."
 6. Giai đoạn 4: hợp tử hiện ở giữa màn hình. Kéo kính phóng đại đến hợp tử. Nhấp vào vòng kính để cất kính, rồi nhấp vào hợp tử. Nút "▶ THEO DÕI HỢP TỬ PHÁT TRIỂN" hiện ở đầu bảng.
-7. Giai đoạn 5: thanh thời gian có 4 mốc Ngày 0, Ngày 10, Ngày 20, Ngày 30. Một mốc mở khi đã xem mốc trước. Nhấp vào mốc hoặc kéo thanh trượt. Hình trên màn hình đổi theo khi kéo. Thả tay thì thanh tự đến mốc gần nhất. Kéo quá mốc còn khóa thì thanh dừng ở mốc cuối cùng đã mở và hiện "Hãy hoàn thành mốc trước để tiếp tục quan sát." Giai đoạn 6, 8 và 9 cũng có thanh trượt này. Tế bào phân chia dần thành phôi. Đến Ngày 30, kéo kính phóng đại đến phôi.
-8. Giai đoạn 6: thanh thời gian có 3 mốc Ngày 30, Ngày 70, Gần ngày sinh. Thai nằm trong một bong bóng hồng, tượng trưng cho cơ thể heo mẹ. Nhấp vào đầu, thân, chân và đuôi của thai, bảng ghi dấu ✓ cho từng bộ phận (tai cũng nhấp được nhưng không bắt buộc). Sau mốc Gần ngày sinh, dùng kính phóng đại để quan sát thai.
-9. Giai đoạn 7: camera lùi ra, màn hình mờ đi rồi hiện khu vườn với heo mẹ và heo con mới sinh. Heo con mới sinh đã mở mắt. Nhấp vào heo con. Nhấp chỗ khác thì hiện "Hãy nhấp vào heo con để quan sát." Sau đó kéo kính phóng đại đến heo con: mắt, tai, chân và thân lần lượt sáng lên.
-10. Giai đoạn 8: thanh thời gian 1 tuần, 2 tuần, 1 tháng, 2 tháng. Heo con lớn dần, đi lại vững hơn và bắt đầu tập ăn. Sau mốc 2 tháng, ba heo con (mới sinh, 1 tháng, 2 tháng) đứng cạnh nhau. Nhấp vào từng con: con đó to lên, có khung viền kích thước và câu thông tin. Cần nhấp đủ cả ba.
-11. Giai đoạn 9: thanh thời gian 2 tháng, 6 tháng, 1 năm. Heo con lớn thành heo trưởng thành đứng cạnh heo mẹ, mỗi mốc có vài đặc điểm ghi bên phải.
+7. Giai đoạn 5: thanh thời gian có 4 mốc Ngày 0, 21, 28, 35. Một mốc mở khi đã xem mốc trước. Nhấp vào mốc hoặc kéo thanh trượt; mốc đang mở thể hiện quá trình hợp tử phân chia và phôi phát triển trong tử cung. Ở Ngày 35, dùng kính phóng đại để xem hình ảnh hợp tử phát triển thành phôi lớn dần trong kính.
+8. Giai đoạn 6: thanh thời gian có 4 mốc Ngày 45, 70, 90, 110. Chỉ hiển thị hình heo con đang phát triển; không có mô hình heo mẹ, bong bóng tử cung hay các cơ quan bên trong. Sau mốc Ngày 110, dùng kính phóng đại để quan sát heo con.
+9. Giai đoạn 7: camera lùi ra, màn hình mờ đi rồi hiện một heo con mới sinh trên bàn vào khoảng Ngày 114. Heo con nhỏ, thân ướt, da mỏng, mắt chưa mở hoàn toàn, vận động còn yếu và phụ thuộc vào mẹ. Nhấp vào heo con rồi dùng kính phóng đại để quan sát. Thông tin nêu heo con cần bú sữa non để tăng sức đề kháng.
+10. Giai đoạn 8: thanh thời gian có các mốc 1 tuần, 2 tuần, 1 tháng, 2 tháng. Một heo con duy nhất lớn dần qua các mốc: một tuần tuổi còn vụng về và chủ yếu bú mẹ; hai tuần tuổi, mắt mở rõ hơn, đi lại vững hơn; khoảng một tháng tuổi, heo con bắt đầu tập ăn; hai tháng tuổi, heo con có thể cai sữa, tự ăn và vận động linh hoạt. Không xuất hiện thêm heo con để so sánh.
+11. Giai đoạn 9: thanh thời gian có các mốc 2 tháng, 6 tháng, 1 năm. Chính heo con ở giai đoạn trước tiếp tục lớn thành heo trưởng thành. Khoảng 6 tháng, heo gần bằng heo trưởng thành về hình dạng khung xương và cơ quan sinh dục bắt đầu phát triển; khả năng sinh sản còn tùy giống và điều kiện nuôi. Khoảng 1 năm, heo đạt mức trưởng thành sinh dục và thể chất, có thể tham gia sinh sản.
 12. Cuối cùng khay đổi thành 8 thẻ xếp lộn xộn. Kéo mỗi thẻ vào ô số 1 đến 8 trên bàn theo đúng thứ tự từ TINH TRÙNG + TRỨNG đến HEO TRƯỞNG THÀNH. Thẻ đúng được giữ lại. Thẻ sai quay về khay kèm câu "Chưa đúng. Hãy quan sát lại trình tự từ thụ tinh đến khi heo trưởng thành."
 13. Đúng đủ 8 thẻ thì các mũi tên sáng lên nối các ô, bảng bên phải hiện "HOÀN THÀNH THÍ NGHIỆM!", sơ đồ tổng quát sáng lên từng bước và phần kết luận. Nút "XEM LẠI THÍ NGHIỆM" cho đọc lại từng giai đoạn. Chỉ để đọc, tiến trình không đổi.
 

@@ -9,7 +9,7 @@
        They are merged over `md` by js/experiments/exp2.js and are not checked against the md file. See SPEC-NOTES.md. */
     user: {
       steps: ['CHẬU CÂY', 'TRAO ĐỔI KHÍ', 'TRAO ĐỔI NƯỚC VÀ CHẤT KHOÁNG', 'HOÀN THÀNH'],
-      tray: { pot: 'Chậu cây' },
+      tray: { pot: 'Chậu cây', minerals: 'Đất có chất khoáng' },
       placed: 'Đã đặt chậu cây. Hãy chọn nội dung em muốn quan sát.',
       msg: { potOff: 'Hãy đặt chậu cây lên bàn quan sát.' },
       conclusion: 'Cây luôn trao đổi chất với môi trường. Trong hô hấp, cây lấy khí ôxi và thải khí cacbonic. Trong quang hợp, cây lấy khí cacbonic, sử dụng ánh sáng và nước để tạo chất dinh dưỡng, đồng thời thải khí ôxi. Rễ cây hấp thụ nước và chất khoáng từ đất, sau đó nước và chất khoáng được vận chuyển đến các bộ phận của cây.',

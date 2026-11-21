@@ -10,7 +10,7 @@
   X.dgCount = 0;
 
   X.enter[PH.sort] = function () {
-    var b = X.born; [b.mother(), b.kit()].forEach(function (c) { if (c) c.group.visible = false; });
+    var b = X.born; if (b.kit()) b.kit().group.visible = false;
     if (X.tl) X.tlEnd(); X.info = null; X.shot('sort', 1200);
     UI.setTray(ORDER.map(function (i) { return { id: 'c' + i, label: MD.sort.cards[i] }; }), { title: APP.cardsTitle, onClick: function () { } });
     SPOT.forEach(function (p, i) {
@@ -64,7 +64,7 @@
   function reviewLines(i) {
     var R = MD.right, I = MD.markInfo, marks = function (tl) { return I[tl].map(function (m) { return MD.marks[tl][I[tl].indexOf(m)] + ': ' + m.msg; }); };
     return [[R.intro, R.maleId, R.femaleId], [MD.labels.sperm + ': ' + R.spermInfo, MD.labels.egg + ': ' + R.eggInfo], [R.fertilized], [R.zygote], marks('embryo'), marks('fetus'),
-      [R.kittenBorn, R.kittenLens].concat(MD.newborn), marks('growth').concat([R.compareAll]), marks('adult').concat([R.adultAll])][i];
+      [R.kittenBorn, R.kittenLens].concat(MD.newborn), marks('growth'), marks('adult').concat([R.adultAll])][i];
   }
   X.reviewRender = function (stack) {
     var list = X.review === 'list';

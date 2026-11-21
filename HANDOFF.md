@@ -43,6 +43,68 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 
 ## Log (newest first)
 
+### 2026-11-21, Copilot: sao chép source sang thư mục experiment-xy12 mới
+
+- Sao chép 128 tệp vào `D:\New folder (2)\experiment-xy12`, không chép `.git`; giữ nguyên `.git` của thư mục đích.
+- Đối chiếu SHA-256: 128/128 tệp giống source. Không chạy kiểm thử vì không sửa mã.
+- Còn lại: không có. Câu hỏi mở: không có.
+
+### 2026-11-21, Copilot: chỉ hiện bảng trao đổi khí sau khi CO₂ ra ngoài
+
+- `js/experiments/exp4.js`: ẩn bảng dấu O₂/CO₂ và dòng giải thích đến khi hoàn tất kéo CO₂ ra ngoài. Cập nhật `tests/shots.js`, `HUONG-DAN.txt` và `SPEC-NOTES.md`.
+- `node --test "tests/*.test.js"`: 135/135 đạt. Kịch bản trình duyệt `exp4/airGo` xác nhận bảng ẩn trước và sau khi O₂ vào, rồi hiện đủ hai dấu cùng dòng giải thích sau khi CO₂ ra ngoài.
+- Còn lại: không có. Câu hỏi mở: không có.
+
+### 2026-11-21, Copilot: cập nhật dòng giải thích thí nghiệm 4
+
+- `js/content/exp4.vi.js`: đổi ba dòng trao đổi sang dùng mũi tên `->` và cập nhật "Động vật" thành "Chuột". Cập nhật `HUONG-DAN.txt`, `SPEC-NOTES.md` và kiểm tra trong `tests/shots.js`.
+- `node --test "tests/*.test.js"`: 135/135 đạt. Không xác nhận được trên trình duyệt vì máy chủ thử nghiệm không chạy.
+- Còn lại: không có. Câu hỏi mở: không có.
+
+### 2026-11-21, Copilot: đổi tiêu đề và dòng phụ thí nghiệm 8
+
+- `js/core/app.js`: đổi tiêu đề thẻ thành "Sinh sản và vòng đời của động vật đẻ con", dòng phụ thành "Heo"; giữ nguyên kiểu chữ.
+- `node --test "tests/*.test.js"`: 135/135 đạt. Không kiểm tra trực tiếp trên trang.
+- Còn lại: không có. Câu hỏi mở: không có.
+
+### 2026-11-21, Copilot: cập nhật tiêu đề thí nghiệm 3
+
+- `js/core/app.js`: đổi tiêu đề thẻ thí nghiệm 3 thành "5 yếu tố cần thiết cho sự sống và phát triển của động vật"; giữ nguyên kiểu chữ.
+- `node --test "tests/*.test.js"`: 135/135 đạt. Không kiểm tra trực tiếp trên trang.
+- Còn lại: không có. Câu hỏi mở: không có.
+
+### 2026-11-20, Copilot: sắp xếp lại chữ trên thẻ thí nghiệm 1
+
+- `js/core/app.js`: chuyển "5 yếu tố" lên tiêu đề thẻ, để phụ đề là "Cây đậu xanh"; giữ nguyên kiểu chữ và kiểu trình bày hiện có.
+- `node --test "tests/*.test.js"`: 135/135 đạt. Mở trang bằng `file://` và xác nhận hai dòng mới hiển thị đúng.
+- Còn lại: không có. Câu hỏi mở: không có.
+
+### 2026-11-20, Copilot: sửa dòng mô tả thí nghiệm 6
+
+- `js/core/app.js`: đổi dòng phụ trên thẻ thí nghiệm 6 thành "Đậu xanh - Khoai lang - Khoai tây - Thuốc bỏng".
+- `node --test "tests/*.test.js"`: 135/135 đạt. Mở trang bằng `file://` và xác nhận dòng chữ mới hiển thị trên thẻ.
+- Còn lại: không có. Câu hỏi mở: không có.
+
+### 2026-11-20, Copilot: đổi tên dụng cụ chất khoáng ở thí nghiệm 2
+
+- `js/content/exp2.vi.js`: đổi nhãn khay dụng cụ thành "Đất có chất khoáng" trong phần `user`, giữ nguyên văn bản `md`.
+- `HUONG-DAN.txt`, `SPEC-NOTES.md`: cập nhật hướng dẫn và ghi nhận nhãn mới.
+- `node --test "tests/*.test.js"`: 135/135 đạt. Mở `index.html#exp2` bằng `file://` và xác nhận nhãn mới hiện trong khay.
+- Còn lại: không có. Câu hỏi mở: không có.
+
+### 2026-11-20, Copilot: cập nhật chữ và hình chuột ở thí nghiệm 4
+
+- `js/content/exp4.vi.js`, `js/experiments/exp4.js`, `exp4-air.js`, `exp4-wfw.js`: thay hai dòng sau khi uống nước, giữ chuột đục trong phần trao đổi khí và thêm dòng tóm tắt dưới dấu O₂/CO₂.
+- `HUONG-DAN.txt`, `SPEC-NOTES.md`, `tests/shots.js`: cập nhật hướng dẫn, ghi chú thay đổi và kiểm tra hai màn hình.
+- `node --test "tests/*.test.js"`: 135/135 đạt. Kịch bản trình duyệt `exp4/air` và `exp4/waste` đạt; màn hình trao đổi khí xác nhận chuột không bật chế độ trong suốt và có dòng mới, màn hình sau khi uống xác nhận hai câu mới. Chưa kiểm tra thủ công bằng cách kéo chuột trong trình duyệt.
+- Còn lại: không có. Câu hỏi mở: không có.
+
+### 2026-11-16, Copilot: chép 15 tệp từ bản tải xuống
+
+- Đã chép 15 tệp được yêu cầu vào source. Giữ `HANDOFF.md` hiện tại theo lựa chọn của người dùng; không đụng tới tệp ZIP vốn đã bị xóa trong git.
+- `node --test "tests/*.test.js"`: 135/135 đạt. Chưa mở trang trên trình duyệt.
+- Còn lại: không có. Câu hỏi mở: không có.
+
 ### 2026-11-15 (end), Claude: backup of `main`, PR #3 merged
 
 - At the user's request ("tạo 1 nhánh backup cho master hiện tại, backup số ngày nay", the repo has no `master`, so `main`): branch `backup/main-2026-11-15` = old `main` `3b85fa1`, pushed to `origin`, no upstream (it never follows `main`).

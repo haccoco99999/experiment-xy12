@@ -5,10 +5,7 @@
 (function (Lab) {
   'use strict';
   Lab.content.exp8 = {
-    /* `user` = sentences of the md changed at the user's request (2026-11-10: "con mèo đổi thành con heo", so the animal is a pig, not a cat).
-       They are merged over `md` by js/experiments/exp8.js and are not checked against the md file. Lists are replaced whole. See SPEC-NOTES.md.
-       Pig facts used: about 114 days in the mother (the embryo becomes a fetus near day 30), piglets are born with open eyes and can stand soon after birth,
-       start to eat solid food at about 2 weeks and stop drinking milk at about 1 to 2 months. */
+    /* `user` overrides the cat wording and aligns the pig life-cycle facts and milestones to the requested scenario. */
     user: {
       title: 'TÌM HIỂU SỰ SINH SẢN VÀ VÒNG ĐỜI CỦA ĐỘNG VẬT ĐẺ CON – HEO',
       steps: ['HEO ĐỰC + HEO CÁI', 'TINH TRÙNG + TRỨNG', 'THỤ TINH', 'HỢP TỬ', 'PHÔI', 'THAI', 'HEO CON', 'HEO CON LỚN DẦN', 'HEO TRƯỞNG THÀNH'],
@@ -16,7 +13,7 @@
         'GIAI ĐOẠN 6: PHÔI PHÁT TRIỂN THÀNH THAI', 'GIAI ĐOẠN 7: HEO CON', 'GIAI ĐOẠN 8: HEO CON LỚN DẦN', 'GIAI ĐOẠN 9: HEO TRƯỞNG THÀNH'],
       tools: { male: 'HEO ĐỰC', female: 'HEO CÁI' },
       info: { species: ['Loài', 'Heo'] },
-      labels: { male: 'HEO ĐỰC', female: 'HEO CÁI', kittenNew: 'HEO CON MỚI SINH', compare: ['HEO CON MỚI SINH', 'HEO CON 1 THÁNG', 'HEO CON 2 THÁNG'] },
+      labels: { male: 'HEO ĐỰC', female: 'HEO CÁI', kittenNew: 'HEO CON MỚI SINH', compare: [] },
       msg: {
         placeMaleTask: 'Hãy kéo heo đực vào khu vực quan sát.',
         placeFemaleTask: 'Hãy kéo heo cái lên bàn quan sát và đặt cạnh heo đực.',
@@ -38,36 +35,45 @@
         female: 'Đã đặt heo cái.',
         bothPlaced: 'Đã đặt heo cái. Hai con heo đã được đặt đúng vị trí.',
         intro: 'Trong sinh sản, heo đực tạo ra tế bào sinh dục đực, còn heo cái tạo ra tế bào sinh dục cái.',
-        maleId: 'Heo đực tạo ra tế bào sinh dục đực.',
-        femaleId: 'Heo cái tạo ra tế bào sinh dục cái.',
+        maleId: 'Heo đực tạo ra tế bào sinh dục đực (tinh trùng).',
+        femaleId: 'Heo cái tạo ra tế bào sinh dục cái (trứng).',
         spermInfo: 'Heo đực tạo ra tinh trùng.',
         eggInfo: 'Heo cái tạo ra trứng.',
-        kittenBorn: 'Sau khi thai phát triển đầy đủ trong cơ thể heo mẹ, heo con được sinh ra.',
-        kittenLens: 'Heo con mới sinh có kích thước nhỏ và khả năng vận động còn yếu.',
-        compareInfo: 'Heo con 2 tháng tuổi có kích thước lớn hơn và khả năng vận động tốt hơn heo con mới sinh.',
-        compareAll: 'Qua từng giai đoạn, heo con tăng kích thước và khả năng vận động ngày càng hoàn thiện.',
-        adultAll: 'Heo con tiếp tục lớn lên, cơ thể phát triển hoàn thiện và trở thành heo trưởng thành.'
+        fertilized: 'Thụ tinh đã xảy ra.',
+        kittenBorn: 'Khoảng Ngày 114, heo mẹ sinh heo con.',
+        kittenLens: 'Heo con mới sinh phụ thuộc hoàn toàn vào mẹ, cần bú sữa non để tăng sức đề kháng.',
+        fetusPart: '',
+        compareInfo: '',
+        compareAll: '',
+        adultAll: 'Heo con tiếp tục lớn lên, cơ thể và cơ quan sinh dục phát triển, rồi trở thành heo trưởng thành có khả năng sinh sản.'
       },
-      marks: { embryo: ['Ngày 0', 'Ngày 10', 'Ngày 20', 'Ngày 30'], fetus: ['Ngày 30', 'Ngày 70', 'Gần ngày sinh'] },
+      marks: { embryo: ['Ngày 0', 'Ngày 21', 'Ngày 28', 'Ngày 35'], fetus: ['Ngày 45', 'Ngày 70', 'Ngày 90', 'Ngày 110'] },
       markInfo: {
+        embryo: [
+          { msg: 'Hợp tử còn rất nhỏ và đang phân chia.', lines: [] },
+          { msg: 'Đến Ngày 21, phôi tiếp tục phát triển và làm tổ trong tử cung.', lines: ['Phôi bám vào niêm mạc tử cung.'] },
+          { msg: 'Đến Ngày 28, phôi tiếp tục phát triển trong tử cung.', lines: [] },
+          { msg: 'Đến khoảng Ngày 35, phôi đã phát triển rõ hơn.', lines: ['Khi dùng kính phóng đại, em sẽ thấy hình ảnh hợp tử phát triển thành phôi lớn dần.'] }
+        ],
         fetus: [
-          { msg: 'Cơ thể còn nhỏ.', lines: ['Các cấu trúc bắt đầu rõ.'] },
-          { msg: 'Các bộ phận cơ thể rõ hơn.', lines: ['Có thể nhận biết:', 'đầu', 'thân', 'chân', 'tai', 'đuôi'] },
-          { msg: 'Phôi tiếp tục phát triển, các bộ phận cơ thể dần hình thành và thai lớn lên trong cơ thể heo mẹ.', lines: ['Thai lớn hơn.', 'Hình dạng cơ thể rõ hơn.'] }
+          { msg: 'Thai còn nhỏ, hình dáng heo con bắt đầu rõ hơn.', lines: ['Giai đoạn giữa thai kỳ: Ngày 36–85.'] },
+          { msg: 'Heo con trong bụng mẹ tiếp tục lớn lên.', lines: ['Giai đoạn giữa thai kỳ.'] },
+          { msg: 'Trong giai đoạn cuối thai kỳ (Ngày 86–114), heo con lớn nhanh.', lines: [] },
+          { msg: 'Đến Ngày 110, hình dáng heo con đã rõ hơn và gần đến ngày sinh.', lines: ['Khoảng Ngày 114, heo mẹ sinh heo con.'] }
         ],
         growth: [
-          { msg: 'Heo con bắt đầu lớn lên và vận động nhiều hơn.', lines: ['lớn hơn một chút', 'đi lại vững hơn', 'vẫn phụ thuộc chủ yếu vào sữa mẹ'] },
-          { msg: 'Heo con lớn nhanh và bắt đầu tập ăn.', lines: ['cơ thể lớn hơn', 'chạy theo heo mẹ', 'vẫn bú sữa mẹ', 'bắt đầu tập ăn thức ăn phù hợp'] },
-          { msg: 'Heo con ăn thêm thức ăn và hoạt động độc lập hơn.', lines: ['cơ thể lớn rõ rệt', 'đi lại tốt hơn', 'chơi', 'ăn thêm thức ăn phù hợp'] },
-          { msg: 'Heo con ngày càng lớn và tự lập hơn.', lines: ['cơ thể lớn hơn', 'chạy nhảy tốt hơn', 'ăn thức ăn phù hợp', 'ít phụ thuộc vào sữa mẹ hơn'] }
+          { msg: 'Heo con một tuần tuổi bú mẹ là chủ yếu và vận động còn vụng về.', lines: ['Cơ thể bắt đầu lớn lên.', 'Vận động còn chưa vững.'] },
+          { msg: 'Heo con hai tuần tuổi mở mắt rõ hơn và đi lại vững hơn.', lines: ['Bắt đầu tò mò với môi trường xung quanh.', 'Vẫn bú sữa mẹ.'] },
+          { msg: 'Khoảng một tháng tuổi, heo con bắt đầu tập ăn thức ăn khác ngoài sữa mẹ.', lines: ['Cơ thể lớn rõ rệt.', 'Tiếp tục bú mẹ và tập ăn.'] },
+          { msg: 'Khoảng hai tháng tuổi, heo con có thể cai sữa và tự ăn.', lines: ['Vận động linh hoạt hơn.', 'Ít phụ thuộc vào heo mẹ.'] }
         ],
         adult: [
-          { msg: 'cơ thể còn nhỏ', lines: ['hoạt động nhanh nhẹn', 'có thể tự ăn thức ăn phù hợp'] },
-          { msg: 'cơ thể lớn hơn', lines: ['chân phát triển', 'thân phát triển', 'cơ thể nặng hơn nhiều', 'vận động linh hoạt'] },
-          { msg: 'cơ thể đạt kích thước gần trưởng thành', lines: ['vận động hoàn thiện', 'có thể tự kiếm ăn', 'có khả năng sinh sản khi trưởng thành'] }
+          { msg: 'Heo khoảng hai tháng tuổi vẫn tiếp tục lớn lên.', lines: ['Cơ thể còn nhỏ hơn heo trưởng thành.', 'Có thể tự ăn.'] },
+          { msg: 'Khoảng sáu tháng tuổi, heo phát triển gần bằng heo trưởng thành về hình dạng khung xương.', lines: ['Cơ quan sinh dục bắt đầu phát triển.', 'Khả năng sinh sản tùy giống và điều kiện nuôi.'] },
+          { msg: 'Khoảng một năm tuổi, heo đạt mức trưởng thành sinh dục và thể chất.', lines: ['Heo đực tạo tinh trùng.', 'Heo cái có thể mang thai.'] }
         ]
       },
-      newborn: ['kích thước nhỏ', 'mắt đã mở', 'tai nhỏ', 'chân còn yếu', 'vận động hạn chế', 'phụ thuộc vào heo mẹ', 'bú sữa mẹ'],
+      newborn: ['kích thước nhỏ', 'thân ướt, da còn mỏng', 'mắt chưa mở hoàn toàn', 'tai nhỏ', 'chân còn yếu', 'vận động còn yếu', 'phụ thuộc vào heo mẹ', 'cần bú sữa non'],
       sort: {
         title: 'SẮP XẾP QUÁ TRÌNH SINH SẢN VÀ PHÁT TRIỂN CỦA HEO',
         cards: ['TINH TRÙNG + TRỨNG', 'THỤ TINH', 'HỢP TỬ', 'PHÔI', 'THAI', 'HEO CON', 'HEO CON LỚN DẦN', 'HEO TRƯỞNG THÀNH'],
@@ -75,7 +81,7 @@
       },
       finish: {
         line: 'Em đã tìm hiểu được quá trình sinh sản và vòng đời của heo.',
-        conclusion: 'Heo sinh sản bằng cách sinh con. Heo đực tạo ra tinh trùng, heo cái tạo ra trứng. Khi tinh trùng kết hợp với trứng sẽ xảy ra thụ tinh và hình thành hợp tử. Hợp tử phát triển thành phôi, phôi tiếp tục phát triển thành thai trong cơ thể heo mẹ. Khi phát triển đầy đủ, heo con được sinh ra. Sau khi sinh, heo con lớn dần, kích thước cơ thể tăng lên, khả năng vận động và tự ăn ngày càng hoàn thiện, cuối cùng phát triển thành heo trưởng thành.',
+        conclusion: 'Heo sinh sản bằng hình thức đẻ con. Heo đực tạo tinh trùng, heo cái tạo trứng. Thụ tinh hình thành hợp tử; hợp tử phát triển thành phôi rồi thành thai trong bụng heo mẹ. Sau khoảng 114 ngày mang thai, heo mẹ sinh heo con. Heo con lớn dần về kích thước, khả năng vận động và tự ăn uống, rồi trở thành heo trưởng thành có khả năng sinh sản.',
         endLine: 'Em đã tìm hiểu được sự sinh sản và vòng đời của heo.'
       }
     },
@@ -93,7 +99,7 @@
       /* name tags over the scene */
       labels: {
         male: 'MÈO ĐỰC', female: 'MÈO CÁI', sperm: 'TINH TRÙNG', egg: 'TRỨNG', zygoteTitle: 'THỤ TINH ĐÃ XẢY RA', kittenNew: 'MÈO CON MỚI SINH',
-        compare: ['MÈO CON MỚI SINH', 'MÈO CON 1 THÁNG', 'MÈO CON 2 THÁNG'], embryo: 'PHÔI'
+        compare: [], embryo: 'PHÔI'
       },
       cellInfo: { sperm: 'Tế bào sinh dục đực', egg: 'Tế bào sinh dục cái' },
       /* wrong moves and the sentence that is also the task for each step */
@@ -169,7 +175,7 @@
         ]
       },
       /* the parts of the fetus (md 16.2, 16.4) and the regions the glass shows on the newborn kitten (md 18.1) */
-      parts: { head: 'đầu', body: 'thân', legs: 'chân', tail: 'đuôi', ears: 'tai' },
+      parts: {},
       regions: ['Mắt', 'Tai', 'Chân', 'Thân'],
       newborn: ['kích thước nhỏ', 'mắt chưa mở', 'tai nhỏ', 'chân còn yếu', 'vận động hạn chế', 'phụ thuộc vào mèo mẹ', 'bú sữa mẹ'],
       /* sorting the eight cards (md 22) */
@@ -206,11 +212,9 @@
       startLocked: 'Hãy đặt cả heo đực và heo cái lên bàn quan sát trước.',
       zygoteClickTask: 'Hãy nhấp vào hợp tử.',
       markTask: 'Hãy nhấp mốc tiếp theo trên thanh thời gian.',
-      fetusPartsTask: 'Hãy nhấp vào đầu, thân, chân và đuôi của thai.',
-      fetusLensTask: 'Hãy dùng kính phóng đại để quan sát thai.',
-      compareTask: 'Hãy nhấp vào từng heo con để so sánh.',
-      lensEmbryoEarly: 'Hãy theo dõi đến Ngày 30 rồi dùng kính để quan sát phôi.',
-      lensFetusEarly: 'Hãy theo dõi đến mốc Gần ngày sinh rồi dùng kính để quan sát thai.',
+      fetusLensTask: 'Hãy dùng kính phóng đại để quan sát heo con trong bụng mẹ.',
+      lensEmbryoEarly: 'Hãy theo dõi đến Ngày 35 rồi dùng kính để quan sát phôi.',
+      lensFetusEarly: 'Hãy theo dõi đến Ngày 110 rồi dùng kính để quan sát thai.',
       kittenFirst: 'Hãy nhấp vào heo con trước, rồi dùng kính.',
       lensOn: 'Kính phóng đại đang cho em nhìn gần hơn. Nhấp vào kính để cất đi.',
       next: '▶ TIẾP TỤC',
@@ -218,14 +222,12 @@
       timeTitle: 'THANH THỜI GIAN',
       stageTitle: 'GIAI ĐOẠN',
       prepTitle: 'CHUẨN BỊ',
-      compareInfo: ['Heo con mới sinh nhỏ và vận động còn yếu.', 'Heo con 1 tháng tuổi lớn hơn heo mới sinh và đi lại tốt hơn.'],
       diagramTitle: 'SƠ ĐỒ TỔNG QUÁT',
       reviewNote: 'Đang xem lại. Thí nghiệm giữ nguyên, em không phải làm lại nhiệm vụ nào.',
       reviewBack: 'QUAY LẠI',
       reviewClose: 'XONG',
       cardsTitle: 'THẺ GIAI ĐOẠN',
       slotNumber: 'VỊ TRÍ',
-      motherLabel: 'HEO MẸ'
     }
   };
 })(window.Lab);

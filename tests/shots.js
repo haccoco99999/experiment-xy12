@@ -71,19 +71,35 @@
     start: async function () { },
     placed: async function (api) { api.drop('mouse', 'bench'); await adv(3); },
     info: async function (api) { await S4.placed(api); var p = Lab.stage.project(api.X.rat.world(new THREE.Vector3(0, 0.5, 0))); ev('pointerdown', p.x, p.y, Lab.stage.canvas); ev('pointerup', p.x, p.y, Lab.stage.canvas); await adv(0.6); },
-    air: async function (api) { await S4.placed(api); click('.topic-btn[data-topic=air]'); await adv(2.6); },
+    air: async function (api) {
+      await S4.placed(api); click('.topic-btn[data-topic=air]'); await adv(2.6);
+      if (api.X.rat.xray !== 0) throw new Error('the rat should keep its usual appearance during gas exchange');
+      var text = document.querySelector('#panel').textContent;
+      if (text.includes('Khí ô-xi -> Chuột -> Khí các-bô- níc.') || text.includes('O₂ VÀO') || text.includes('CO₂ RA')) throw new Error('the gas results card should stay hidden before both gases are exchanged');
+    },
     airGo: async function (api) {
       var X = api.X;
       function body() { var r = Lab.stage.rectOf(X.rat.bodyBox(), 0); return { x: r.x + r.w / 2, y: r.y + r.h / 2 }; }
       await S4.air(api);
       await dragMol(mols('o2')[0], body()); await adv(4.5);
-      var b = body(), lung = mols('co2').filter(function (m) { return Math.hypot(m.x - b.x, m.y - b.y) < 90; })[0];
+      var text = document.querySelector('#panel').textContent;
+      if (text.includes('Khí ô-xi -> Chuột -> Khí các-bô- níc.') || text.includes('O₂ VÀO') || text.includes('CO₂ RA')) throw new Error('the gas results card should stay hidden after O₂ enters and before CO₂ leaves');
+      var lungSpot = Lab.stage.project(X.rat.world(new THREE.Vector3(0, 0.7, 0)));
+      var lung = mols('co2').sort(function (a, b) { return Math.hypot(a.x - lungSpot.x, a.y - lungSpot.y) - Math.hypot(b.x - lungSpot.x, b.y - lungSpot.y); })[0];
+      if (!lung || Math.hypot(lung.x - lungSpot.x, lung.y - lungSpot.y) > 60) throw new Error('the CO₂ molecule should appear at the lungs after O₂ enters');
       await dragMol(lung, { x: Lab.stage.insets.l + 60, y: Lab.stage.insets.t + 190 }); await adv(4.5);
+      text = document.querySelector('#panel').textContent;
+      if (!text.includes('O₂ VÀO ✓') || !text.includes('CO₂ RA ✓') || !text.includes('Khí ô-xi -> Chuột -> Khí các-bô- níc.')) throw new Error('the gas results card should appear after CO₂ leaves');
     },
     food: async function (api) { await S4.placed(api); click('.topic-btn[data-topic=wfw]'); await adv(1.5); api.drop('food', 'near'); await adv(4.2); },
     water: async function (api) { await S4.food(api); await adv(2.2); api.drop('water', 'near'); await adv(3.6); },
     later: async function (api) { await S4.water(api); await adv(1.2); },
-    waste: async function (api) { await S4.water(api); await adv(15); },
+    waste: async function (api) {
+      await S4.water(api); await adv(15);
+      var lines = Array.from(document.querySelectorAll('.panel-card.task-card .task-text')).map(function (p) { return p.textContent; });
+      if (!lines.includes('Các chất hữu cơ trong thức ăn -> Chuột -> Các chất thải.') || !lines.includes('Nước -> Chuột -> Nước tiểu.')) throw new Error('the two updated exchange lines should appear after drinking');
+      if (lines.some(function (line) { return line.indexOf('→') >= 0; })) throw new Error('the replaced exchange lines should no longer appear');
+    },
     wfwGo: async function (api) { await S4.water(api); await adv(24); },
     finale: async function (api) {
       await S4.airGo(api); click('.topic-btn[data-topic=wfw]'); await adv(1.5);
@@ -255,7 +271,7 @@
     }
   };
 
-  /* Experiment 8: the cat, from the two cats to the eight sorted cards. */
+  /* Experiment 8: the pig, from the two pigs to the eight sorted cards. */
   async function nextPhase(api, to) {
     await until('the button to phase ' + to, function () { return !api.X.busy && !(api.X.tl && api.X.tl.busy) && !!panelBtn(); }, 40);
     await pressPanel(api, 'phase ' + to);
@@ -304,34 +320,35 @@
       await nextPhase(api, 5);
     },
     embryo: async function (api) {
-      await S8.zygote(api); await marks(api, 'embryo', 4);
-      api.drop('lens', 'embryo'); await until('embryo under the glass', function () { return api.state().embryoObserved && !api.X.busy; }, 30);
+      await S8.zygote(api); await marks(api, 'embryo', Lab.logic.exp8.TL.embryo);
+      api.drop('lens', 'embryo');
+      if (!api.X.busy || api.X.embryo.t > 0.01 || !Lab.lens.active()) throw new Error('the magnifier should replay embryo development from the zygote');
+      await until('embryo grows under the glass', function () { return api.state().embryoObserved && api.X.embryo.t > 2.99 && !api.X.busy; }, 60);
       api.X.closeLens(); await nextPhase(api, 6);
     },
     fetus: async function (api) {
-      await S8.embryo(api); await marks(api, 'fetus', 3);
-      var parts = ['fetus:head', 'fetus:body', 'fetus:legs', 'fetus:tail'];
-      for (var i = 0; i < parts.length; i++) { await tapPick(parts[i]); }
-      for (var j = 0; j < 3 && !Lab.logic.exp8.partsDone(api.state()); j++) {          // a tap can land while a part is still glowing: tap the missed ones again
-        for (i = 0; i < parts.length; i++) if (!api.state().fetusParts[parts[i].slice(6)]) { await adv(1); await tapPick(parts[i]); }
-      }
-      await until('the four parts', function () { return api.state().fetusObserved || Lab.logic.exp8.partsDone(api.state()); }, 40);
+      await S8.embryo(api); await marks(api, 'fetus', Lab.logic.exp8.TL.fetus);
+      var hasPartPick = false;
+      api.X.fetus.group.traverse(function (o) { if (o.userData.pick) hasPartPick = true; });
+      if (hasPartPick) throw new Error('the fetus still exposes clickable body parts');
       api.drop('lens', 'fetus'); await until('fetus under the glass', function () { return api.state().fetusObserved && !api.X.busy; }, 30);
       api.X.closeLens(); await nextPhase(api, 7);
     },
     kitten: async function (api) {
       await S8.fetus(api);
       await until('the newborn kitten', function () { return !!found('kitten') && !api.X.busy; }, 60);
+      if (!api.X.born.kit() || !api.X.born.kit().group.visible || api.X.born.mother) throw new Error('newborn stage should show only the piglet');
       await tapPick('kitten'); await until('kitten clicked', function () { return api.state().kittenClicked && !api.X.busy; }, 30);
       api.drop('lens', 'kitten'); await until('kitten under the glass', function () { return api.state().kittenObserved && !api.X.busy; }, 30);
       api.X.closeLens(); await nextPhase(api, 8);
     },
     growth: async function (api) {
       await S8.kitten(api); await marks(api, 'growth', 4);
-      await until('three kittens', function () { return !!found('kitten0') && !api.X.busy; }, 60);
-      for (var i = 0; i < 3; i++) { await tapPick('kitten' + i); await adv(1.2); }
-      await until('compared', function () { return api.state().compared.every(Boolean) && !api.X.busy; }, 40);
+      await until('one piglet remains', function () { return !!api.X.born.kit() && api.X.born.kit().group.visible && !api.X.busy; }, 60);
+      var piglet = api.X.born.kit();
+      if (!piglet || api.X.born.mother || found('kitten0') || found('kitten1') || found('kitten2')) throw new Error('growth stage should show one piglet and no mother');
       await nextPhase(api, 9);
+      if (api.X.born.kit() !== piglet) throw new Error('adult stage did not keep the same pig model');
     },
     adultCat: async function (api) { await S8.growth(api); await marks(api, 'adult', 3); await nextPhase(api, 10); },
     finale: async function (api) {

@@ -12,12 +12,12 @@ function zygote() { const s = fertilize(); L.applyFertilize(s); assert.ok(L.adva
 function marks(s, tl) { for (let i = 0; i < L.TL[tl]; i++) L.applyMark(s, tl, i); }
 function embryo() { const s = zygote(); L.applyLens(s, 'zygote'); L.applyZygoteClick(s); assert.ok(L.advance(s)); return s; }
 function fetus() { const s = embryo(); marks(s, 'embryo'); L.applyLens(s, 'embryo'); assert.ok(L.advance(s)); return s; }
-function kitten() { const s = fetus(); marks(s, 'fetus'); L.PARTS.forEach((p) => L.applyPart(s, p)); L.applyLens(s, 'fetus'); assert.ok(L.advance(s)); return s; }
+function kitten() { const s = fetus(); marks(s, 'fetus'); L.applyLens(s, 'fetus'); assert.ok(L.advance(s)); return s; }
 function growth() { const s = kitten(); L.applyKitten(s); L.applyLens(s, 'kitten'); assert.ok(L.advance(s)); return s; }
-function adult() { const s = growth(); marks(s, 'growth'); [0, 1, 2].forEach((i) => L.applyCompare(s, i)); assert.ok(L.advance(s)); return s; }
+function adult() { const s = growth(); marks(s, 'growth'); assert.ok(L.advance(s)); return s; }
 function sort() { const s = adult(); marks(s, 'adult'); assert.ok(L.advance(s)); return s; }
 
-test('the two cats go on the table; a drop elsewhere sends them back with the md sentence; the start opens with both', () => {
+test('the two pigs go on the table; a drop elsewhere sends them back with the md sentence; the start opens with both', () => {
   const s = L.initialState();
   assert.deepStrictEqual(L.decideCat(s, 'male', null), { ok: false, msg: 'maleOff' });
   assert.deepStrictEqual(L.decideCat(s, 'female', null), { ok: false, msg: 'femaleOff' });
@@ -92,10 +92,12 @@ test('timeline: a mark opens after the one before it was seen; a locked mark giv
   assert.strictEqual(L.decideMark(s, 'embryo', 1).again, false); L.applyMark(s, 'embryo', 1);
   assert.strictEqual(L.decideMark(s, 'embryo', 0).again, true);                        // seen marks can be visited again
   assert.strictEqual(L.decideMark(s, 'fetus', 0).ok, false);                           // that timeline belongs to another phase
-  assert.strictEqual(L.applyMark(s, 'embryo', 2).done, false); assert.strictEqual(L.applyMark(s, 'embryo', 3).done, true);
+  assert.strictEqual(L.applyMark(s, 'embryo', 2).done, false);
+  for (let i = 3; i < L.TL.embryo - 1; i++) assert.strictEqual(L.applyMark(s, 'embryo', i).done, false);
+  assert.strictEqual(L.applyMark(s, 'embryo', L.TL.embryo - 1).done, true);
 });
 
-test('embryo: the glass earns the credit only after day 45; the bar step needs both', () => {
+test('embryo: four marks through day 35, then the glass earns the observation credit', () => {
   const s = embryo();
   assert.strictEqual(L.lensEarly(s, 'embryo'), 'lensEmbryoEarly'); assert.strictEqual(L.applyLens(s, 'embryo').credit, null);
   marks(s, 'embryo'); assert.strictEqual(L.lensEarly(s, 'embryo'), null);
@@ -104,12 +106,8 @@ test('embryo: the glass earns the credit only after day 45; the bar step needs b
   assert.strictEqual(L.advance(s), true); assert.strictEqual(s.phase, PH.fetus);
 });
 
-test('fetus: three marks, the four parts (the ears are extra) and the glass after "gần ngày sinh"', () => {
+test('fetus: four marks through day 110 and the glass completes the phase', () => {
   const s = fetus();
-  assert.strictEqual(L.decidePart(s, 'ears').ok, true); L.applyPart(s, 'ears'); assert.strictEqual(L.partsDone(s), false);
-  assert.strictEqual(L.decidePart(s, 'wings').ok, false);
-  L.PARTS.forEach((p) => { assert.strictEqual(L.decidePart(s, p).ok, true); L.applyPart(s, p); });
-  assert.strictEqual(L.partsDone(s), true); assert.strictEqual(L.canAdvance(s), false);
   marks(s, 'fetus'); assert.strictEqual(L.canAdvance(s), false);                       // still no glass
   assert.strictEqual(L.applyLens(s, 'fetus').credit, 'fetus'); assert.strictEqual(L.canAdvance(s), true); assert.strictEqual(L.stepStates(s)[5], 'done');
   assert.strictEqual(L.advance(s), true); assert.strictEqual(s.phase, PH.kitten);
@@ -124,11 +122,9 @@ test('kitten: a click elsewhere gives the md sentence; the glass counts only aft
   assert.strictEqual(L.advance(s), true); assert.strictEqual(s.phase, PH.growth);
 });
 
-test('growth: four marks, then three kittens to compare, then the adult timeline', () => {
+test('growth: four marks complete the single-piglet phase and open the adult timeline', () => {
   const s = growth();
-  assert.strictEqual(L.canCompare(s), false); marks(s, 'growth'); assert.strictEqual(L.canCompare(s), true);
-  assert.strictEqual(L.promptKey(s), 'compareTask'); assert.strictEqual(L.canAdvance(s), false);
-  assert.strictEqual(L.applyCompare(s, 0).done, false); assert.strictEqual(L.applyCompare(s, 1).done, false); assert.strictEqual(L.applyCompare(s, 2).done, true);
+  marks(s, 'growth');
   assert.strictEqual(L.stepStates(s)[7], 'done'); assert.strictEqual(L.advance(s), true); assert.strictEqual(s.phase, PH.adult);
   marks(s, 'adult'); assert.strictEqual(L.stepStates(s)[8], 'done'); assert.strictEqual(L.advance(s), true); assert.strictEqual(s.phase, PH.sort);
 });
@@ -148,7 +144,7 @@ test('nothing opens too early: a step is locked until the one before it is done'
   assert.deepStrictEqual(L.stepStates(s), ['active', 'locked', 'locked', 'locked', 'locked', 'locked', 'locked', 'locked', 'locked']);
   assert.strictEqual(L.decideIdentify(s, 'male').ok, false); assert.strictEqual(L.decideCell(s, 'sperm', 'male').ok, false);
   assert.strictEqual(L.decideFertilize(s, true).ok, false); assert.strictEqual(L.decideMark(s, 'embryo', 0).ok, false);
-  assert.strictEqual(L.decidePart(s, 'head').ok, false); assert.strictEqual(L.decideSort(s, 0, 0).ok, false);
+  assert.strictEqual(L.decideSort(s, 0, 0).ok, false);
   assert.strictEqual(L.advance(s), false); assert.strictEqual(s.phase, PH.place);
 });
 
@@ -156,18 +152,19 @@ test('the texts have every sentence the logic can ask for, and the right number 
   global.window = global; global.Lab = { content: {} };
   delete require.cache[require.resolve('../js/content/exp8.vi.js')];
   require('../js/content/exp8.vi.js');
-  const C = global.Lab.content.exp8, has = (k) => typeof C.md.msg[k] === 'string' || typeof C.app[k] === 'string';
+  const C = global.Lab.content.exp8;
+  const merge = (a, b) => { const o = Object.assign({}, a); for (const k in b) o[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k]) ? merge(a[k], b[k]) : b[k]; return o; };
+  const MD = merge(C.md, C.user), has = (k) => typeof MD.msg[k] === 'string' || typeof C.app[k] === 'string';
   ['maleOff', 'femaleOff', 'identifyWrong', 'spermWrong', 'eggWrong', 'spermFar', 'eggClick', 'lensOff', 'lensZygoteOff', 'lensEmbryoEarly', 'lensFetusEarly', 'kittenFirst', 'markLocked', 'kittenOff', 'sortWrong']
     .forEach((k) => assert.ok(has(k), 'missing text: ' + k));
   const states = [L.initialState(), placed(), identify(), cells(), fertilize(), zygote(), embryo(), fetus(), kitten(), growth(), adult(), sort()];
-  states.forEach((s, i) => { const k = L.promptKey(s); if (k) assert.ok(has(k), 'state ' + i + ' asks for a missing text: ' + k); assert.strictEqual(L.stepStates(s).length, C.md.steps.length); });
-  Object.keys(L.TL).forEach((tl) => { assert.strictEqual(C.md.marks[tl].length, L.TL[tl], tl + ' labels'); assert.strictEqual(C.md.markInfo[tl].length, L.TL[tl], tl + ' texts'); });
-  assert.strictEqual(C.md.sort.cards.length, L.CARDS); assert.strictEqual(C.md.sort.cards.length, C.md.steps.length - 1);
-  L.PARTS.forEach((p) => assert.ok(C.md.parts[p], 'missing part name: ' + p));
-  assert.strictEqual(C.md.stageTitles.length, 9);
+  states.forEach((s, i) => { const k = L.promptKey(s); if (k) assert.ok(has(k), 'state ' + i + ' asks for a missing text: ' + k); assert.strictEqual(L.stepStates(s).length, MD.steps.length); });
+  Object.keys(L.TL).forEach((tl) => { assert.strictEqual(MD.marks[tl].length, L.TL[tl], tl + ' labels'); assert.strictEqual(MD.markInfo[tl].length, L.TL[tl], tl + ' texts'); });
+  assert.strictEqual(MD.sort.cards.length, L.CARDS); assert.strictEqual(MD.sort.cards.length, MD.steps.length - 1);
+  assert.strictEqual(MD.stageTitles.length, 9);
 });
 
-test('the user changed the cat into a pig (2026-11-10): after the merge no text says "mèo", and the lists keep their lengths', () => {
+test('the pig scenario uses the requested pregnancy, newborn, growth, and maturity milestones', () => {
   global.window = global; global.Lab = { content: {} };
   delete require.cache[require.resolve('../js/content/exp8.vi.js')];
   require('../js/content/exp8.vi.js');
@@ -178,6 +175,16 @@ test('the user changed the cat into a pig (2026-11-10): after the merge no text 
   assert.ok(/HEO/.test(MD.title));
   assert.strictEqual(MD.steps.length, 9); assert.strictEqual(MD.stageTitles.length, 9); assert.strictEqual(MD.sort.cards.length, L.CARDS);
   Object.keys(L.TL).forEach((tl) => { assert.strictEqual(MD.marks[tl].length, L.TL[tl], tl + ' labels'); assert.strictEqual(MD.markInfo[tl].length, L.TL[tl], tl + ' texts'); });
-  assert.strictEqual(MD.marks.embryo[MD.marks.embryo.length - 1], MD.marks.fetus[0], 'the fetus timeline starts where the embryo one ends');
-  assert.ok(MD.newborn.includes('mắt đã mở'), 'piglets are born with open eyes');
+  assert.deepStrictEqual(MD.marks.embryo, ['Ngày 0', 'Ngày 21', 'Ngày 28', 'Ngày 35']);
+  assert.deepStrictEqual(MD.marks.fetus, ['Ngày 45', 'Ngày 70', 'Ngày 90', 'Ngày 110']);
+  assert.ok(MD.newborn.includes('mắt chưa mở hoàn toàn'), 'newborn eyes are not fully open');
+  assert.ok(MD.finish.conclusion.includes('114 ngày'));
+  assert.ok(MD.right.maleId.includes('tinh trùng'));
+  assert.ok(MD.right.femaleId.includes('trứng'));
+  assert.strictEqual(MD.right.fertilized, 'Thụ tinh đã xảy ra.');
+  assert.ok(MD.markInfo.fetus[0].lines.some((line) => line.includes('36–85')));
+  assert.ok(MD.markInfo.fetus[2].msg.includes('86–114'));
+  assert.ok(MD.markInfo.growth[1].msg.includes('hai tuần'));
+  assert.ok(MD.markInfo.adult[1].msg.includes('sáu tháng'));
+  assert.ok(MD.markInfo.adult[2].msg.includes('một năm'));
 });

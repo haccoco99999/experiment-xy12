@@ -1,5 +1,5 @@
 /* Experiment 4, part "trao đổi nước, thức ăn và chất thải": the food tray and the water bowl (the rat walks over, eats and drinks),
-   a short time passes, then four lines about the inside of the body appear and the rat gets rid of its waste and urine by itself
+   a short time passes, then two lines about the body's exchanges appear and the rat gets rid of its waste and urine by itself
    (md sections 24–37, changed at the user's request on 2026-11-10; strictly in the order food → water → waste → urine). */
 (Lab.exp4mods = Lab.exp4mods || []).push(function (X) {
   'use strict';
@@ -56,9 +56,8 @@
   }
 
   /* ---------------- waste and urine: they come out by themselves ----------------
-     The user asked on 2026-11-10 to drop the see-through belly and the dragging of the waste and the urine. After the time has passed,
-     four lines appear one by one (APP.bodyFlows), the rat leaves its droppings behind it, then a little urine. */
-  var flowCount = 0;                                                       // how many of the four lines are on screen
+     After the time has passed, the two exchange lines appear in order; the rat then leaves its droppings and a little urine. */
+  var flowCount = 0;                                                       // how many of the two lines are on screen
   X.bodyFlows = function () { return flowCount; };
   function behind(x, z) { return X.rat.world(new T.Vector3(x, 0, z)); }  // a point on the floor behind the rat (it faces +z)
   function patch(kind, at) {
@@ -102,9 +101,9 @@
     if (running) return;
     var seq = X.seq, res = null; running = true; X.busy++;
     try {
-      for (var i = 0; i < 3; i++) if (!(await showLine(i, seq))) return;   // food, air, carbon dioxide
+      if (!(await showLine(0, seq))) return;                                // organic matter from food becomes waste
       if (!(await dropOut('waste', seq))) return;
-      if (!(await showLine(3, seq))) return;                               // kidneys and urine
+      if (!(await showLine(1, seq))) return;                                // water becomes urine
       res = await dropOut('urine', seq);
     } finally { running = false; X.busy--; }
     if (!res || !res.wfwDone) { X.refresh(); return; }

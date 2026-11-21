@@ -57,11 +57,11 @@
 
   Mo.hostPlant = function () {
     var g = new T.Group(); g.name = 'hostPlant';
-    var potMat = M.std(0xc9693f, { map: M.tex.terracotta(), roughness: 0.72, side: T.DoubleSide }), stemMat = M.std(0x5c9a3e, { roughness: 0.7 }), woody = M.std(0x7a5a3a, { roughness: 0.85 });
+    var potMat = M.std(0xc9693f, { map: M.tex.terracotta(), roughness: 0.72, side: T.DoubleSide }), stemMat = M.std(0x5c9a3e, { roughness: 0.7 });
     var pot = new T.Mesh(P.lathe([[0, 0], [0.62, 0], [0.8, 0.95], [0.9, 0.95], [0.9, 1.1], [0.72, 1.1], [0.66, 0.16], [0, 0.16]], 40), potMat); pot.castShadow = pot.receiveShadow = true; pot.userData.noPick = true; g.add(pot);
     var soil = new T.Mesh(new T.CircleGeometry(0.72, 32), M.std(0x5a3d26, { roughness: 1 })); soil.rotation.x = -Math.PI / 2; soil.position.y = 1.0; soil.userData.noPick = true; g.add(soil);
     g.add(branch([V(0, 1.0, 0), V(0.05, 2.0, 0.02), V(0, 3.0, 0), V(0.12, 3.9, -0.04)], 0.1, 0.05, stemMat, 16));
-    var perch = branch([V(0.02, 3.0, 0), V(0.9, 3.22, 0.05), V(1.9, 3.32, 0.1), V(2.9, 3.26, 0.1)], 0.07, 0.03, woody, 14); g.add(perch);
+    var perch = branch([V(0.02, 3.0, 0), V(0.9, 3.22, 0.05), V(1.9, 3.32, 0.1), V(2.9, 3.26, 0.1)], 0.07, 0.03, stemMat, 14); g.add(perch);
     g.add(branch([V(0.04, 1.55, 0.02), V(0.5, 1.65, 0.12), V(1.0, 1.75, 0.16)], 0.045, 0.03, stemMat, 8));
     g.add(branch([V(-0.02, 1.35, 0), V(-0.5, 1.45, 0.08), V(-0.95, 1.55, 0.12)], 0.045, 0.03, stemMat, 8));
     /* a leaf turned by yaw (around y) and lifted by pitch */
