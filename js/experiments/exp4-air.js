@@ -1,5 +1,5 @@
-/* Experiment 4, part "trao đổi khí": the see-through rat seen from the side. O₂ floats around; the student drags it in through the
-   nose, down the airway to the lungs; then a CO₂ appears in the lungs and is dragged out (md sections 16–23; no photosynthesis). */
+/* Experiment 4, part "trao đổi khí": the rat stays in its usual appearance while O₂ and CO₂ are dragged into and out of its body
+   (md sections 16–23; no photosynthesis). */
 (Lab.exp4mods = Lab.exp4mods || []).push(function (X) {
   'use strict';
   var T = X.T, L = X.L, MD = X.MD, APP = X.APP, Mo = X.Mo, state = X.state, scene = X.scene;
@@ -51,7 +51,7 @@
       });
     }, { ambient: true });
   }
-  function lungSpot() { return X.rat.lungsWorld().add(new T.Vector3(0.05, 0.12, 0.4)); }
+  function lungSpot() { return X.rat.world(new T.Vector3(0, 0.7, 0)); }
   function layout() {
     clearMols();
     ENV.forEach(function (e) { addMol(e[0], new T.Vector3(e[1], e[2], 0.75), false); });
@@ -76,13 +76,13 @@
     X.addFx(Lab.fx.flow(scene, { points: pts.map(function (p) { return p.clone(); }), color: COLOR[it.type], size: 0.07, count: 8, speed: 1.5, spread: 0.05, seeThrough: true }));
     X.tag(into ? MD.resp.o2Path : MD.resp.co2Path, function () { return rat.world(new T.Vector3(0, 1.3, 1.2)); }, 'arrow', 5600);
     X.toast(MD.right[key].text, { type: 'ok', ms: 5600 });
-    rat.airMat.emissiveIntensity = 1.2; rat.breathFast = 1;
+    rat.breathFast = 1;
     await Lab.tween.value(2.2, function (k) { it.object.position.copy(curve.getPointAt(k)); }, { ease: 'inOutQuad' }).promise;
-    if (into) { Lab.fx.ringPulse(scene, new T.Vector3(rat.lungsWorld().x, 0.05, rat.lungsWorld().z), 0xff8fa3, 1.2); rat.lungMat.emissiveIntensity = 1.4; }
+    if (into) Lab.fx.ringPulse(scene, new T.Vector3(rat.group.position.x, 0.05, rat.group.position.z), 0xff8fa3, 1.2);
     await Lab.tween.to(it.object.scale, { x: 0.01, y: 0.01, z: 0.01 }, 0.4, { ease: 'inCubic' }).promise;
     removeMol(it); X.busy--;
     if (seq !== X.seq) return;
-    rat.airMat.emissiveIntensity = 0.3; Lab.tween.wait(2.5).promise.then(function () { rat.breathFast = 0; });
+    Lab.tween.wait(2.5).promise.then(function () { rat.breathFast = 0; });
     if (!res.airDone) {                                                     // the CO₂ that the lungs give back
       var born = addMol('co2', lungSpot(), true); born.object.scale.setScalar(0.01); Lab.tween.to(born.object.scale, { x: 1, y: 1, z: 1 }, 0.5, { ease: 'outBack' });
       X.refresh(); return;
@@ -99,8 +99,8 @@
   /* ---------------- entering and leaving ---------------- */
   X.leaveHooks.push(function () {
     clearMols();
-    if (X.rat && X.rat.xray > 0) {
-      X.rat.setXray(0); X.rat.breathFast = 0;
+    if (X.rat) {
+      X.rat.breathFast = 0;
       Lab.tween.to(X.rat.group.rotation, { y: X.near(X.rat.group.rotation.y, X.HEADING) }, 0.6);
       Lab.tween.to(X.rat.group.position, { x: X.POS.x, z: X.POS.z }, 0.6);
     }
@@ -110,7 +110,6 @@
       X.go('air'); var rat = X.rat;
       X.UI.caption(MD.resp.mode, { ms: 1500, cls: 'day' });
       Lab.tween.to(rat.group.position, { x: 0.35, z: 0.3 }, 0.9); Lab.tween.to(rat.group.rotation, { y: X.near(rat.group.rotation.y, -Math.PI / 2) }, 0.9);
-      Lab.tween.value(1.2, function (k) { rat.setXray(k); });
       X.toast(MD.resp.info, { type: 'info', ms: 6500 });
       X.tag(MD.resp.view, function () { return rat.world(new T.Vector3(0, 1.35, 1.0)); }, 'arrow', 6500);
       if (!state.airDone) layout();

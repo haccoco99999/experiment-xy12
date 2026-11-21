@@ -71,19 +71,35 @@
     start: async function () { },
     placed: async function (api) { api.drop('mouse', 'bench'); await adv(3); },
     info: async function (api) { await S4.placed(api); var p = Lab.stage.project(api.X.rat.world(new THREE.Vector3(0, 0.5, 0))); ev('pointerdown', p.x, p.y, Lab.stage.canvas); ev('pointerup', p.x, p.y, Lab.stage.canvas); await adv(0.6); },
-    air: async function (api) { await S4.placed(api); click('.topic-btn[data-topic=air]'); await adv(2.6); },
+    air: async function (api) {
+      await S4.placed(api); click('.topic-btn[data-topic=air]'); await adv(2.6);
+      if (api.X.rat.xray !== 0) throw new Error('the rat should keep its usual appearance during gas exchange');
+      var text = document.querySelector('#panel').textContent;
+      if (text.includes('Khí ô-xi -> Chuột -> Khí các-bô- níc.') || text.includes('O₂ VÀO') || text.includes('CO₂ RA')) throw new Error('the gas results card should stay hidden before both gases are exchanged');
+    },
     airGo: async function (api) {
       var X = api.X;
       function body() { var r = Lab.stage.rectOf(X.rat.bodyBox(), 0); return { x: r.x + r.w / 2, y: r.y + r.h / 2 }; }
       await S4.air(api);
       await dragMol(mols('o2')[0], body()); await adv(4.5);
-      var b = body(), lung = mols('co2').filter(function (m) { return Math.hypot(m.x - b.x, m.y - b.y) < 90; })[0];
+      var text = document.querySelector('#panel').textContent;
+      if (text.includes('Khí ô-xi -> Chuột -> Khí các-bô- níc.') || text.includes('O₂ VÀO') || text.includes('CO₂ RA')) throw new Error('the gas results card should stay hidden after O₂ enters and before CO₂ leaves');
+      var lungSpot = Lab.stage.project(X.rat.world(new THREE.Vector3(0, 0.7, 0)));
+      var lung = mols('co2').sort(function (a, b) { return Math.hypot(a.x - lungSpot.x, a.y - lungSpot.y) - Math.hypot(b.x - lungSpot.x, b.y - lungSpot.y); })[0];
+      if (!lung || Math.hypot(lung.x - lungSpot.x, lung.y - lungSpot.y) > 60) throw new Error('the CO₂ molecule should appear at the lungs after O₂ enters');
       await dragMol(lung, { x: Lab.stage.insets.l + 60, y: Lab.stage.insets.t + 190 }); await adv(4.5);
+      text = document.querySelector('#panel').textContent;
+      if (!text.includes('O₂ VÀO ✓') || !text.includes('CO₂ RA ✓') || !text.includes('Khí ô-xi -> Chuột -> Khí các-bô- níc.')) throw new Error('the gas results card should appear after CO₂ leaves');
     },
     food: async function (api) { await S4.placed(api); click('.topic-btn[data-topic=wfw]'); await adv(1.5); api.drop('food', 'near'); await adv(4.2); },
     water: async function (api) { await S4.food(api); await adv(2.2); api.drop('water', 'near'); await adv(3.6); },
     later: async function (api) { await S4.water(api); await adv(1.2); },
-    waste: async function (api) { await S4.water(api); await adv(15); },
+    waste: async function (api) {
+      await S4.water(api); await adv(15);
+      var lines = Array.from(document.querySelectorAll('.panel-card.task-card .task-text')).map(function (p) { return p.textContent; });
+      if (!lines.includes('Các chất hữu cơ trong thức ăn -> Chuột -> Các chất thải.') || !lines.includes('Nước -> Chuột -> Nước tiểu.')) throw new Error('the two updated exchange lines should appear after drinking');
+      if (lines.some(function (line) { return line.indexOf('→') >= 0; })) throw new Error('the replaced exchange lines should no longer appear');
+    },
     wfwGo: async function (api) { await S4.water(api); await adv(24); },
     finale: async function (api) {
       await S4.airGo(api); click('.topic-btn[data-topic=wfw]'); await adv(1.5);

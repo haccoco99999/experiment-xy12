@@ -93,8 +93,10 @@
       var stack = U.el('div', { class: 'panel-stack' });
       if (X.finaleShown && X.finale) X.finale.render(stack);
       stack.appendChild(U.el('div', { class: 'panel-card' }, U.el('div', { class: 'panel-title', text: APP.chooseTopic }), topicButton('air'), topicButton('wfw')));
-      if (state.topic) stack.appendChild(U.el('div', { class: 'panel-card' }, marks(state.topic === 'air' ? ['o2', 'co2'] : ['food', 'water', 'waste', 'urine'])));
-      var nf = X.bodyFlows ? X.bodyFlows() : 0;                            // the four lines about the inside of the body (exp4-wfw.js)
+      if (state.topic === 'air' && state.airDone) stack.appendChild(U.el('div', { class: 'panel-card task-card' },
+        marks(['o2', 'co2']), U.el('p', { class: 'task-text', text: APP.airFlow })));
+      else if (state.topic === 'wfw') stack.appendChild(U.el('div', { class: 'panel-card' }, marks(['food', 'water', 'waste', 'urine'])));
+      var nf = X.bodyFlows ? X.bodyFlows() : 0;                            // the two exchange lines shown after time passes
       if (nf && state.topic === 'wfw' && !X.finaleShown) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, U.el('div', { class: 'panel-title', text: APP.bodyTitle }),
         APP.bodyFlows.slice(0, nf).map(function (t) { return U.el('p', { class: 'task-text', text: t }); })));
       var keys = L.promptKeys(state);
@@ -165,7 +167,7 @@
       var m = UI.modal(U.el('div', {}, U.el('div', { html: html }), U.el('div', { class: 'confirm-actions', style: { marginTop: '18px' } },
         U.el('button', { class: 'btn', text: t.close, attrs: { 'data-autofocus': '1' }, on: { click: function () { m.close(); } } }))), { wide: false });
     }
-    /* the magnifier looks at the food tray or the bowl when it is dropped on one, otherwise at the rat (its lungs when it is see-through) */
+    /* the magnifier looks at the food tray or the bowl when it is dropped on one, otherwise at the rat */
     function lensSubject(pt) {
       var best = null, bd = 130;
       ['food', 'water'].forEach(function (k) {
@@ -176,8 +178,8 @@
       return best;
     }
     function magnify(pt) {
-      var rat = X.rat, see = rat.xray > 0.5, what = see ? null : lensSubject(pt), item = what && X.items[what], label = see ? MD.labels.lungs : what ? MD.labels[what] : null;
-      var world = function () { return item ? item.position.clone().add(new T.Vector3(0, 0.25, 0)) : see ? rat.lungsWorld() : rat.world(new T.Vector3(0, 0.55, 1.1)); };
+      var rat = X.rat, what = lensSubject(pt), item = what && X.items[what], label = what ? MD.labels[what] : null;
+      var world = function () { return item ? item.position.clone().add(new T.Vector3(0, 0.25, 0)) : rat.world(new T.Vector3(0, 0.55, 1.1)); };
       var handle = Lab.lens.show({ world: world, radius: 120, viewSize: 1.3, distance: 2.4, onClose: function () { X.refresh(); } });
       if (label) X.tag(label, function () { return world().add(new T.Vector3(0, 0.95, 0)); }, 'part', 4200);
       X.toast(APP.magOn, { type: 'info', ms: 4600 });
@@ -186,7 +188,7 @@
     X.leaveHooks.push(function () { Lab.lens.hide(); });
     Lab.stage.onPick(function (hit) {
       if (!state.placed || X.busy) return; X.touch();
-      if (hit.id === 'rat' && X.rat.xray < 0.3) showInfo();
+      if (hit.id === 'rat') showInfo();
     });
 
     back = U.el('button', { class: 'btn btn-blue mode-back', text: '↩ ' + APP.backToTable, hidden: true });

@@ -91,6 +91,7 @@
       ],
       chooseTopic: 'CHỌN NỘI DUNG',
       chooseWfw: 'Hãy chọn TRAO ĐỔI NƯỚC, THỨC ĂN VÀ CHẤT THẢI trước nhé.',
+      airFlow: 'Khí ô-xi -> Chuột -> Khí các-bô- níc.',
       magOff: 'Hãy đưa kính phóng đại đến chuột hoặc các vật xung quanh.',
       magOn: 'Kính phóng đại đang cho em nhìn gần hơn. Nhấp vào kính để cất đi.',
       tapMouse: 'Nhấp vào chuột để xem thông tin.',
@@ -99,10 +100,8 @@
       /* shown one by one after "MỘT KHOẢNG THỜI GIAN SAU..." (the user's own wording, 2026-11-10; not in the md) */
       bodyTitle: 'BÊN TRONG CƠ THỂ CHUỘT',
       bodyFlows: [
-        'Thức ăn → hệ tiêu hóa → chất dinh dưỡng → máu → tế bào',
-        'Không khí → phổi → oxygen → máu → tế bào',
-        'Tế bào → carbon dioxide → máu → phổi → môi trường',
-        'Máu → thận → nước tiểu → ngoài cơ thể'
+        'Các chất hữu cơ trong thức ăn -> Chuột -> Các chất thải.',
+        'Nước -> Chuột -> Nước tiểu.'
       ],
       backToTable: 'VỀ BÀN QUAN SÁT',
       learnedTitle: 'BẢNG TỔNG HỢP',

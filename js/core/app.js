@@ -6,14 +6,14 @@
   var U = Lab.util, UI = Lab.ui;
 
   var CATALOG = [
-    { n: 1, id: 'exp1', group: 'plant', emoji: '🌱', title: 'Các yếu tố cần thiết cho sự sống và phát triển của thực vật', sub: 'Cây đậu xanh · 5 yếu tố' },
+    { n: 1, id: 'exp1', group: 'plant', emoji: '🌱', title: '5 yếu tố cần thiết cho sự sống và phát triển của thực vật', sub: 'Cây đậu xanh' },
     { n: 2, id: 'exp2', group: 'plant', emoji: '🥬', title: 'Trao đổi khí, nước và chất khoáng của thực vật với môi trường', sub: 'Cây xanh trong chậu' },
-    { n: 3, id: 'exp3', group: 'animal', emoji: '🐥', title: '5 yếu tố cần thiết cho sự sống của động vật', sub: 'Gà con' },
+    { n: 3, id: 'exp3', group: 'animal', emoji: '🐥', title: '5 yếu tố cần thiết cho sự sống và phát triển của động vật', sub: 'Gà con' },
     { n: 4, id: 'exp4', group: 'animal', emoji: '🐭', title: 'Trao đổi nước, không khí và thức ăn của động vật với môi trường', sub: 'Chuột bạch' },
     { n: 5, id: 'exp5', group: 'plant', emoji: '🍅', title: 'Cơ quan sinh sản của thực vật có hoa và quá trình tạo quả, hạt', sub: 'Hoa cà chua' },
-    { n: 6, id: 'exp6', group: 'plant', emoji: '🌿', title: 'Sự hình thành cây con từ hạt, rễ, thân và lá của thực vật', sub: 'Đậu xanh · khoai lang · khoai tây · thuốc bỏng' },
+    { n: 6, id: 'exp6', group: 'plant', emoji: '🌿', title: 'Sự hình thành cây con từ hạt, rễ, thân và lá của thực vật', sub: 'Đậu xanh - Khoai lang - Khoai tây - Thuốc bỏng' },
     { n: 7, id: 'exp7', group: 'animal', emoji: '🦋', title: 'Sinh sản và vòng đời của động vật đẻ trứng', sub: 'Bướm' },
-    { n: 8, id: 'exp8', group: 'animal', emoji: '🐷', title: 'Sinh sản và vòng đời của heo', sub: 'Động vật đẻ con' }
+    { n: 8, id: 'exp8', group: 'animal', emoji: '🐷', title: 'Sinh sản và vòng đời của động vật đẻ con', sub: 'Heo' }
   ];
 
   var app = Lab.app = { current: null, catalog: CATALOG };
