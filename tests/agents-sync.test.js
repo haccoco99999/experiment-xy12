@@ -48,11 +48,13 @@ test('.agents/skills files are identical to the masters', () => {
   });
 });
 
-test('the selected animation and Svelte skills are installed and locked', () => {
+test('the selected 3D, animation, Svelte and UX skills are installed and locked', () => {
   const names = [
     'threejs-animation', 'threejs-interaction', 'threejs-performance',
     'svg-animation', 'accessible-animation', '60fps-animation',
-    'svelte-code-writer', 'svelte-core-bestpractices'
+    'svelte-code-writer', 'svelte-core-bestpractices',
+    'interaction-design', 'ui-animation', 'find-animation-opportunities',
+    'review-animations', 'usability-heuristics'
   ];
   const lock = JSON.parse(read('skills-lock.json'));
   names.forEach((name) => {

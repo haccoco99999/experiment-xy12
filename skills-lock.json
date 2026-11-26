@@ -17,6 +17,30 @@
       "computedHash": "396a43fbb461daa4cb93a2795910459ae96c82937f965906b2b84f2703aef76c",
       "installMode": "copy"
     },
+    "find-animation-opportunities": {
+      "source": "emilkowalski/skills",
+      "commit": "64eb3deb9a5fbfa041faf783e0bc3fd635872e9c",
+      "sourceType": "github",
+      "skillPath": "skills/find-animation-opportunities/SKILL.md",
+      "computedHash": "9ec1c8c622b2c3caf9bda1712440e25dd4f9bc6da1207db4fa80b784aa319186",
+      "installMode": "copy"
+    },
+    "interaction-design": {
+      "source": "wshobson/agents",
+      "commit": "c96b5f6552dba32e4492307493ee613581430715",
+      "sourceType": "github",
+      "skillPath": "plugins/ui-design/skills/interaction-design/SKILL.md",
+      "computedHash": "584caf0ce8817a4b93ec9d253d3d36e67d2ea3d137764653652caba89002c47d",
+      "installMode": "copy"
+    },
+    "review-animations": {
+      "source": "emilkowalski/skills",
+      "commit": "64eb3deb9a5fbfa041faf783e0bc3fd635872e9c",
+      "sourceType": "github",
+      "skillPath": "skills/review-animations/SKILL.md",
+      "computedHash": "50f1de2394b88bb3433eca1e30da6866a4e310963d872a66af20ca77fd77f07d",
+      "installMode": "copy"
+    },
     "svelte-code-writer": {
       "source": "sveltejs/ai-tools",
       "commit": "f9d22f2f7f7cd5e4596eef5d108a69ac8f0dd48d",
@@ -63,6 +87,22 @@
       "sourceType": "github",
       "skillPath": "skills/threejs-performance/SKILL.md",
       "computedHash": "edc078cf2cb729eb4a808ee3c202f4bdbda40a0beb6e34f2cf7b1f5003f11783",
+      "installMode": "copy"
+    },
+    "ui-animation": {
+      "source": "mblode/agent-skills",
+      "commit": "f0b5cd4fc28a3598ecc01a8e480ea64c8a92d0c3",
+      "sourceType": "github",
+      "skillPath": "skills/ui-animation/SKILL.md",
+      "computedHash": "27cdc9c2d83d4535bd7236e5923ce02872b4359ce6fd92123afe138bfcbcd847",
+      "installMode": "copy"
+    },
+    "usability-heuristics": {
+      "source": "jpoindexter/design-skills",
+      "commit": "677a3b7d06df0c121e0a5d163b64d67b9addd9d5",
+      "sourceType": "github",
+      "skillPath": "skills/usability-heuristics/SKILL.md",
+      "computedHash": "088c7240dae9f57f485c7c8a08599614e2983e67fdf0e831c88bcde6c9d15b3c",
       "installMode": "copy"
     }
   }

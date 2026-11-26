@@ -53,6 +53,28 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 
 ## Log (newest first)
 
+### 2026-11-26, Copilot: đánh giá UX và motion prototype thí nghiệm 1
+
+- Review read-only bằng `usability-heuristics`, `interaction-design`, `ui-animation`, `find-animation-opportunities` và `review-animations`; không sửa mã sản phẩm. Browser đã kiểm desktop, màn hình dọc, pause và reduced motion; axe WCAG 2/2.1 A/AA: 0 violation.
+- Verdict: `Block`. `handleDrop` trong `js/experiments/exp1.js` không khóa khay khi `busy > 0`; kiểm thử thật nhận liên tiếp nước rồi sỏi cho hai kết quả `{ok:true}`, `busy=2`, bốn tween và một cue/camera chung. `actionFocused`/`actionCue` có thể bị thao tác sau ghi đè, rồi thao tác trước kéo camera về góc tổng quan khi thao tác sau chưa xong.
+- Điểm cần cải thiện tiếp theo: cue 116×70 chưa có chữ nên dễ bị hiểu thành đồ trang trí ở điện thoại; trạng thái `Có nước`/`Thiếu chất khoáng` và dấu tick xuất hiện ngay khi drop được nhận, trước khi hoạt cảnh hoàn thành; help trong `js/content/exp1.vi.js` vẫn chỉ nói kéo, chưa nói chạm rồi chọn vị trí.
+- Nên giữ: camera 650/720 ms cho mục tiêu giải thích, SVG dùng `transform`/`opacity` và path draw, pause/reduced motion đúng, 3D dành khoảng 61,8% chiều cao vùng nhìn điện thoại, không tràn ngang, hit target các thẻ 92×112 px. Không nên thêm bounce/ambient motion cho thẻ và tiến trình dùng thường xuyên.
+- `node --test "tests/*.test.js"`: 159/159 đạt nhưng test hiện tại chưa bắt được race khi hai dụng cụ chạy liên tiếp. Còn lại: khóa toàn khay lúc bận, thêm test hành vi và làm rõ copy/cue rồi review lại. Câu hỏi mở: không.
+
+### 2026-11-26, Copilot: cài 5 skill UX và UX animation
+
+- Đã cài `interaction-design`, `ui-animation`, `find-animation-opportunities`, `review-animations` và `usability-heuristics` vào `.claude/skills`, đồng bộ sang `.agents/skills` và khóa trong `skills-lock.json`.
+- Nguồn `rolemodel/skills` không còn cung cấp `usability-heuristics`; đã dùng bản tương đương đã kiểm Snyk Pass từ `jpoindexter/design-skills`. Bốn nguồn còn lại là `wshobson/agents`, `mblode/agent-skills` và `emilkowalski/skills`.
+- `tests/agents-sync.test.js` giờ kiểm đủ 13 skill đã chọn giữa 3D, animation, Svelte và UX. `node tools/sync-skills.mjs`: hai bản khớp; `package.json` và `package-lock.json` không đổi; không có runtime/CDN mới.
+- `node --test "tests/*.test.js"`: 159/159 đạt; `git diff --check`: sạch. Chưa áp dụng skill vào giao diện, chưa sửa prototype và chưa chốt mẫu theo yêu cầu. Còn lại: dùng các skill mới cho audit UX/motion trước khi chỉnh code; câu hỏi mở: không.
+
+### 2026-11-26, Copilot: khảo sát skill UX và UX animation
+
+- Không sửa mã sản phẩm và chưa cài skill mới. Đã tra, so sánh nội dung, mức phổ biến và cảnh báo bảo mật của các skill cho interaction design, UI motion, usability heuristics, Laws of UX và animation review.
+- Bộ ưu tiên: `interaction-design` (17,7 nghìn lượt), `ui-animation` (11,3 nghìn), `find-animation-opportunities` (283,9 nghìn), `review-animations` (338 nghìn), `usability-heuristics` và `charles-ux-animation` (312 lượt nhưng tài liệu sâu). Các skill trên đều Snyk Pass; không cần CDN hay runtime mới.
+- Có thể thêm `design-motion-principles` khi cần một quy trình create/audit và `laws-of-ux` khi cần kiểm hit area, feedback và cognitive load. Chưa chọn `micro-interaction` của iart-ai vì skill đó có cảnh báo Snyk về tải code từ esm.sh; đã có `60fps-animation`, nên không cần cài thêm `animation-performance` ngay.
+- Chưa chạy test vì lượt này chỉ nghiên cứu và cập nhật `HANDOFF.md`; test gần nhất vẫn 159/159. Chưa cài skill hay áp dụng lên giao diện vì người dùng chưa chốt mẫu. Còn lại: lấy 5 skill ưu tiên để cài sau khi duyệt; câu hỏi mở: bộ tối thiểu hay bộ đầy đủ.
+
 ### 2026-11-26, Copilot: cài skill và prototype hoạt cảnh thí nghiệm 1
 
 - Đã cài và khóa 8 skill trong `.claude/skills`, đồng bộ sang `.agents/skills`: ba skill Three.js, ba skill animation/SVG/accessibility, hai skill Svelte. `package.json` và runtime không thêm animation library nào; `skills-lock.json` ghi nguồn và commit của từng skill.
@@ -67,24 +89,3 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 - Nên thêm có chọn lọc vào skill workspace: `threejs-animation`, `threejs-interaction`, `threejs-performance`; `svg-animation`, `accessible-animation`, `60fps-animation`; `svelte-code-writer` hoặc `svelte-core-bestpractices`. Thêm `motion-design` chỉ sau khi loại phần Creator MCP/referral vì Skills.sh đang có cảnh báo Snyk prompt injection.
 - Không nên cài GSAP, Remotion, Rive hoặc Lottie runtime vào web hiện tại. GSAP trùng luồng `Lab.tween`; Remotion có cảnh báo Snyk và phù hợp xuất video hơn; Rive thêm renderer/asset pipeline; Lottie tăng file nhưng ít cải thiện điều khiển 3D.
 - `node --test "tests/*.test.js"`: 157/157 đạt sau nghiên cứu; lượt này không thay đổi mã sản phẩm ngoài `HANDOFF.md`. Chưa cài skill hoặc benchmark skill mới. Còn lại: nếu được duyệt, cài đúng nhóm skill đã chọn rồi chạy đồng bộ `.claude/.agents`. Câu hỏi mở: cài ngay skill hay chỉ dùng báo cáo để chọn.
-
-### 2026-11-26, Copilot: rà soát thiết kế và kiến trúc 3D
-
-- Không sửa mã sản phẩm. Đã rà trang chủ Svelte/Threlte, shell classic Three.js, CSS, camera, chất lượng đồ họa, kéo/thả, hiệu ứng, dữ liệu catalog, luồng học tập và độ lớn bản offline.
-- Browser: trang chủ desktop/mobile và thí nghiệm 1/3 đã kiểm tra trực quan. `axe` WCAG 2 A/AA và 2.1 A/AA: 0 lỗi trên trang chủ và thí nghiệm 1. Mở `index.html` bằng `file://` cho đến thí nghiệm 1: không có page/console error.
-- Kết luận thiết kế: giữ Svelte 5 + Threlte/Three.js + WebGLRenderer, đổi trang chủ thành vườn 3D có hotspot và cảnh thí nghiệm thành diorama toàn màn hình với bảng điều khiển theo ngữ cảnh. Điện thoại dọc hiện đưa cùng lúc cả khay và panel xuống dưới nên vùng cảnh 3D còn rất ít; đây là điểm ưu tiên đầu tiên. Catalog hiện lặp ở `js/core/app.js` và `src/i18n.ts`; `three` dev là 0.187 nhưng runtime là r185.
-- `npm run check:modern`: 0 error/0 warning; `npm run check:typescript`: đạt; `node --test "tests/*.test.js"`: 157/157 đạt. Chưa triển khai redesign, chưa benchmark laptop 8 GB thật hoặc screen reader thật. Còn lại: báo cáo phương án và xin người dùng chọn mức triển khai. Câu hỏi mở: ưu tiên prototype 1 bài hay chuyển toàn bộ 8 bài.
-
-### 2026-11-26, Copilot: khóa toàn bộ tiêu đề và nhãn bằng tiếng Việt
-
-- Đã gỡ hoàn toàn selector ngôn ngữ và bản dịch English khỏi `src/ModernHome.svelte`, `src/i18n.ts`, `src/catalog.ts` và `LabModernApi`. Locale cố định `vi`, old key `lab.locale` được xóa khi mở trang để một lần chọn English trước đây không thể quay lại giao diện English sau reload.
-- Đã cập nhật kiểm thử để không cho phép `addMessages('en')`, `setLocale`, `Garden Science Lab`, `Start exploring`, `EXPERIMENT...` hoặc bộ chọn ngôn ngữ xuất hiện trong shell. `HUONG-DAN.txt` ghi rõ toàn bộ title, info, label và nút đều dùng tiếng Việt.
-- Browser đặt `lab.locale=en` rồi reload: khóa bị xóa, trang chủ không có selector, `html.lang=vi`. Đã mở 8/8 thí nghiệm ở trạng thái đầu và kịch bản kết quả cuối; document title, heading, text hiển thị và `aria-label` không chứa các chuỗi English được kiểm tra; 8/8 không có page error. Build hiện tại shell 149,09 KB, gzip 51,12 KB; offline 3.150.681 byte.
-- `npm run check:modern`: 0 error/0 warning; `npm run check:typescript`: đạt; `node --test "tests/*.test.js"`: 157/157 đạt; audit 0 lỗ hổng. Chưa đánh giá phát âm bằng screen reader thật. Câu hỏi mở: không.
-
-### 2026-11-26, Copilot: áp dụng các chuẩn hoạt cảnh và WCAG pause/stop
-
-- Đã thêm nút "Tạm dừng hoạt cảnh" ở topbar, lưu trạng thái `lab.motion`, dừng cả CSS animation, tween và ticker 3D, vẫn render khung tĩnh khi reset/chất lượng thay đổi và tiếp tục đúng vị trí khi bấm lại. Đã tách pause của người dùng khỏi trạng thái tab ẩn để chuyển tab không tự gỡ pause.
-- Đã thêm anticipation giảm chuyển động 160 ms cho thao tác rót nước/rải khoáng ở thí nghiệm 1, 2, 6 và đưa que lấy phấn ở thí nghiệm 5. Không biến dạng kích thước sinh học. Đã đổi transition nhiệt độ, trứng thụ tinh, card, zone, pulse và shell hiện đại sang `transform`/`opacity`, bỏ animation `width`, `background` và `box-shadow`.
-- `node --test "tests/*.test.js"`: 157/157 đạt. `npm run check:modern`: 0 error/0 warning; `npm run check:typescript`: đạt; audit 0 lỗ hổng; review code không tìm thấy lỗi đáng kể. Browser: pause đóng băng vị trí tween, thông báo vẫn hiện, reload giữ pause, reset dựng cảnh tĩnh, 4 kịch bản 1/2/5/6 chạy đủ; axe 0 violation; 390 px không tràn.
-- Build: shell 154,86 KB, gzip 52,96 KB; offline 3.156.457 byte. Chưa kiểm tra trên laptop 8 GB vật lý hoặc screen reader thật. Còn lại: benchmark phần cứng và kiểm tra đọc bằng công cụ hỗ trợ nếu cần tuyên bố WCAG chính thức. Câu hỏi mở: không.
