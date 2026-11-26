@@ -53,6 +53,20 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 
 ## Log (newest first)
 
+### 2026-11-26, Copilot: đánh giá style Biome Lab cho 8 thí nghiệm
+
+- Không sửa mã sản phẩm. Đã xem showcase và ảnh chạy Biome Lab, đọc build brief cùng Iteration 1–Final pass, rồi đối chiếu với cảnh 3D, model và luồng học tập hiện tại.
+- Phán quyết: khả thi nếu lấy ngôn ngữ `procedural terrarium / faceted diorama`, một cảnh 3D trung tâm, control nhỏ hai bên và phản hồi môi trường tức thời. Không sao chép dashboard tối, slider kỹ thuật và nhiều biểu đồ; thay bằng nền sân vườn sáng, ít control hơn, chữ tiếng Việt lớn và luồng từng bước.
+- Phạm vi áp dụng: 1/2/6 rất hợp; 3/4 hợp với cutaway; 5 dùng macro cutaway; 7 dùng cụm vòng đời trên diorama; 8 chỉ dùng style này cho khối cảnh, còn tế bào/phôi cần Scientific Cutaway riêng. React Three Fiber chỉ là stack của Biome Lab; dự án hiện nên giữ Three.js/Threlte.
+- Chưa chạy test vì chỉ đánh giá và cập nhật `HANDOFF.md`; test gần nhất 159/159. Còn lại: nếu được duyệt, dựng moodboard/light prototype cho thí nghiệm 1 với island/pedestal, 1 luồng control và 1 thẻ quan sát; trước đó vẫn phải sửa race thao tác đã review. Câu hỏi mở: nền tối như ảnh hay bản sáng sân vườn.
+
+### 2026-11-26, Copilot: đánh giá phong cách 3D cho 8 thí nghiệm
+
+- Không sửa mã sản phẩm. Đã đối chiếu low-poly/toon, soft 3D/clay, sci-fi/hologram, realistic PBR, Spline và asset packs với 8 model hiện có, ba mức đồ họa, reset/offline và đối tượng học sinh tiểu học.
+- Khuyến nghị: `Soft Low-Poly Specimen Diorama` là style chủ đạo; giữ vật liệu matte trong roughness 0,55–0,95, cạnh bo nhẹ, ánh sáng sân vườn, thêm chế độ `Scientific Cutaway` trong suốt cho khí, rễ, hoa, noãn, tế bào và phôi. Không dùng realistic PBR toàn site; sci-fi chỉ là lớp overlay tối đa ở phần vi mô.
+- Giữ Three.js/Threlte và model tạo bằng code. Spline chỉ dùng để sketch vì bản Vanilla JS cần local server và animation/events không có trong mọi dạng export. Không trộn asset packs Quaternius/KayKit; giấy phép phải kiểm từng pack và style/dung lượng khó đồng nhất. WebGPU chưa ưu tiên; Three.js vẫn khuyến nghị WebGL cho pure WebGL app.
+- Chưa chạy test vì lượt này chỉ đánh giá style và cập nhật `HANDOFF.md`; test gần nhất 159/159. Còn lại: sau khi chốt style, làm moodboard 1 cảnh ngoài trời và 1 cảnh mặt cắt trước khi áp dụng rộng. Câu hỏi mở: duyệt hay đổi tone giữa trẻ em và giáo cụ.
+
 ### 2026-11-26, Copilot: đánh giá UX và motion prototype thí nghiệm 1
 
 - Review read-only bằng `usability-heuristics`, `interaction-design`, `ui-animation`, `find-animation-opportunities` và `review-animations`; không sửa mã sản phẩm. Browser đã kiểm desktop, màn hình dọc, pause và reduced motion; axe WCAG 2/2.1 A/AA: 0 violation.
@@ -74,18 +88,3 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 - Bộ ưu tiên: `interaction-design` (17,7 nghìn lượt), `ui-animation` (11,3 nghìn), `find-animation-opportunities` (283,9 nghìn), `review-animations` (338 nghìn), `usability-heuristics` và `charles-ux-animation` (312 lượt nhưng tài liệu sâu). Các skill trên đều Snyk Pass; không cần CDN hay runtime mới.
 - Có thể thêm `design-motion-principles` khi cần một quy trình create/audit và `laws-of-ux` khi cần kiểm hit area, feedback và cognitive load. Chưa chọn `micro-interaction` của iart-ai vì skill đó có cảnh báo Snyk về tải code từ esm.sh; đã có `60fps-animation`, nên không cần cài thêm `animation-performance` ngay.
 - Chưa chạy test vì lượt này chỉ nghiên cứu và cập nhật `HANDOFF.md`; test gần nhất vẫn 159/159. Chưa cài skill hay áp dụng lên giao diện vì người dùng chưa chốt mẫu. Còn lại: lấy 5 skill ưu tiên để cài sau khi duyệt; câu hỏi mở: bộ tối thiểu hay bộ đầy đủ.
-
-### 2026-11-26, Copilot: cài skill và prototype hoạt cảnh thí nghiệm 1
-
-- Đã cài và khóa 8 skill trong `.claude/skills`, đồng bộ sang `.agents/skills`: ba skill Three.js, ba skill animation/SVG/accessibility, hai skill Svelte. `package.json` và runtime không thêm animation library nào; `skills-lock.json` ghi nguồn và commit của từng skill.
-- Thí nghiệm 1 trong `js/experiments/exp1.js` có thao tác chạm dùng chung picker với bàn phím, camera tập trung vào chậu B khi tưới nước/rải sỏi/đặt thùng, rồi quay lại góc tổng quan. `css/app.css` thêm SVG chỉ đường nhẹ; pause dừng cả 3D tween và SVG. Reduced motion giữ nguyên camera và hiện trạng thái SVG tĩnh. `HUONG-DAN.txt` đã cập nhật.
-- Browser 1024×768: pause giữ nguyên toàn bộ giá trị camera, cue bị dừng; sau thao tác camera về đúng góc tổng quan. Trên 390×844, pointer touch tổng hợp mở picker đúng vị trí, không tràn ngang. Reduced motion giữ camera bất biến và SVG dùng `animation:none`, `opacity: 1`. Bản offline `file://`: picker chạy, không page/console error, không tài nguyên HTTP ngoài.
-- `npm run check:modern`: 0 error/0 warning; `npm run check:typescript`: đạt; `node --test "tests/*.test.js"`: 159/159 đạt; audit 0 lỗ hổng; `git diff --check`: sạch. Build: shell 149,086 byte, gzip 51,64 KB; offline 3.155.315 byte, vẫn dưới budget.
-- Chưa benchmark laptop 8 GB thật hoặc screen reader thật; chưa áp dụng prototype cho 7 bài còn lại. Còn lại: người dùng duyệt hình và quyết định mở rộng; câu hỏi mở: không có. Công cụ đọc usage vẫn không khả dụng nên không báo được phần trăm giới hạn.
-
-### 2026-11-26, Copilot: khảo sát skill hoạt cảnh, SVG và 3D
-
-- Không sửa mã sản phẩm. Đã tra Skills.sh và kho nguồn chính thức cho GSAP, Three.js, SVG animation, LottieFiles motion design, Remotion, Rive và Svelte 5.
-- Nên thêm có chọn lọc vào skill workspace: `threejs-animation`, `threejs-interaction`, `threejs-performance`; `svg-animation`, `accessible-animation`, `60fps-animation`; `svelte-code-writer` hoặc `svelte-core-bestpractices`. Thêm `motion-design` chỉ sau khi loại phần Creator MCP/referral vì Skills.sh đang có cảnh báo Snyk prompt injection.
-- Không nên cài GSAP, Remotion, Rive hoặc Lottie runtime vào web hiện tại. GSAP trùng luồng `Lab.tween`; Remotion có cảnh báo Snyk và phù hợp xuất video hơn; Rive thêm renderer/asset pipeline; Lottie tăng file nhưng ít cải thiện điều khiển 3D.
-- `node --test "tests/*.test.js"`: 157/157 đạt sau nghiên cứu; lượt này không thay đổi mã sản phẩm ngoài `HANDOFF.md`. Chưa cài skill hoặc benchmark skill mới. Còn lại: nếu được duyệt, cài đúng nhóm skill đã chọn rồi chạy đồng bộ `.claude/.agents`. Câu hỏi mở: cài ngay skill hay chỉ dùng báo cáo để chọn.
