@@ -44,15 +44,22 @@
       enabled: function () { return L.bothPlaced(state) && !state.mated && !X.busy; },
       onStart: function () { male.mode = 'fly'; X.touch(); }, onEnd: function () { male.mode = 'perch'; },
       onDrop: function (it, info) {
-        var r = L.decideMating(state, info.world.distanceTo(female.group.position) < 1.05);
-        if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return { ok: false }; }
-        mate(); return { ok: true };
+        return tryMate(info.world.distanceTo(female.group.position) < 1.05);
       }
     });
     X.busy--; X.refresh();
   }
 
   /* ---------------- mating (md 7): the male comes close, they face each other, a short animation with a heart between them ---------------- */
+  function tryMate(near) {
+    var r = L.decideMating(state, near);
+    if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return { ok: false }; }
+    mate(); return { ok: true };
+  }
+  X.panelHooks.push(function (stack) {
+    if (X.busy || !male || !female || !L.decideMating(state, true).ok) return;
+    stack.appendChild(X.button('ĐƯA BƯỚM ĐỰC ĐẾN GẦN BƯỚM CÁI', 'btn-orange', function () { tryMate(true); }));
+  });
   async function mate() {
     X.busy++; X.touch(); L.applyMating(state); X.refresh();
     var target = female.group.position.clone().add(V(-1.4, 0.02, 0));

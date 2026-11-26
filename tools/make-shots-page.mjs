@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 let html = readFileSync(join(root, 'index.html'), 'utf8');
-html = html.replace(/(src|href)="(css|js|vendor)\//g, '$1="../$2/');
+html = html.replace(/(src|href)="(css|js|vendor|dist-modern)\//g, '$1="../$2/');
 html = html.replace('</body>', '<script src="shots.js"></script>\n</body>');
 writeFileSync(join(root, 'tests', 'shots.html'), html);
 console.log('tests/shots.html written');

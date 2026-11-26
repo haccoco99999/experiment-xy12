@@ -30,7 +30,8 @@
   function shake() { var g = X.flower.group; Lab.tween.value(0.6, function (k) { g.rotation.z = Math.sin(k * 40) * 0.025 * (1 - k); }, { ease: Lab.tween.ease.linear }); }
   function bring(target, loaded) {                                        // the stick comes in from the upper right and touches `target`
     removeStick(); stick = Mo.pollenStick(); stick.setLoaded(loaded); stick.group.position.copy(target).add(V(2.6, 1.1, 0.9)); scene.add(stick.group);
-    return Lab.tween.to(stick.group.position, { x: target.x, y: target.y, z: target.z }, 0.8, { ease: 'outQuad' }).promise;
+    return Lab.tween.anticipate(stick.group.rotation, 'z', 0.08, 0.16)
+      .then(function () { return Lab.tween.to(stick.group.position, { x: target.x, y: target.y, z: target.z }, 0.8, { ease: 'outQuad' }).promise; });
   }
   function takeAway(target) { return Lab.tween.to(stick.group.position, { x: target.x + 2.6, y: target.y + 1.1, z: target.z + 0.9 }, 0.7, { ease: 'inQuad' }).promise; }
 

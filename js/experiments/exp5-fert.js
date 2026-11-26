@@ -4,7 +4,7 @@
   'use strict';
   var T = X.T, L = X.L, MD = X.MD, APP = X.APP, Mo = X.Mo, state = X.state, scene = X.scene, Y0 = X.Y0, Z = X.POS.z;
   var CORRIDOR = 0.34;                                                    // how far (world units) the pointer may wander from the way down the style
-  var tube = null, tube2 = null, item1 = null, item2 = null, item3 = null, stop = [], extras = [], tags = [], pollenTag = null, target = -1, prog = 0.07, lastOff = 0;
+  var tube = null, tube2 = null, item1 = null, item2 = null, item3 = null, stop = [], extras = [], tags = [], pollenTag = null, target = -1, prog = 0.07, lastOff = 0, tubeCam = 0;
   function V(x, y, z) { return new T.Vector3(x, y, z); }
   function rmItem(it) { if (it) Lab.sceneDrag.remove(it); }
   function cleanup() {
@@ -38,8 +38,8 @@
   }
   function tapPollen(exact) {
     var r = L.decideGerminate(state, exact ? 'pollen' : 'other');
-    if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return; }
-    germinate();
+    if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return false; }
+    germinate(); return true;
   }
   async function germinate() {
     var seq = X.seq, fl = X.flower; L.applyGerminate(state); X.busy++;
@@ -57,8 +57,32 @@
   }
 
   /* ---------------- 2. the tube goes down the style (the tip follows the pointer along the way down) ---------------- */
+  function advanceTube(next) {
+    if (!tube || next <= prog) return false;
+    prog = Math.min(1, next);
+    var res = L.applyTube(state, prog);
+    if (prog > 0.35 && tubeCam < 1) { tubeCam = 1; shotAt(Y0 + 0.85, 2.2, 700); }
+    else if (prog > 0.7 && tubeCam < 2) { tubeCam = 2; shotAt(Y0 + 0.45, 1.9, 700); }
+    tube.setProgress(prog);
+    if (res.atOvary && item1) tubeArrived();
+    return true;
+  }
+  async function runKeyboardTube() {
+    var seq = X.seq, from = prog;
+    X.busy++;
+    try {
+      await Lab.tween.value(1.15, function (k) {
+        if (seq === X.seq) advanceTube(from + (1 - from) * k);
+      }, { ease: 'inOutQuad' }).promise;
+    } finally { X.busy--; }
+    if (seq === X.seq) X.refresh();
+  }
+  function keyboardTube() {
+    if (X.busy || !item1 || item1.state !== 'idle' || !tube || !state.germinated || state.tubeAtOvary) return false;
+    runKeyboardTube(); return true;
+  }
   function startTube() {
-    var curve = stylePath(), cam = 0; prog = 0.07; lastOff = 0;
+    var curve = stylePath(); prog = 0.07; lastOff = 0; tubeCam = 0;
     item1 = {
       object: tube.tip, radius: 80, home: function () { return tube.pointAt(prog); }, region: function () { return 'path'; },
       enabled: function () { return !X.busy && state.germinated && !state.tubeAtOvary; },
@@ -72,12 +96,8 @@
     stop.push(Lab.loop.add(function () {
       if (!item1 || item1.state !== 'drag') return;
       var c = closest(curve, tube.tip.position); lastOff = c.d;
-      if (c.d <= CORRIDOR && c.t > prog) {
-        prog = c.t; L.applyTube(state, prog);
-        if (prog > 0.35 && cam < 1) { cam = 1; shotAt(Y0 + 0.85, 2.2, 700); } else if (prog > 0.7 && cam < 2) { cam = 2; shotAt(Y0 + 0.45, 1.9, 700); }
-      }
-      tube.setProgress(prog);
-      if (state.tubeAtOvary) tubeArrived();
+      if (c.d <= CORRIDOR && c.t > prog) advanceTube(c.t);
+      else tube.setProgress(prog);
     }, { ambient: true }));
   }
   function tubeArrived() {
@@ -99,9 +119,7 @@
       onDrop: function (it, info) {
         var best = -1, bd = 1e9;
         fl.ovulePos.forEach(function (p, i) { var s = Lab.stage.project(fl.world(p)), d = Math.hypot(s.x - info.client.x, s.y - info.client.y); if (d < bd) { bd = d; best = i; } });
-        var r = L.decideOvule(state, bd < 48);
-        if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return { ok: false }; }
-        it.state = 'idle'; connect(best); return { ok: true };
+        return acceptOvule(it, bd < 48 ? best : -1);
       }
     };
     Lab.sceneDrag.add(item2);
@@ -109,6 +127,17 @@
       if (!item2 || !tube2 || (item2.state !== 'drag' && item2.state !== 'home')) return;
       tube2.setCurve(bend(S, tube2.tip.position.clone()), 1);
     }, { ambient: true }));
+    X.refresh();
+  }
+  function acceptOvule(it, i) {
+    var r = L.decideOvule(state, i >= 0);
+    if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return { ok: false }; }
+    if (it) it.state = 'idle';
+    connect(i); return { ok: true };
+  }
+  function keyboardOvule() {
+    if (X.busy || !item2 || item2.state !== 'idle' || !state.tubeAtOvary || state.tubeAtOvule || !X.flower.ovulePos.length) return false;
+    return acceptOvule(null, 0).ok;
   }
   async function connect(i) {
     var seq = X.seq, fl = X.flower, ov = fl.ovules[i], S = tube.pointAt(1), top = fl.world(fl.ovulePos[i].clone().add(V(0, 0.2, 0)));
@@ -126,19 +155,29 @@
     ov.material.transparent = true; ov.material.opacity = 0.42; ov.material.depthWrite = false; ov.material.needsUpdate = true;
     X.shot({ cx: c.x, cy: c.y, cz: Z, w: 0.62, h: 0.45, pitch: 0.04, fov: 34 }, 900);
     var male = sphere(0.04, 0x66e0ff, top); tags.push(X.tag(MD.labels.male, function () { return male.position.clone().add(V(0.13, 0.09, 0)); }, 'part'));
-    X.toast(MD.prompt.maleTask, { type: 'info', ms: 6000 }); X.refresh();
+    X.toast(MD.prompt.maleTask, { type: 'info', ms: 6000 });
     item3 = {
       object: male, radius: 70, home: function () { return top; }, region: function () { return 'tube'; },
       enabled: function () { return !X.busy && state.tubeAtOvule && !state.maleIn; },
       onDrop: function (it, info) {
         var p = Lab.stage.project(c), q = Lab.stage.project(c.clone().add(V(0.17, 0, 0))), rpx = Math.hypot(q.x - p.x, q.y - p.y);
         var inside = Math.hypot(info.client.x - p.x, info.client.y - p.y) < rpx * 0.7;
-        var r = L.decideMale(state, inside);
-        if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return { ok: false }; }
-        it.state = 'idle'; fertilize(male, c); return { ok: true };
+        return acceptMale(it, male, c, inside);
       }
     };
     Lab.sceneDrag.add(item3);
+    X.refresh();
+  }
+  function acceptMale(it, male, c, inside) {
+    var r = L.decideMale(state, inside);
+    if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return { ok: false }; }
+    if (it) it.state = 'idle';
+    fertilize(male, c); return { ok: true };
+  }
+  function keyboardMale() {
+    if (X.busy || !item3 || item3.state !== 'idle' || !state.tubeAtOvule || state.maleIn || target < 0) return false;
+    var c = X.flower.world(X.flower.ovulePos[target]);
+    return acceptMale(item3, item3.object, c, true).ok;
   }
   async function fertilize(male, c) {
     var seq = X.seq; X.busy++; L.applyMale(state); rmItem(item3); item3 = null;
@@ -159,5 +198,15 @@
     X.refresh();
   }
 
-  X.fert = { enter: enter, tapPollen: tapPollen, debug: function () { return { prog: prog, lastOff: lastOff, target: target }; } };
+  function action() {
+    if (X.busy || X.mode !== 'fert') return null;
+    var key = L.promptKey(state);
+    if (key === 'clickPollen') return X.sceneButton('Làm hạt phấn nảy mầm', 'exp5-germinate', function () { return tapPollen(true); });
+    if (key === 'tubeTask' && item1) return X.sceneButton('Đưa ống phấn tới buồng nhụy', 'exp5-tube', keyboardTube);
+    if (key === 'ovuleTask' && item2) return X.sceneButton('Nối ống phấn với một noãn', 'exp5-ovule', keyboardOvule);
+    if (key === 'maleTask' && item3) return X.sceneButton('Đưa tế bào đực vào noãn', 'exp5-male', keyboardMale);
+    return null;
+  }
+
+  X.fert = { enter: enter, tapPollen: tapPollen, action: action, debug: function () { return { prog: prog, lastOff: lastOff, target: target }; } };
 });

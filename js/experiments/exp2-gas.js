@@ -76,12 +76,12 @@
 
   function setTask() {
     var key = L.promptKey(state);
-    X.task = key ? { text: MD.prompt[key], legend: [X.U.el('span', { class: 'gas-chip o2', text: MD.gas.o2 }), X.U.el('span', { class: 'gas-chip co2', text: MD.gas.co2 })] } : null;
+    X.task = key ? { text: MD.prompt[key], legend: [X.U.el('span', { class: 'gas-chip o2', text: MD.gas.o2 }), X.U.el('span', { class: 'gas-chip co2', text: MD.gas.co2 })], action: gasButton } : null;
   }
 
   /* ---------------- dropping a molecule ---------------- */
-  function onDrop(it, info) {
-    var to = regionOf(info.client.x, info.client.y), from = it.inLeaf ? 'leaf' : 'env';
+  function attemptGas(it, to) {
+    var from = it.inLeaf ? 'leaf' : 'env';
     var r = L.decideGas(state, it.type, from, to);
     if (!r.ok) {
       if (r.msg) X.toast(X.msgFor(r.msg), { type: 'warn' });
@@ -89,6 +89,24 @@
       return { ok: false };
     }
     accept(it, r.move); return { ok: true };
+  }
+  function onDrop(it, info) {
+    return attemptGas(it, regionOf(info.client.x, info.client.y));
+  }
+  function keyboardMove() {
+    var move = L.currentMove(state), it = null;
+    if (!move || X.busy || X.mode !== 'leaf') return false;
+    for (var i = 0; i < mols.length; i++) {
+      var candidate = mols[i], from = candidate.inLeaf ? 'leaf' : 'env';
+      if (candidate.type === move.gas && from === move.from && candidate.state === 'idle' && candidate.enabled()) { it = candidate; break; }
+    }
+    return it ? attemptGas(it, move.to).ok : false;
+  }
+  function gasButton() {
+    var move = L.currentMove(state);
+    if (!move || X.busy || X.mode !== 'leaf' || state.topic !== 'air') return null;
+    var gas = move.gas === 'o2' ? 'O₂' : 'CO₂';
+    return X.sceneButton(move.to === 'leaf' ? 'Chuyển ' + gas + ' vào lá' : 'Đưa ' + gas + ' ra khỏi lá', 'exp2-gas', keyboardMove);
   }
   /* the right move: the gas travels, an arrow and the md sentence appear, and the next move (or the end) follows */
   async function accept(it, move) {

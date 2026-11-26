@@ -7,6 +7,11 @@
   var cur = null;
   var dirV = new T.Vector3();
 
+  function targetSize() {
+    if (!Lab.stage) return 384;
+    return Lab.stage.qualityMode === 'light' ? 256 : Lab.stage.qualityMode === 'high' ? 512 : 384;
+  }
+
   function hide() {
     if (!cur) return;
     var c = cur; cur = null;
@@ -18,19 +23,20 @@
   function show(o) {
     hide();
     var S = Lab.stage, radius = o.radius || 118, dist = o.distance || 2.4, view = o.viewSize || 1.2;
-    var rt = new T.WebGLRenderTarget(512, 512, { depthBuffer: true });
+    var rt = new T.WebGLRenderTarget(targetSize(), targetSize(), { depthBuffer: true });
     rt.texture.colorSpace = T.SRGBColorSpace;
     var ovScene = new T.Scene(), ovCam = new T.OrthographicCamera(0, 1, 1, 0, -10, 10);
     var mat = new T.MeshBasicMaterial({ map: rt.texture, toneMapped: false, transparent: true });
     var disc = new T.Mesh(new T.CircleGeometry(1, 64), mat); ovScene.add(disc);
     var cam = new T.PerspectiveCamera(20, 1, 0.05, 200);
     var point = function () { return typeof o.world === 'function' ? o.world() : o.world; };
-    var ring = Lab.labels.add({ html: '', cls: 'lens-ring', world: point, anchor: 'center', onClick: function () { hide(); if (o.onClose) o.onClose(); } });
+    var closeLens = function () { hide(); if (o.onClose) o.onClose(); };
+    var ring = Lab.labels.add({ html: '', cls: 'lens-ring', world: point, anchor: 'center', ariaLabel: 'Cất kính phóng đại', onClick: closeLens, onEscape: closeLens });
     ring.el.style.width = ring.el.style.height = (radius * 2 + 12) + 'px';
     ring.el.title = 'Nhấp để cất kính phóng đại';
 
     function render(renderer) {
-      var wp = point(), rc = S.container.getBoundingClientRect(), p = S.project(wp);
+      var wp = point(), rc = S.clientRect ? S.clientRect() : S.container.getBoundingClientRect(), p = S.project(wp, rc);
       if (p.behind) return;
       dirV.copy(S.camera.position).sub(wp).normalize();
       cam.position.copy(wp).addScaledVector(dirV, dist); cam.lookAt(wp);
@@ -43,11 +49,17 @@
       disc.scale.set(radius, radius, 1); disc.position.set(p.x - rc.left, rc.height - (p.y - rc.top), 0);
       var ac = renderer.autoClear; renderer.autoClear = false; renderer.clearDepth(); renderer.render(ovScene, ovCam); renderer.autoClear = ac;
     }
-    cur = { ring: ring, rt: rt, disc: disc, mat: mat, render: render };
+    cur = { ring: ring, rt: rt, disc: disc, mat: mat, render: render, rebuild: function () {
+      var next = new T.WebGLRenderTarget(targetSize(), targetSize(), { depthBuffer: true });
+      next.texture.colorSpace = T.SRGBColorSpace;
+      rt.dispose(); rt = next;
+      mat.map = next.texture; mat.needsUpdate = true;
+      cur.rt = next;
+    } };
     S.afterRender = render;
     Lab.loop.wake();
     return { hide: hide };
   }
 
-  Lab.lens = { show: show, hide: hide, active: function () { return !!cur; } };
+  Lab.lens = { show: show, hide: hide, active: function () { return !!cur; }, rebuild: function () { if (cur && cur.rebuild) cur.rebuild(); } };
 })(window.Lab);

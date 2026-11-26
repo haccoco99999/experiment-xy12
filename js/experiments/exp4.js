@@ -89,6 +89,36 @@
         return U.el('span', { class: 'mark-chip ' + st, text: st === 'done' ? R.mark : R.mark.replace(' ✓', '') });
       }));
     }
+    function focusNode(node) {
+      try { node.focus({ preventScroll: true }); } catch (err) { node.focus(); }
+    }
+    X.keepSceneFocus = function (node) { X.sceneFocusNode = node; };
+    X.sceneButton = function (text, key, action) {
+      var b = U.el('button', { class: 'btn btn-orange panel-btn', text: text, attrs: { type: 'button', 'data-scene-action': key, 'aria-label': text } });
+      b.addEventListener('click', function () {
+        X.touch();
+        X.keepSceneFocus(b);
+        var ok = action();
+        if (ok === false) { X.keepSceneFocus(null); return; }
+        b.disabled = true;
+        b.setAttribute('aria-disabled', 'true');
+      });
+      return b;
+    };
+    function takeSceneFocus() {
+      var active = document.activeElement, origin = X.sceneFocusNode;
+      if (!origin && active && active.getAttribute && active.getAttribute('data-scene-action')) origin = active;
+      if (origin && active !== origin && active !== document.body) { X.sceneFocusNode = null; return null; }
+      return origin ? { node: origin, key: origin.getAttribute('data-scene-action') } : null;
+    }
+    function restoreSceneFocus(saved) {
+      if (!saved) return;
+      var controls = Array.prototype.slice.call(UI.el.panel.querySelectorAll('[data-scene-action]:not([disabled])'));
+      var target = controls.filter(function (b) { return b.getAttribute('data-scene-action') === saved.key; })[0] || controls[0];
+      if (!target && !X.busy) target = UI.el.panel.querySelector('.btn.pulse:not([disabled])') || UI.el.panel.querySelector('.btn:not([disabled])');
+      if (target) { X.sceneFocusNode = null; focusNode(target); }
+      else X.sceneFocusNode = saved.node;
+    }
     function renderPanel() {
       var stack = U.el('div', { class: 'panel-stack' });
       if (X.finaleShown && X.finale) X.finale.render(stack);
@@ -100,18 +130,22 @@
       if (nf && state.topic === 'wfw' && !X.finaleShown) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, U.el('div', { class: 'panel-title', text: APP.bodyTitle }),
         APP.bodyFlows.slice(0, nf).map(function (t) { return U.el('p', { class: 'task-text', text: t }); })));
       var keys = L.promptKeys(state);
-      if (state.placed && keys.length && !X.finaleShown && !X.busy) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, keys.map(function (k) { return U.el('p', { class: 'task-text', text: MD.prompt[k] }); }), X.extra || null));
+      var extra = typeof X.extra === 'function' ? X.extra() : X.extra;
+      if (state.placed && keys.length && !X.finaleShown && !X.busy) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, keys.map(function (k) { return U.el('p', { class: 'task-text', text: MD.prompt[k] }); }), extra || null));
       else if (!state.placed) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, U.el('p', { class: 'task-text', text: MD.msg.mouseFirst })));
       else if (X.note && !X.finaleShown) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, U.el('p', { class: 'task-text', text: X.note })));
       UI.setPanel(stack);
     }
     X.refresh = function () {
+      var sceneFocus = takeSceneFocus();
       UI.setProgress(MD.steps, L.stepStates(state));
       UI.setCard('mouse', { ghost: state.placed });
       UI.setCard('food', { ghost: state.foodIn, used: state.foodIn });
       UI.setCard('water', { ghost: state.waterIn, used: state.waterIn });
       UI.setCard('magnifier', { ghost: Lab.lens.active() });
-      renderPanel(); Lab.loop.wake();
+      renderPanel();
+      restoreSceneFocus(sceneFocus);
+      Lab.loop.wake();
     };
     function onTopic(k) {
       if (X.busy) return;

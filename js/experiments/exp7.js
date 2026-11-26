@@ -71,9 +71,11 @@
       return Lab.tween.to(g.rotation, { y: g.rotation.y + d }, secs || 0.5, { ease: 'inOutCubic' }).promise;
     };
     X.newButterfly = function (sex) { var b = Mo.butterfly(sex); b.group.rotation.order = 'YXZ'; scene.add(b.group); X.bf.push(b); return b; };
-    X.button = function (text, cls, fn, locked) {
-      return el('button', { class: 'btn ' + (cls || 'btn-orange') + ' panel-btn' + (locked ? ' locked' : ''), text: text, attrs: locked ? { title: MD.msg.locked } : {},
-        on: { click: function () { X.touch(); if (locked) { X.toast(MD.msg.locked, { type: 'warn' }); Lab.audio.play('wrong'); } else fn(); } } });
+    X.button = function (text, cls, fn, locked, lockedText) {
+      var attrs = { type: 'button' };
+      if (locked) { attrs.disabled = 'disabled'; attrs.title = lockedText || MD.msg.locked; }
+      return el('button', { class: 'btn ' + (cls || 'btn-orange') + ' panel-btn' + (locked ? ' locked' : ''), text: text, attrs: attrs,
+        on: { click: function () { X.touch(); if (locked) { X.toast(lockedText || MD.msg.locked, { type: 'warn' }); Lab.audio.play('wrong'); } else fn(); } } });
     };
     Lab.stage.shot(SHOTS.garden, 0);
     UI.fitStage();

@@ -66,7 +66,9 @@
   function putRuler() {
     var lv = X.larva; ruler = Mo.ruler(); lv.g.add(ruler); ruler.position.set(0, 0.9, 0.25); X.rulerOn = true;
     Lab.tween.to(ruler.position, { y: 0.02 }, 0.7, { ease: 'outBounce' });
-    rulerTag = X.tag('', function () { return lv.g.position.clone().add(V(0, 0.45 + 0.35 * lv.size, 0.45 * lv.size + 0.15)); }, 'part', 0, { onClick: function () { takeRuler(); X.refresh(); } });
+    rulerTag = X.tag('', function () { return lv.g.position.clone().add(V(0, 0.45 + 0.35 * lv.size, 0.45 * lv.size + 0.15)); }, 'part', 0, {
+      ariaLabel: APP.rulerAway, onClick: function () { takeRuler(); X.refresh(); }
+    });
     rulerTag.el.title = APP.rulerAway; updateRuler(); Lab.audio.play('ok'); X.toast(MD.right.length, { type: 'ok', ms: 5200 }); X.refresh();
   }
   function takeRuler() {

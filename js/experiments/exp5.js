@@ -73,6 +73,36 @@
       return el('button', { class: 'btn ' + (cls || 'btn-orange') + ' panel-btn', text: text, attrs: off ? { disabled: 'disabled' } : {}, on: { click: function () { X.touch(); fn(); } } });
     }
     X.button = button;
+    function focusNode(node) {
+      try { node.focus({ preventScroll: true }); } catch (err) { node.focus(); }
+    }
+    X.keepSceneFocus = function (node) { X.sceneFocusNode = node; };
+    X.sceneButton = function (text, key, action) {
+      var b = el('button', { class: 'btn btn-orange panel-btn', text: text, attrs: { type: 'button', 'data-scene-action': key, 'aria-label': text } });
+      b.addEventListener('click', function () {
+        X.touch();
+        X.keepSceneFocus(b);
+        var ok = action();
+        if (ok === false) { X.keepSceneFocus(null); return; }
+        b.disabled = true;
+        b.setAttribute('aria-disabled', 'true');
+      });
+      return b;
+    };
+    function takeSceneFocus() {
+      var active = document.activeElement, origin = X.sceneFocusNode;
+      if (!origin && active && active.getAttribute && active.getAttribute('data-scene-action')) origin = active;
+      if (origin && active !== origin && active !== document.body) { X.sceneFocusNode = null; return null; }
+      return origin ? { node: origin, key: origin.getAttribute('data-scene-action') } : null;
+    }
+    function restoreSceneFocus(saved) {
+      if (!saved) return;
+      var controls = Array.prototype.slice.call(UI.el.panel.querySelectorAll('[data-scene-action]:not([disabled])'));
+      var target = controls.filter(function (b) { return b.getAttribute('data-scene-action') === saved.key; })[0] || controls[0];
+      if (!target && !X.busy) target = UI.el.panel.querySelector('.btn.pulse:not([disabled])') || UI.el.panel.querySelector('.btn:not([disabled])');
+      if (target) { X.sceneFocusNode = null; focusNode(target); }
+      else X.sceneFocusNode = saved.node;
+    }
     function partsCard() {
       var next = L.nextObs(state);
       return el('div', { class: 'panel-card' }, el('div', { class: 'obs-head', text: APP.partsTitle }), el('div', { class: 'marks' }, L.OBS.map(function (p) {
@@ -102,7 +132,19 @@
           else if (!state.obsDone) stack.appendChild(el('div', { class: 'panel-card task-card' }, el('p', { class: 'task-text', text: APP.tapDots })));
           if (!state.obsDone || !state.pollStarted) stack.appendChild(partsCard());
         }
-        if (state.pollStarted && key && !X.busy) stack.appendChild(el('div', { class: 'panel-card task-card' }, el('p', { class: 'task-text', text: MD.prompt[key] || APP[key] })));
+        if (state.pollStarted && key && !X.busy) stack.appendChild(el('div', { class: 'panel-card task-card' },
+          el('p', { class: 'task-text', text: MD.prompt[key] || APP[key] }),
+          X.fert && X.fert.action ? X.fert.action() : null));
+        if (!X.busy && state.lapse === 'at14') {
+          var seedButton = button('NHÌN BÊN TRONG QUẢ', 'btn-blue', function () { X.fruit.tapFruit(); });
+          seedButton.setAttribute('data-fruit-action', 'seeds');
+          stack.appendChild(el('div', { class: 'panel-card task-card' }, el('p', { class: 'task-text', text: MD.right.day14 }), seedButton));
+        }
+        if (!X.busy && state.lapse === 'at30') {
+          var cutButton = button('CẮT QUẢ CHÍN ĐỂ QUAN SÁT', 'btn-orange', function () { X.fruit.tapFruit(); });
+          cutButton.setAttribute('data-fruit-action', 'cut');
+          stack.appendChild(el('div', { class: 'panel-card task-card' }, el('p', { class: 'task-text', text: MD.right.ripe }), cutButton));
+        }
         if (state.fertilized && state.lapse === 'idle' && !X.busy) stack.appendChild(el('div', { class: 'panel-card task-card' }, button(MD.buttons.lapse, 'btn-orange', function () { X.fruit.start(); })));
         if (state.lapse !== 'idle') stack.appendChild(timeCard());
         if (L.canContinue(state) && !X.busy) stack.appendChild(el('div', { class: 'panel-card task-card' }, X.note ? el('p', { class: 'task-text', text: X.note }) : null, button(APP.keepGoing, 'btn-orange', function () { X.fruit.next(); })));
@@ -111,11 +153,14 @@
       UI.setPanel(stack);
     }
     X.refresh = function () {
+      var sceneFocus = takeSceneFocus();
       UI.setProgress(MD.steps, L.stepStates(state));
       UI.setCard('flower', { ghost: state.placed });
       UI.setCard('lens', { ghost: Lab.lens.active() });
       var c = UI.card('stick'); if (c) { c.classList.toggle('is-loaded', state.hasPollen); var lb = c.querySelector('.card-label'); if (lb) lb.textContent = state.hasPollen ? APP.loaded + ' · ' + MD.tray.stick : MD.tray.stick; }
-      renderPanel(); Lab.loop.wake();
+      renderPanel();
+      restoreSceneFocus(sceneFocus);
+      Lab.loop.wake();
     };
 
     /* ------------------------------------------------------------------ drop areas for the tools from the tray */

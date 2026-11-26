@@ -2,7 +2,7 @@
    timeline (19), then follows that same pig through the adult timeline (21). */
 (Lab.exp8mods = Lab.exp8mods || []).push(function (X) {
   'use strict';
-  var T = X.T, L = X.L, MD = X.MD, UI = X.UI, state = X.state, V = X.V, Mo = X.Mo, PH = X.PH;
+  var T = X.T, L = X.L, MD = X.MD, APP = X.APP, UI = X.UI, state = X.state, V = X.V, Mo = X.Mo, PH = X.PH;
   var AGES = { growth: [0.25, 0.5, 1, 2], adult: [2, 6, 12] }, BASE = V(-0.4, 0, 1.15);
   var kit = null, kitTag = null, markTag = null, standing = false, wander = { speed: 0 };
   function boxAt(p, r) { return new T.Box3(V(p.x - r, p.y - r, p.z - r), V(p.x + r, p.y + r, p.z + r)); }
@@ -35,14 +35,23 @@
       X.busy--; X.toast(MD.right.kittenBorn, { type: 'info', ms: 7000 }); X.setInfo({ title: MD.labels.kittenNew, msg: MD.right.kittenBorn, lines: MD.newborn });
     });
   };
-  X.clicks.push(function (hit) {
-    if (state.phase !== PH.kitten) return false;
-    var r = L.decideKitten(state, !!(hit && hit.id === 'kitten'));
+  function clickKitten(onKitten) {
+    var r = L.decideKitten(state, onKitten);
     if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return true; }
     L.applyKitten(state); Lab.audio.play('ok'); kit.glow(true); Lab.fx.sparkles(X.scene, BASE.clone().add(V(0, 0.5, 0)), 0xffe066, 10);
     X.shot({ cx: BASE.x, cy: 0.45, cz: BASE.z, w: 2.8, h: 1.7, pitch: 0.2, fov: 34 }, 1000);
     if (!kitTag) kitTag = X.tag(MD.labels.kittenNew, function () { return kit.group.position.clone().add(V(0, 1.0, 0)); }, 'place');
     X.setInfo({ title: MD.labels.kittenNew, msg: MD.right.kittenBorn, lines: MD.newborn }); X.refresh(); return true;
+  }
+  X.clicks.push(function (hit) {
+    if (state.phase !== PH.kitten) return false;
+    return clickKitten(!!(hit && hit.id === 'kitten'));
+  });
+  X.panelHooks.push(function (stack) {
+    if (state.phase !== PH.kitten) return;
+    var locked = !!X.busy || !kit || !kit.group.visible || state.kittenClicked;
+    stack.appendChild(X.button('NHẤP VÀO HEO CON', 'btn-blue', function () { clickKitten(true); }, locked,
+      state.kittenClicked ? 'Heo con đã được chọn.' : APP.busy));
   });
   function kitCenter() { return kit.group.position.clone().add(V(0, 0.25 + 0.5 * Math.min(1, kit.age / 6), 0)); }
   X.targets.kitten = function () { return kit && kit.group.visible && (state.phase === PH.kitten || state.phase === PH.growth || state.phase === PH.adult) ? boxAt(kitCenter(), 0.9) : null; };

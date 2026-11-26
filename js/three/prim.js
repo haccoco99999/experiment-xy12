@@ -3,6 +3,7 @@
 (function (Lab) {
   'use strict';
   var T = window.THREE;
+  var blobGeo = null;
 
   /* ---------- Tube that can be updated in place every frame (cheap: no new arrays) ---------- */
   function TubeGeo(nSeg, nRad) {
@@ -27,6 +28,7 @@
   TubeGeo.prototype.update = function (pts, radius) {
     var n = this.nSeg, R = this.nRad, P = this.pos, N = this.nor;
     var nx = 0, ny = 0, nz = 0;
+    var minX = Infinity, minY = Infinity, minZ = Infinity, maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
     for (var i = 0; i <= n; i++) {
       var p0 = pts[i > 0 ? i - 1 : 0], p1 = pts[i < n ? i + 1 : n], p = pts[i];
       var tx = p1.x - p0.x, ty = p1.y - p0.y, tz = p1.z - p0.z, tl = Math.sqrt(tx * tx + ty * ty + tz * tz) || 1;
@@ -48,11 +50,15 @@
         var ox = nx * c + bx * s, oy = ny * c + by * s, oz = nz * c + bz * s, k = (i * (R + 1) + j) * 3;
         P[k] = p.x + ox * r; P[k + 1] = p.y + oy * r; P[k + 2] = p.z + oz * r;
         N[k] = ox; N[k + 1] = oy; N[k + 2] = oz;
+        minX = Math.min(minX, P[k]); minY = Math.min(minY, P[k + 1]); minZ = Math.min(minZ, P[k + 2]);
+        maxX = Math.max(maxX, P[k]); maxY = Math.max(maxY, P[k + 1]); maxZ = Math.max(maxZ, P[k + 2]);
       }
     }
     this.geometry.attributes.position.needsUpdate = true;
     this.geometry.attributes.normal.needsUpdate = true;
-    this.geometry.computeBoundingSphere();
+    var sphere = this.geometry.boundingSphere || (this.geometry.boundingSphere = new T.Sphere());
+    sphere.center.set((minX + maxX) * 0.5, (minY + maxY) * 0.5, (minZ + maxZ) * 0.5);
+    sphere.radius = Math.sqrt((maxX - minX) * (maxX - minX) + (maxY - minY) * (maxY - minY) + (maxZ - minZ) * (maxZ - minZ)) * 0.5;
   };
 
   /* ---------- Leaf: a grid that is cupped and drooped, plus a "wilt" morph target (influence 0..1) ---------- */
@@ -152,7 +158,12 @@
 
   /* Flat soft shadow decal lying on a surface (cheap "contact shadow"). */
   function blobShadow(rx, rz, opacity) {
-    var m = new T.Mesh(new T.PlaneGeometry(1, 1),
+    if (!blobGeo) {
+      blobGeo = new T.PlaneGeometry(1, 1);
+      blobGeo.userData.shared = true;
+      blobGeo.name = 'shared-blob-shadow-plane';
+    }
+    var m = new T.Mesh(blobGeo,
       new T.MeshBasicMaterial({ map: Lab.mat.tex.blob(), transparent: true, depthWrite: false, opacity: opacity == null ? 1 : opacity, fog: false }));
     m.rotation.x = -Math.PI / 2;
     m.scale.set(rx * 2, rz * 2, 1);
@@ -168,17 +179,29 @@
     return g;
   }
 
-  /* Frees GPU memory of an object tree (shared textures/materials flagged userData.shared are kept). */
+  /* Frees GPU memory of an object tree. Shared caches are deliberately retained across resets. */
   function disposeTree(root) {
     if (!root) return;
+    var geometries = new WeakSet(), materials = new WeakSet(), textures = new WeakSet();
+    var textureKeys = ['map', 'alphaMap', 'aoMap', 'bumpMap', 'normalMap', 'displacementMap', 'emissiveMap', 'envMap', 'lightMap', 'metalnessMap', 'roughnessMap'];
     root.traverse(function (o) {
-      if (o.isLight && o.dispose) o.dispose();          // frees the light's shadow map (a big GPU texture)
-      if (o.geometry) o.geometry.dispose();
+      if (o.isLight && o.dispose) o.dispose();
+      if (o.isInstancedMesh && o.dispose) o.dispose();
+      if (o.geometry && !geometries.has(o.geometry)) {
+        geometries.add(o.geometry);
+        if (!(o.geometry.userData && o.geometry.userData.shared)) o.geometry.dispose();
+      }
       var mats = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : [];
       mats.forEach(function (m) {
+        if (materials.has(m)) return;
+        materials.add(m);
         if (m.userData && m.userData.shared) return;
-        ['map', 'alphaMap', 'normalMap', 'emissiveMap'].forEach(function (k) {
-          if (m[k] && m[k].userData && m[k].userData.own) m[k].dispose();
+        textureKeys.forEach(function (k) {
+          var t = m[k];
+          if (t && !textures.has(t) && t.userData && t.userData.own) {
+            textures.add(t);
+            t.dispose();
+          }
         });
         m.dispose();
       });

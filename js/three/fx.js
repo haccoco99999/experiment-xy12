@@ -4,83 +4,145 @@
 (function (Lab) {
   'use strict';
   var T = window.THREE, U = Lab.util, M = Lab.mat;
-  var sphereGeo = null;
-  function sphere() { return sphereGeo || (sphereGeo = new T.SphereGeometry(1, 10, 8)); }
+  var shared = {};
+
+  function sharedGeometry(key, make) {
+    if (!shared[key]) {
+      var geo = make();
+      geo.name = 'fx-shared-' + key;
+      geo.userData.shared = true;
+      shared[key] = geo;
+    }
+    return shared[key];
+  }
+  function sphere() { return sharedGeometry('sphere', function () { return new T.SphereGeometry(1, 10, 8); }); }
+  function hidden() { return typeof document !== 'undefined' && document.hidden === true; }
+  function reducedMotion() { return !!(typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  function effectCount(n) {
+    var factor = reducedMotion() ? 0.55 : 1;
+    if (Lab.stage && Lab.stage.quality === 'light') factor *= 0.72;
+    return Math.max(1, Math.round(n * factor));
+  }
+  function remove(mesh, scene) {
+    if (mesh && mesh.isInstancedMesh && mesh.dispose) mesh.dispose();
+    if (mesh && mesh.parent === scene) scene.remove(mesh);
+  }
+  function waterColor(color) { return [M.C.water, 0x59bff2, 0x9be2ff].indexOf(color) >= 0; }
 
   /* Particles fall from `from` to `to`. o: {color, size, count, duration, spread, opacity, rough, flight, gravityCurve} */
   function pour(scene, o) {
-    var R = U.rng((Math.random() * 1e6) | 0), group = new T.Group(), parts = [], i;
-    var mat = M.std(o.color, { roughness: o.rough == null ? 0.25 : o.rough, transparent: (o.opacity || 1) < 1, opacity: o.opacity || 1 });
-    var emit = o.duration * 0.72, flight = o.flight || 0.42, spread = o.spread == null ? 0.14 : o.spread;
-    for (i = 0; i < o.count; i++) {
-      var m = new T.Mesh(sphere(), mat); m.visible = false; m.castShadow = false;
-      m.scale.setScalar(o.size * (0.65 + R() * 0.7)); group.add(m);
+    var R = U.rng((Math.random() * 1e6) | 0), parts = [], i;
+    var count = effectCount(o.count || 1), duration = o.duration || 1, flight = o.flight || 0.42;
+    var spread = o.spread == null ? 0.14 : o.spread, emit = duration * 0.72;
+    var opacity = o.opacity == null ? 1 : o.opacity;
+    var mat = M.std(o.color, { roughness: o.rough == null ? 0.25 : o.rough, transparent: opacity < 1, opacity: opacity });
+    var im = new T.InstancedMesh(sphere(), mat, count);
+    im.frustumCulled = false; im.castShadow = false; im.receiveShadow = false; im.userData.noPick = true;
+    for (i = 0; i < count; i++) {
       parts.push({
-        m: m, t0: (i / o.count) * emit,
+        t0: (i / count) * emit,
+        size: o.size * (0.65 + R() * 0.7),
         sx: (R() - 0.5) * spread * 0.4, sz: (R() - 0.5) * spread * 0.4,
         ex: (R() - 0.5) * spread * 2, ez: (R() - 0.5) * spread * 2
       });
     }
-    scene.add(group);
-    return Lab.tween.value(o.duration, function (k, raw) {
-      var t = raw * o.duration;
-      parts.forEach(function (p) {
-        var u = (t - p.t0) / flight;
-        if (u < 0 || u > 1) { p.m.visible = false; return; }
-        p.m.visible = true;
-        var fall = o.arc ? Math.sin(u * Math.PI * 0.5) : u * u;
-        p.m.position.set(o.from.x + p.sx + (o.to.x - o.from.x) * u + p.ex * u, o.from.y + (o.to.y - o.from.y) * fall, o.from.z + p.sz + (o.to.z - o.from.z) * u + p.ez * u);
-      });
-    }, { ease: Lab.tween.ease.linear }).promise.then(function () { scene.remove(group); mat.dispose(); });
+    scene.add(im);
+    var matrix = new T.Matrix4(), q = new T.Quaternion(), p = new T.Vector3(), s = new T.Vector3();
+    return Lab.tween.value(duration, function (k, raw) {
+      var t = raw * duration;
+      for (var j = 0; j < count; j++) {
+        var part = parts[j], u = (t - part.t0) / flight, scale = 0;
+        if (u >= 0 && u <= 1) {
+          var fall = o.arc ? Math.sin(u * Math.PI * 0.5) : Math.pow(u, o.gravityCurve || 2);
+          p.set(o.from.x + part.sx + (o.to.x - o.from.x) * u + part.ex * u,
+            o.from.y + (o.to.y - o.from.y) * fall,
+            o.from.z + part.sz + (o.to.z - o.from.z) * u + part.ez * u);
+          scale = part.size;
+        } else p.set(0, 0, 0);
+        s.setScalar(scale); matrix.compose(p, q, s); im.setMatrixAt(j, matrix);
+      }
+      im.instanceMatrix.needsUpdate = true;
+    }, { ease: Lab.tween.ease.linear }).promise.then(function () {
+      remove(im, scene); mat.dispose();
+    });
   }
 
   /* expanding ring on the table (used for "placed correctly") */
   function ringPulse(scene, pos, color, maxR) {
     var mat = new T.MeshBasicMaterial({ color: color || 0x4caf50, transparent: true, opacity: 0.9, depthWrite: false, side: T.DoubleSide, fog: false });
-    var m = new T.Mesh(Lab.prim.ring(0.86, 1, 56), mat); m.position.copy(pos); m.position.y += 0.02; m.renderOrder = 3; m.userData.noPick = true;
+    var geo = sharedGeometry('ring', function () { return Lab.prim.ring(0.86, 1, 48); });
+    var m = new T.Mesh(geo, mat); m.position.copy(pos); m.position.y += 0.02; m.renderOrder = 3; m.userData.noPick = true;
     scene.add(m);
     return Lab.tween.value(0.75, function (k) {
-      var s = (0.35 + 1.05 * k) * (maxR || 1.4); m.scale.set(s, 1, s); mat.opacity = 0.9 * (1 - k);
-    }, { ease: Lab.tween.ease.outCubic }).promise.then(function () { scene.remove(m); m.geometry.dispose(); mat.dispose(); });
+      var scale = (0.35 + 1.05 * k) * (maxR || 1.4); m.scale.set(scale, 1, scale); mat.opacity = 0.9 * (1 - k);
+    }, { ease: Lab.tween.ease.outCubic }).promise.then(function () {
+      remove(m, scene); mat.dispose();
+    });
   }
 
   /* little stars flying outwards */
   function sparkles(scene, pos, color, n) {
-    var R = U.rng((Math.random() * 1e6) | 0), group = new T.Group(), items = [], geo = new T.OctahedronGeometry(1, 0);
+    var R = U.rng((Math.random() * 1e6) | 0), items = [];
+    var count = effectCount(n || 12), geo = sharedGeometry('sparkle', function () { return new T.OctahedronGeometry(1, 0); });
     var mat = new T.MeshBasicMaterial({ color: color || 0xffe066, transparent: true, opacity: 1, fog: false });
-    for (var i = 0; i < (n || 12); i++) {
-      var m = new T.Mesh(geo, mat); m.scale.setScalar(0.05 + R() * 0.07); m.userData.noPick = true; group.add(m);
-      var a = R() * 6.283, up = 0.5 + R() * 1.2, sp = 0.5 + R() * 1.1;
-      items.push({ m: m, vx: Math.cos(a) * sp, vy: up, vz: Math.sin(a) * sp * 0.6 });
+    for (var i = 0; i < count; i++) {
+      var a = R() * 6.283, up = 0.5 + R() * 1.2, speed = 0.5 + R() * 1.1;
+      items.push({ size: 0.05 + R() * 0.07, vx: Math.cos(a) * speed, vy: up, vz: Math.sin(a) * speed * 0.6, spin: 5 + R() * 6 });
     }
-    group.position.copy(pos); scene.add(group);
+    var im = new T.InstancedMesh(geo, mat, count); im.frustumCulled = false; im.position.copy(pos); im.userData.noPick = true; scene.add(im);
+    var matrix = new T.Matrix4(), q = new T.Quaternion(), p = new T.Vector3(), s = new T.Vector3(), axis = new T.Vector3(0, 1, 0);
     return Lab.tween.value(0.9, function (k) {
-      items.forEach(function (it) { it.m.position.set(it.vx * k, it.vy * k - 1.3 * k * k, it.vz * k); it.m.rotation.y = k * 8; });
-      mat.opacity = 1 - k * k;
-    }, { ease: Lab.tween.ease.outQuad }).promise.then(function () { scene.remove(group); geo.dispose(); mat.dispose(); });
+      for (var j = 0; j < count; j++) {
+        var it = items[j]; p.set(it.vx * k, it.vy * k - 1.3 * k * k, it.vz * k);
+        s.setScalar(it.size * (1 - k * 0.25)); q.setFromAxisAngle(axis, k * it.spin);
+        matrix.compose(p, q, s); im.setMatrixAt(j, matrix);
+      }
+      im.instanceMatrix.needsUpdate = true; mat.opacity = 1 - k * k;
+    }, { ease: Lab.tween.ease.outQuad }).promise.then(function () {
+      remove(im, scene); mat.dispose();
+    });
   }
 
   /* drifting snow (cold) or rising haze (hot) inside a box. Returns {stop()} */
   function ambient(scene, kind, box) {
-    var R = U.rng(kind === 'snow' ? 3 : 4), group = new T.Group(), parts = [];
-    var geo = kind === 'snow' ? new T.SphereGeometry(0.05, 6, 5) : new T.CircleGeometry(0.22, 12);
-    var mat = new T.MeshBasicMaterial({ color: kind === 'snow' ? 0xffffff : 0xffa14a, transparent: true, opacity: kind === 'snow' ? 0.9 : 0.16, depthWrite: false, fog: false, side: T.DoubleSide });
-    var n = kind === 'snow' ? 70 : 26;
+    var R = U.rng(kind === 'snow' ? 3 : 4), parts = [];
+    var n = effectCount(kind === 'snow' ? 70 : 26);
+    var geo = kind === 'snow' ? sphere() : sharedGeometry('heatDisc', function () { return new T.CircleGeometry(1, 12); });
+    var mat = new T.MeshBasicMaterial({
+      color: kind === 'snow' ? 0xffffff : 0xffa14a, transparent: true,
+      opacity: kind === 'snow' ? 0.9 : 0.16, depthWrite: false, fog: false, side: T.DoubleSide
+    });
+    var im = new T.InstancedMesh(geo, mat, n); im.frustumCulled = false; im.userData.noPick = true;
     for (var i = 0; i < n; i++) {
-      var m = new T.Mesh(geo, mat); m.userData.noPick = true;
-      var p = { m: m, x: box.x0 + R() * (box.x1 - box.x0), z: box.z0 + R() * (box.z1 - box.z0), y: box.y0 + R() * (box.y1 - box.y0), s: 0.25 + R() * 0.6, ph: R() * 6.28 };
-      parts.push(p); group.add(m);
-    }
-    scene.add(group);
-    var remove = Lab.loop.add(function (dt, time) {
-      parts.forEach(function (p) {
-        p.y += (kind === 'snow' ? -1 : 1) * p.s * dt * 0.8;
-        if (p.y > box.y1) p.y = box.y0; if (p.y < box.y0) p.y = box.y1;
-        p.m.position.set(p.x + Math.sin(time * 0.8 + p.ph) * 0.15, p.y, p.z);
-        if (kind === 'heat') { p.m.scale.setScalar(1 + Math.sin(time * 2 + p.ph) * 0.25); p.m.rotation.x = -0.6; }
+      parts.push({
+        x: box.x0 + R() * (box.x1 - box.x0), z: box.z0 + R() * (box.z1 - box.z0),
+        y: box.y0 + R() * (box.y1 - box.y0), speed: 0.25 + R() * 0.6, phase: R() * 6.28,
+        radius: kind === 'snow' ? 0.038 + R() * 0.018 : 0.18 + R() * 0.08
       });
-    }, { ambient: true });
-    return { stop: function () { remove(); scene.remove(group); geo.dispose(); mat.dispose(); } };
+    }
+    scene.add(im);
+    var matrix = new T.Matrix4(), q = new T.Quaternion(), heatQ = new T.Quaternion().setFromAxisAngle(new T.Vector3(1, 0, 0), -0.6);
+    var p = new T.Vector3(), s = new T.Vector3(), removeTicker, stopped = false;
+    function tick(dt, time, force) {
+      if (!force && hidden()) return;
+      for (var j = 0; j < n; j++) {
+        var part = parts[j];
+        part.y += (kind === 'snow' ? -1 : 1) * part.speed * dt * 0.8;
+        if (part.y > box.y1) part.y = box.y0; if (part.y < box.y0) part.y = box.y1;
+        p.set(part.x + Math.sin(time * 0.8 + part.phase) * 0.15, part.y, part.z);
+        var k = part.radius * (kind === 'heat' ? 1 + Math.sin(time * 2 + part.phase) * 0.25 : 1);
+        s.setScalar(k); matrix.compose(p, kind === 'heat' ? heatQ : q, s); im.setMatrixAt(j, matrix);
+      }
+      im.instanceMatrix.needsUpdate = true;
+    }
+    tick(0, 0, true);
+    removeTicker = Lab.loop.add(tick, { ambient: true });
+    return {
+      stop: function () {
+        if (stopped) return; stopped = true; removeTicker();
+        remove(im, scene); mat.dispose();
+      }
+    };
   }
 
   /* Little beads travelling again and again along a path (water and minerals up the plant, gases in and out).
@@ -88,27 +150,51 @@
      Returns {setActive(bool), stop()}. It keeps the screen redrawing while it runs, so stop() it when it is not needed. */
   function flow(scene, o) {
     var curve = new T.CatmullRomCurve3(o.points, false, 'centripetal'), len = curve.getLength() || 1;
-    var n = o.count || 14, size = o.size || 0.07, spread = o.spread == null ? 0.08 : o.spread, R = U.rng((Math.random() * 1e6) | 0);
-    var geo = new T.SphereGeometry(1, 10, 8);
-    var mat = new T.MeshBasicMaterial({ color: o.color || 0x59bff2, transparent: true, opacity: o.opacity == null ? 0.95 : o.opacity, depthTest: !o.seeThrough, depthWrite: false, fog: false });
-    var im = new T.InstancedMesh(geo, mat, n); im.frustumCulled = false; im.renderOrder = o.seeThrough ? 12 : 3; im.userData.noPick = true;
-    var ph = [], sp = [], off = [], i;
-    for (i = 0; i < n; i++) { ph.push(i / n + R() * 0.03); sp.push(0.85 + R() * 0.3); off.push([(R() - 0.5) * spread, (R() - 0.5) * spread, (R() - 0.5) * spread]); }
+    var n = effectCount(o.count || 14), size = o.size || 0.07, spread = o.spread == null ? 0.08 : o.spread;
+    var R = U.rng((Math.random() * 1e6) | 0), color = o.color == null ? M.C.water : o.color;
+    var mat = new T.MeshBasicMaterial({
+      color: color, map: waterColor(color) ? M.tex.water() : null, transparent: true,
+      opacity: o.opacity == null ? 0.95 : o.opacity, depthTest: !o.seeThrough, depthWrite: false, fog: false
+    });
+    var im = new T.InstancedMesh(sphere(), mat, n); im.frustumCulled = false; im.renderOrder = o.seeThrough ? 12 : 3; im.userData.noPick = true;
+    var phases = [], speeds = [], offsets = [], i;
+    for (i = 0; i < n; i++) {
+      phases.push(i / n + R() * 0.03); speeds.push(0.85 + R() * 0.3);
+      offsets.push(new T.Vector3((R() - 0.5) * spread, (R() - 0.5) * spread, (R() - 0.5) * spread));
+    }
     scene.add(im);
-    var m = new T.Matrix4(), q = new T.Quaternion(), p = new T.Vector3(), s = new T.Vector3(), t0 = R() * 10, active = true, fade = 0;
-    var remove = Lab.loop.add(function (dt) {
-      t0 += dt; fade += ((active ? 1 : 0) - fade) * Math.min(1, dt * 4);
+    var matrix = new T.Matrix4(), q = new T.Quaternion(), p = new T.Vector3(), s = new T.Vector3();
+    var elapsed = R() * 10, active = true, fade = 0, removeTicker = null, stopped = false;
+    function draw(dt) {
+      if (hidden()) return;
+      elapsed += dt; fade += ((active ? 1 : 0) - fade) * Math.min(1, dt * 4);
       for (var j = 0; j < n; j++) {
-        var u = (ph[j] + t0 * (o.speed || 1) * sp[j] / len) % 1;
-        curve.getPointAt(u, p); p.x += off[j][0]; p.y += off[j][1]; p.z += off[j][2];
-        var k = size * fade * Math.min(1, u * 8, (1 - u) * 8) * (0.8 + 0.2 * Math.sin(t0 * 6 + j));
-        s.set(k, k, k); m.compose(p, q, s); im.setMatrixAt(j, m);
+        var u = (phases[j] + elapsed * (o.speed || 1) * speeds[j] / len) % 1;
+        curve.getPointAt(u, p); p.add(offsets[j]);
+        var k = size * fade * Math.min(1, u * 8, (1 - u) * 8) * (0.8 + 0.2 * Math.sin(elapsed * 6 + j));
+        s.setScalar(k); matrix.compose(p, q, s); im.setMatrixAt(j, matrix);
       }
       im.instanceMatrix.needsUpdate = true;
-    });
+      if (!active && fade < 0.002 && removeTicker) {
+        fade = 0; im.visible = false;
+        var stop = removeTicker; removeTicker = null;
+        Promise.resolve().then(stop);
+      }
+    }
+    function start() { if (!removeTicker && !stopped) removeTicker = Lab.loop.add(draw); }
+    start();
     return {
-      setActive: function (b) { active = !!b; Lab.loop.wake(); },
-      stop: function () { remove(); scene.remove(im); geo.dispose(); mat.dispose(); }
+      setActive: function (b) {
+        if (stopped) return;
+        active = !!b;
+        if (active) { im.visible = true; start(); }
+        Lab.loop.wake();
+      },
+      stop: function () {
+        if (stopped) return; stopped = true;
+        if (removeTicker) { removeTicker(); removeTicker = null; }
+        remove(im, scene); mat.dispose();
+      }
     };
   }
 
@@ -116,17 +202,29 @@
   function confetti(ms) {
     var cv = document.createElement('canvas'); cv.className = 'confetti';
     cv.width = window.innerWidth; cv.height = window.innerHeight; document.body.appendChild(cv);
-    var g = cv.getContext('2d'), cols = ['#4caf50', '#00affe', '#e18500', '#ffd24a', '#f06292', '#8e6cf0'], R = U.rng(31), ps = [];
-    for (var i = 0; i < 150; i++) ps.push({ x: R() * cv.width, y: -20 - R() * cv.height * 0.6, vx: (R() - 0.5) * 2, vy: 2 + R() * 4, w: 6 + R() * 8, h: 4 + R() * 6, r: R() * 6, vr: (R() - 0.5) * 0.3, c: cols[(R() * cols.length) | 0] });
-    return Lab.tween.value((ms || 3200) / 1000, function (k) {
-      g.clearRect(0, 0, cv.width, cv.height);
-      ps.forEach(function (p) {
-        p.x += p.vx; p.y += p.vy; p.r += p.vr;
-        g.save(); g.translate(p.x, p.y); g.rotate(p.r); g.globalAlpha = 1 - k * k; g.fillStyle = p.c; g.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); g.restore();
+    var g = cv.getContext('2d'), colors = ['#4caf50', '#00affe', '#e18500', '#ffd24a', '#f06292', '#8e6cf0'];
+    var R = U.rng(31), particles = [], count = effectCount(150);
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x: R() * cv.width, y: -20 - R() * cv.height * 0.6, vx: (R() - 0.5) * 120, vy: 100 + R() * 180,
+        width: 6 + R() * 8, height: 4 + R() * 6, rotation: R() * 6, spin: (R() - 0.5) * 8,
+        gravity: 75 + R() * 65, color: colors[(R() * colors.length) | 0]
       });
-    }, { ease: Lab.tween.ease.linear }).promise.then(function () { if (cv.parentNode) cv.parentNode.removeChild(cv); });
+    }
+    var duration = (ms || 3200) / 1000;
+    return Lab.tween.value(duration, function (k, raw) {
+      var elapsed = raw * duration;
+      g.clearRect(0, 0, cv.width, cv.height);
+      particles.forEach(function (p) {
+        var x = p.x + p.vx * elapsed, y = p.y + p.vy * elapsed + p.gravity * elapsed * elapsed;
+        g.save(); g.translate(x, y); g.rotate(p.rotation + p.spin * elapsed); g.globalAlpha = 1 - k * k;
+        g.fillStyle = p.color; g.fillRect(-p.width / 2, -p.height / 2, p.width, p.height); g.restore();
+      });
+    }, { ease: Lab.tween.ease.linear }).promise.then(function () {
+      if (cv.parentNode) cv.parentNode.removeChild(cv);
+    });
   }
-  function clearAll() { U.qsa('canvas.confetti').forEach(function (c) { c.parentNode.removeChild(c); }); }
+  function clearAll() { U.qsa('canvas.confetti').forEach(function (c) { if (c.parentNode) c.parentNode.removeChild(c); }); }
 
   Lab.fx = { pour: pour, ringPulse: ringPulse, sparkles: sparkles, ambient: ambient, flow: flow, confetti: confetti, clearAll: clearAll };
 })(window.Lab);

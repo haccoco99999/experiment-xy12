@@ -15,23 +15,33 @@ Keep the last 5 entries. Delete older ones; git history keeps them.
 
 ## Where things stand
 
-- Done: all 8 experiments: 1 (mung bean), 2 (a potted plant, no kind named since 2026-11-10), 3 (chicks), 4 (lab rat), 5 (tomato flower), 6 (new plants from four parts), 7 (butterfly life cycle) and 8 (reproduction and life cycle; a cat in the md, a pig since 2026-11-10, merged into `main` through PR #2). Experiments 2, 4, 5, 6 and 7 are committed and pushed; Experiment 8 was built on 2026-09-21 and committed and pushed when the user asked for it. `main` is in sync with `origin` (private repo `haccoco99999/experiment-xy12`) after that push. On 2026-11-10 four fixes from the user's Word file (Experiments 1, 2, 4, 5) were committed on branch `feature/exp-2` and merged into `main` through PR #1 (merge commit `575b549`); the live site was rebuilt from it. A branch `feature/exp-1` was also made from `main`; see the log.
-- Not built: nothing. The home page has 8 open cards. The plan still lists polish and a single-file export (`Thi-nghiem-tat-ca-trong-1-file.html`); ask the user before starting either.
+- Done: all 8 experiments: 1 (mung bean), 2 (a potted plant, no kind named since 2026-11-10), 3 (chicks), 4 (lab rat), 5 (tomato flower), 6 (new plants from four parts), 7 (butterfly life cycle) and 8 (reproduction and life cycle; a cat in the md, a pig since 2026-11-10, merged into `main` through PR #2). The 2026-11-26 redesign is in the current worktree: Svelte/Threlte home, shared Three.js visual refresh, three quality levels, keyboard scene actions, reduced-motion and visibility controls, persisted global motion pause/resume, safe anticipation cues, portrait layout, accessibility fixes, Vietnamese-only Sveltia I18n for home/title copy, TypeScript title statistics, and the generated one-file export `Thi-nghiem-tat-ca-trong-1-file.html`. The original classic-script path and `file://` fallback remain.
+- Not built: nothing. The home page has 8 open cards and every experiment can be opened from the normal site or the one-file export. The redesign is not committed or pushed because the user did not ask for a commit.
 - An earlier Experiment 8 build (commit `701178a`, local branch `exp8`) was deleted at the user's request on 2026-09-20 and was not used.
 
-## Standing order from the user (2026-09-20): ended
+## Standing order from the user (2026-11-26): completed
 
-The user first asked for all experiments to be built one after another, pausing at 90% usage and resuming after the reset. On 2026-09-20, when Experiment 7 was finished, the user asked to commit and push it and then to stop the automatic work. No scheduled job exists (the session-only resume job is gone). Rule 5 in AGENTS.md still applies to every assistant: at 90% usage stop, and go on only when the user says so. On 2026-09-21 the user asked for Experiment 8 ("start experiment 8") and later for the commit and push after it; nothing else is scheduled.
+On 2026-11-26 the user asked to redesign all 8 experiments, continue without approval gates and report when the whole pass was complete. That implementation is now in the current worktree. No scheduled job exists. Rule 5 in AGENTS.md still applies to later assistants; the usage-reading tool was unavailable in this session.
 
-## Suggested split of work
+## Verification commands after this handoff
 
-This is a suggestion from the plan. None of these tools has been tried on this project yet.
-
-- Codex: `js/logic`, `js/content` and `tests`. Node can check this work, and its documentation shows no built-in browser.
-- Antigravity: 3D models, `js/experiments`, CSS, and looking at the page in a browser with screenshots. Its documentation says Chrome must be the default browser, and this site has only been tried on Edge.
-- Claude: review, integration, `HUONG-DAN.txt`, `SPEC-NOTES.md` and commits.
+- `npm run check:modern`
+- `npm run check:typescript`
+- `npm run build`
+- `node --test "tests/*.test.js"`
+- `git --no-pager diff --check`
+- `npm audit --audit-level=high`
 
 Experiments edit shared files, so hand over only at a clean point: the tests pass and this file is updated.
+
+## Svelte toolkit decisions (2026-11-26)
+
+- Use `@sveltia/i18n` 1.5.0 for the client-only Svelte shell as a Vietnamese-only message source. It owns `vi` home copy, experiment titles, MF2 counts and `html lang`; no language selector or English dictionary is shipped. Science body copy remains in the existing `js/content` files.
+- Use `svelte-check-native` 1.12.2 with `@typescript/native-preview`; keep TypeScript 6.0.3 for the existing Vite build and keep a separate `check:typescript` command.
+- Do not add a generic DOM drag/drop library. Projected Three.js targets already use `Lab.drag` and the keyboard picker, so `sveltednd` would duplicate that contract.
+- Do not add Motion Core/OGL beside Threlte/Three.js; adding a second GPU renderer would increase bundle/runtime cost and bypass the existing quality controls.
+- Do not add Stately, Nabu, Atom Forge, Svileo, Blossom, phantom-ui or Svelte Spell UI now. The current static/offline shell has no backend/editor, no server state, no color authoring, no async skeleton state and already has a shared accessible toast/animation layer.
+- Svelte Agentation is useful for an explicit design-review workflow, but it is not a runtime dependency and was not installed.
 
 ## First-time check for each new assistant
 
@@ -43,179 +53,37 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 
 ## Log (newest first)
 
-### 2026-11-21, Copilot: sao chép source sang thư mục experiment-xy12 mới
+### 2026-11-26, Copilot: khóa toàn bộ tiêu đề và nhãn bằng tiếng Việt
 
-- Sao chép 128 tệp vào `D:\New folder (2)\experiment-xy12`, không chép `.git`; giữ nguyên `.git` của thư mục đích.
-- Đối chiếu SHA-256: 128/128 tệp giống source. Không chạy kiểm thử vì không sửa mã.
-- Còn lại: không có. Câu hỏi mở: không có.
+- Đã gỡ hoàn toàn selector ngôn ngữ và bản dịch English khỏi `src/ModernHome.svelte`, `src/i18n.ts`, `src/catalog.ts` và `LabModernApi`. Locale cố định `vi`, old key `lab.locale` được xóa khi mở trang để một lần chọn English trước đây không thể quay lại giao diện English sau reload.
+- Đã cập nhật kiểm thử để không cho phép `addMessages('en')`, `setLocale`, `Garden Science Lab`, `Start exploring`, `EXPERIMENT...` hoặc bộ chọn ngôn ngữ xuất hiện trong shell. `HUONG-DAN.txt` ghi rõ toàn bộ title, info, label và nút đều dùng tiếng Việt.
+- Browser đặt `lab.locale=en` rồi reload: khóa bị xóa, trang chủ không có selector, `html.lang=vi`. Đã mở 8/8 thí nghiệm ở trạng thái đầu và kịch bản kết quả cuối; document title, heading, text hiển thị và `aria-label` không chứa các chuỗi English được kiểm tra; 8/8 không có page error. Build hiện tại shell 149,09 KB, gzip 51,12 KB; offline 3.150.681 byte.
+- `npm run check:modern`: 0 error/0 warning; `npm run check:typescript`: đạt; `node --test "tests/*.test.js"`: 157/157 đạt; audit 0 lỗ hổng. Chưa đánh giá phát âm bằng screen reader thật. Câu hỏi mở: không.
 
-### 2026-11-21, Copilot: chỉ hiện bảng trao đổi khí sau khi CO₂ ra ngoài
+### 2026-11-26, Copilot: áp dụng các chuẩn hoạt cảnh và WCAG pause/stop
 
-- `js/experiments/exp4.js`: ẩn bảng dấu O₂/CO₂ và dòng giải thích đến khi hoàn tất kéo CO₂ ra ngoài. Cập nhật `tests/shots.js`, `HUONG-DAN.txt` và `SPEC-NOTES.md`.
-- `node --test "tests/*.test.js"`: 135/135 đạt. Kịch bản trình duyệt `exp4/airGo` xác nhận bảng ẩn trước và sau khi O₂ vào, rồi hiện đủ hai dấu cùng dòng giải thích sau khi CO₂ ra ngoài.
-- Còn lại: không có. Câu hỏi mở: không có.
+- Đã thêm nút "Tạm dừng hoạt cảnh" ở topbar, lưu trạng thái `lab.motion`, dừng cả CSS animation, tween và ticker 3D, vẫn render khung tĩnh khi reset/chất lượng thay đổi và tiếp tục đúng vị trí khi bấm lại. Đã tách pause của người dùng khỏi trạng thái tab ẩn để chuyển tab không tự gỡ pause.
+- Đã thêm anticipation giảm chuyển động 160 ms cho thao tác rót nước/rải khoáng ở thí nghiệm 1, 2, 6 và đưa que lấy phấn ở thí nghiệm 5. Không biến dạng kích thước sinh học. Đã đổi transition nhiệt độ, trứng thụ tinh, card, zone, pulse và shell hiện đại sang `transform`/`opacity`, bỏ animation `width`, `background` và `box-shadow`.
+- `node --test "tests/*.test.js"`: 157/157 đạt. `npm run check:modern`: 0 error/0 warning; `npm run check:typescript`: đạt; audit 0 lỗ hổng; review code không tìm thấy lỗi đáng kể. Browser: pause đóng băng vị trí tween, thông báo vẫn hiện, reload giữ pause, reset dựng cảnh tĩnh, 4 kịch bản 1/2/5/6 chạy đủ; axe 0 violation; 390 px không tràn.
+- Build: shell 154,86 KB, gzip 52,96 KB; offline 3.156.457 byte. Chưa kiểm tra trên laptop 8 GB vật lý hoặc screen reader thật. Còn lại: benchmark phần cứng và kiểm tra đọc bằng công cụ hỗ trợ nếu cần tuyên bố WCAG chính thức. Câu hỏi mở: không.
 
-### 2026-11-21, Copilot: cập nhật dòng giải thích thí nghiệm 4
+### 2026-11-26, Copilot: đối chiếu 12 nguyên tắc hoạt cảnh
 
-- `js/content/exp4.vi.js`: đổi ba dòng trao đổi sang dùng mũi tên `->` và cập nhật "Động vật" thành "Chuột". Cập nhật `HUONG-DAN.txt`, `SPEC-NOTES.md` và kiểm tra trong `tests/shots.js`.
-- `node --test "tests/*.test.js"`: 135/135 đạt. Không xác nhận được trên trình duyệt vì máy chủ thử nghiệm không chạy.
-- Còn lại: không có. Câu hỏi mở: không có.
+- Không sửa mã sản phẩm. Đã đọc Overshoot/Disney 12 principles và đối chiếu tween, camera, model động vật/thực vật, hiệu ứng và CSS. Ước tính: 8/12 nguyên tắc dùng rõ (staging, pose-to-pose, slow in/out, arcs, secondary action, timing/spacing, solid form, appeal); squash/stretch, anticipation, overlap/follow-through và exaggeration còn ở mức một phần.
+- Điểm mạnh: easing time-based và `outBack`/`outBounce` trong `js/core/tween.js`, camera staging/reduced-motion trong `js/three/stage.js`, curve/path/particle trong `js/three/fx.js`, các pose của gà/chuột/bướm và nhịp cánh/camera trong `js/models/*` và `js/experiments/*`.
+- Rủi ro cần xử lý trước khi tuyên bố WCAG đầy đủ: nhiều CSS/ambient loop tự chạy quá 5 giây (`css/app.css:108`, `:136`, `js/experiments/exp1.js:343`, `exp7.js:148`, `exp8.js:227`) không có nút pause/stop chung cho người dùng; `Lab.loop.pause/resume` tồn tại nhưng chưa nối ra UI. Một vài transition còn dùng `width`, `background`, `box-shadow` thay vì chỉ `transform`/`opacity` (`css/app.css:150`, `:298`). `node --test "tests/*.test.js"`: 155/155 đạt.
+- Đề xuất nếu áp dụng: thêm một nút "Tạm dừng hoạt cảnh" toàn site, giữ hoạt cảnh khoa học bắt buộc nhưng giảm/bỏ trang trí, chuẩn hóa anticipation 120–180 ms và follow-through nhẹ, không dùng squash/stretch/exaggeration làm sai kích thước sinh học. Chưa benchmark máy 8 GB thật trong lượt này; không có lỗi mới do review. Câu hỏi mở: không.
 
-### 2026-11-21, Copilot: đổi tiêu đề và dòng phụ thí nghiệm 8
+### 2026-11-26, Copilot: thêm i18n và thống kê tiêu đề Svelte
 
-- `js/core/app.js`: đổi tiêu đề thẻ thành "Sinh sản và vòng đời của động vật đẻ con", dòng phụ thành "Heo"; giữ nguyên kiểu chữ.
-- `node --test "tests/*.test.js"`: 135/135 đạt. Không kiểm tra trực tiếp trên trang.
-- Còn lại: không có. Câu hỏi mở: không có.
+- Đã cài `@sveltia/i18n` 1.5.0, thêm bản Tiếng Việt/English cho trang chủ, tên nhóm, 8 tiêu đề thẻ và tiêu đề thanh thí nghiệm. Đã thêm `src/i18n.ts`, thống kê TypeScript trong `src/catalog.ts`, selector ngôn ngữ, số liệu 8/8/4/4 và chi tiết độ dài; lựa chọn được lưu bằng `lab.locale`.
+- Đã thay `check:modern` bằng `svelte-check-native` 1.12.2 chạy với TypeScript native preview 7, vẫn giữ `check:typescript` cho TypeScript 6.0.3. `npm run check:modern`: 0 error/0 warning. `npm run check:typescript`: đạt. `node --test "tests/*.test.js"`: 155/155 đạt. `npm audit --audit-level=high`: 0 lỗ hổng.
+- Build: `lab-modern.js` 154,89 KB, gzip 52,97 KB, dưới hạn mức 60 KB; file offline 3.153.713 byte. Trình duyệt `file://`: đổi Tiếng Việt/English đúng, giữ lựa chọn sau reload, tiêu đề bài 1 đổi theo locale nhưng gốc bài vẫn được đánh dấu `lang="vi"`; reset giữ tiêu đề và không tràn tại 390 px. Axe: 0 violation cho tiếng Việt/English và hết cảnh báo label-content-name-mismatch; phần contrast trên nền gradient/canvas vẫn cần kiểm tra tay.
+- Chỉ Sveltia I18n và bộ kiểm tra native được đưa vào; các gói DnD, OGL/GSAP, state, editor, backend, toast, skeleton, picker và animation copy/paste không được cài vì trùng hoặc chưa có nhu cầu. Chưa dịch nội dung khoa học bên trong thí nghiệm; chưa commit/push. Còn lại: xác nhận translation English với giáo viên nếu cần sửa cách diễn đạt. Câu hỏi mở: không.
 
-### 2026-11-21, Copilot: cập nhật tiêu đề thí nghiệm 3
+### 2026-11-26, Copilot: hoàn thành nâng cấp toàn bộ 8 thí nghiệm
 
-- `js/core/app.js`: đổi tiêu đề thẻ thí nghiệm 3 thành "5 yếu tố cần thiết cho sự sống và phát triển của động vật"; giữ nguyên kiểu chữ.
-- `node --test "tests/*.test.js"`: 135/135 đạt. Không kiểm tra trực tiếp trên trang.
-- Còn lại: không có. Câu hỏi mở: không có.
-
-### 2026-11-20, Copilot: sắp xếp lại chữ trên thẻ thí nghiệm 1
-
-- `js/core/app.js`: chuyển "5 yếu tố" lên tiêu đề thẻ, để phụ đề là "Cây đậu xanh"; giữ nguyên kiểu chữ và kiểu trình bày hiện có.
-- `node --test "tests/*.test.js"`: 135/135 đạt. Mở trang bằng `file://` và xác nhận hai dòng mới hiển thị đúng.
-- Còn lại: không có. Câu hỏi mở: không có.
-
-### 2026-11-20, Copilot: sửa dòng mô tả thí nghiệm 6
-
-- `js/core/app.js`: đổi dòng phụ trên thẻ thí nghiệm 6 thành "Đậu xanh - Khoai lang - Khoai tây - Thuốc bỏng".
-- `node --test "tests/*.test.js"`: 135/135 đạt. Mở trang bằng `file://` và xác nhận dòng chữ mới hiển thị trên thẻ.
-- Còn lại: không có. Câu hỏi mở: không có.
-
-### 2026-11-20, Copilot: đổi tên dụng cụ chất khoáng ở thí nghiệm 2
-
-- `js/content/exp2.vi.js`: đổi nhãn khay dụng cụ thành "Đất có chất khoáng" trong phần `user`, giữ nguyên văn bản `md`.
-- `HUONG-DAN.txt`, `SPEC-NOTES.md`: cập nhật hướng dẫn và ghi nhận nhãn mới.
-- `node --test "tests/*.test.js"`: 135/135 đạt. Mở `index.html#exp2` bằng `file://` và xác nhận nhãn mới hiện trong khay.
-- Còn lại: không có. Câu hỏi mở: không có.
-
-### 2026-11-20, Copilot: cập nhật chữ và hình chuột ở thí nghiệm 4
-
-- `js/content/exp4.vi.js`, `js/experiments/exp4.js`, `exp4-air.js`, `exp4-wfw.js`: thay hai dòng sau khi uống nước, giữ chuột đục trong phần trao đổi khí và thêm dòng tóm tắt dưới dấu O₂/CO₂.
-- `HUONG-DAN.txt`, `SPEC-NOTES.md`, `tests/shots.js`: cập nhật hướng dẫn, ghi chú thay đổi và kiểm tra hai màn hình.
-- `node --test "tests/*.test.js"`: 135/135 đạt. Kịch bản trình duyệt `exp4/air` và `exp4/waste` đạt; màn hình trao đổi khí xác nhận chuột không bật chế độ trong suốt và có dòng mới, màn hình sau khi uống xác nhận hai câu mới. Chưa kiểm tra thủ công bằng cách kéo chuột trong trình duyệt.
-- Còn lại: không có. Câu hỏi mở: không có.
-
-### 2026-11-16, Copilot: chép 15 tệp từ bản tải xuống
-
-- Đã chép 15 tệp được yêu cầu vào source. Giữ `HANDOFF.md` hiện tại theo lựa chọn của người dùng; không đụng tới tệp ZIP vốn đã bị xóa trong git.
-- `node --test "tests/*.test.js"`: 135/135 đạt. Chưa mở trang trên trình duyệt.
-- Còn lại: không có. Câu hỏi mở: không có.
-
-### 2026-11-15 (end), Claude: backup of `main`, PR #3 merged
-
-- At the user's request ("tạo 1 nhánh backup cho master hiện tại, backup số ngày nay", the repo has no `master`, so `main`): branch `backup/main-2026-11-15` = old `main` `3b85fa1`, pushed to `origin`, no upstream (it never follows `main`).
-- Then PR haccoco99999/experiment-xy12#3 merged into `main` with a merge commit (`d8a67e1`). Branch `test/kich-ban-3-thi-nghiem` kept. Local `main` pulled; tests on `main`: 135, all pass. GitHub Pages started building from `d8a67e1`; the live site was not opened afterwards.
-- To go back to the old `main`, use `backup/main-2026-11-15` (ask the user first; it would need a force-push or a revert).
-
-### 2026-11-15 (end), Claude: commit and PR #3
-
-- At the user's request: commit `fd612a7` "feat(exp6,exp7,exp8): làm theo file kịch bản 3 thí nghiệm" on `test/kich-ban-3-thi-nghiem` (all files of the entries below, added by name, including the three Vietnamese reports and `tests/kich-ban-exp7.test.js`). Pushed; PR haccoco99999/experiment-xy12#3 into `main` is open, not merged. The repo has no CI checks.
-- Tests before the commit: 135, all pass.
-- Next: the user reviews and decides on the merge. After a merge, GitHub Pages rebuilds from `main`.
-
-### 2026-11-15 (later), Claude: re-check asked "bằng chrome mcp và claude" (waiting on the user)
-
-- Node tests: 135, all pass. Claude read the whole diff of `js/experiments` and `js/models` again: no new bug found.
-- Claude in Chrome (the extension) was not connected after 3 tries. The user chose "Dùng cách khác".
-- Headless Chrome over `file://` (script in the scratchpad, `autocheck.js`, checks the page text after each shot scenario): exp6 `two14`, `twoFinale`, `finale`, exp7 `quick`, exp8 `embryo`, `finale` pass. exp7 `finale` reached HOÀN THÀNH THÍ NGHIỆM; my check also asked for the "ĐÃ QUAN SÁT TRỨNG" chip, which the final screen never shows (the app is right, the check was wrong).
-- Real Chrome screenshots (headless `--screenshot`): exp6 two pots at the end, exp7 cut (see-through pupa, small eyes: the fix holds), exp8 slider. All look right.
-- Scripted checks in the built-in pane: Exp 6 one pot, 21 checks (messages, lock after start, only HẠT card, back button text, results, reset = fresh start); one check read the water message too early, re-checked with a wait: "Đã cung cấp nước cho Chậu 4." Exp 7 from the eggs, 16 checks (no magnifier needed, texts, dots optional, eye size, nectar, sorting, complete). Exp 8 slider, 9 checks (stops at last open mark, drag to a mark, drag back, mark click, reset). No console errors. All pass.
-
-### 2026-11-15 (late), Claude: the checks left over from the entry below (same branch, not committed)
-
-- `file://`: headless Chrome (`--headless=new --virtual-time-budget=... --dump-dom`, own `--user-data-dir` in the scratchpad) works on this machine; `--screenshot` works too. Over `file://`: exp6 `twoFinale` and `finale`, exp7 `quick`, exp8 `embryo` all finish, the 3D fallback stays hidden, panels show the expected texts.
-- Phone: upright phones get the site's "Hãy xoay ngang màn hình" screen (as before). Sideways 812x375: Exp 6 classification and Exp 8 slider usable; the pot name tags overlap a little (also before this work).
-- Hand play with real mouse drags (1280x720): Exp 6 one pot from start to results, wrong waterings and a sample without its pot give the new messages, LÀM LẠI dialog works. Exp 7 from the eggs: hatch without the magnifier, leaf feeding, cut, one dot, emergence, nectar message. Exp 8 slider was dragged by mouse earlier.
-- Sound: only checked that the names used (`ok`, `wrong`) exist in `js/core/audio.js`; nobody listened.
-- Bug found and fixed in `js/models/butterfly.js` (`Mo.pupa().highlight`): it set each inner part's scale to 1 or 1.15, so the eye balls (unit spheres scaled 0.05) grew 20 times into a big dark-blue ball that hid the see-through pupa after any dot was clicked. Present since Exp 7 was built. Now each part grows from its own size. Checked in the pane: the four parts show inside the clear case.
-- Wording: Exp 6 `classAllSome` is now "Em đã phân loại đúng tất cả." (the old one said "các cây con" even for one pot).
-- Tests: 135, all pass.
-
-### 2026-11-15 (night), Claude: Experiments 6, 7 and 8 changed after the scenario file (branch `test/kich-ban-3-thi-nghiem`, not committed)
-
-- The user asked to apply the file's changes to Experiments 6 and 7, and for Experiment 8 only the draggable time bar; the pig facts (eyes, day marks) stay as they are for now.
-- Exp 6: 1 to 4 pots. `js/logic/exp6.js` rewritten (per pot `ready`, `state.active` fixed at BẮT ĐẦU, `cards`, table locked after start); `js/experiments/exp6.js` and `exp6-lapse.js` grow only the active pots, show only their cards, results list only them; no soil card; `user` texts in `js/content/exp6.vi.js`. Our choices where the file was silent (the user did not answer): table locked after BẮT ĐẦU, only the cards of the used pots. Progress bar clicks ("tua theo giai đoạn") not done.
-- Exp 7: magnifier optional (`canHatch`, `canCutaway`), the four dots optional, new `observeCutaway`; the 3 texts of the file in `user`; a pink flower on `Mo.hostPlant` (`flowerAt`) and the new butterfly drinks nectar there before the sorting. The magnifier stays in the tray.
-- Exp 8: the slider already existed (my feasibility report was wrong; corrected in it). Fixed the slider: past the last open mark it now stops there instead of jumping back and leaving the picture half-way (`js/experiments/exp8.js`).
-- Also: `tools/dev-server.py` takes a `PORT` setting (another session held 4173). New shot scenarios: exp6 `two`, `two14`, `twoFinale`; exp7 `quick`. `SPEC-NOTES.md` has a new table for these changes and the corrected Exp 7 progress-bar note (B1). `HUONG-DAN.txt` updated for 6, 7, 8 and the `user` text group.
-- Tests: `node --test "tests/*.test.js"`: 135 tests, all pass. Browser (dev server on port 4174, 1280x720, scripted): Exp 6 `two14` (pots 1 and 4 grow, pot 2 empty, cards HẠT and LÁ), `twoFinale` (results list 2 pots), `finale` (4 pots); Exp 7 `quick` (no magnifier, no dots, butterfly on the flower, sorting opens) and `finale` (old path with magnifier and dots); Exp 8 `embryo` slider with real mouse drags and scripted drags. Two resets give the same snapshot in 6, 7 and 8. No console errors.
-- Not tested: `file://`, phone sizes, sound, a full hand playthrough.
-- Open questions for the user: are the two choices for Exp 6 fine? Commit and merge?
-
-### 2026-11-15 (evening), Claude: feasibility report for 3 experiments (branch `test/kich-ban-3-thi-nghiem`, not committed)
-
-- The user asked for a new branch and a feasibility check (no code changes) of the 3 experiments in the scenario file. Branch `test/kich-ban-3-thi-nghiem` was made from `test/kich-ban-exp7` (same commit as `main`, `3b85fa1`); the uncommitted files of the entry below came along.
-- The new download `...(1).docx` has the same text as the earlier one (Exp 7 only). The Google Doc (3 tabs) was read again: edited 19:13 today; Tab 1 (Exp 6) now answers two of the three earlier questions (classify only the planted pots; conclusion fits the pots done). Tabs 2 and 3 unchanged.
-- Report: `BAO-CAO-KHA-THI-3-THI-NGHIEM.md`. Exp 6 with 1–4 pots is feasible and touches only Exp 6 files (logic, tests, experiment, texts in a `user` group, docs); 2 open questions (adding pots after BẮT ĐẦU; showing cards of unplanted pots), with recommendations. Exp 8: keep the site on the cat-copied facts. Exp 7: all K1–K7 feasible.
-- Tests: `node --test "tests/*.test.js"`: 129 tests, all pass. Nothing in the app changed, so no browser check.
-- Open questions for the user: the 2 Exp 6 questions; which Exp 7/8 points to apply.
-
-### 2026-11-15, Claude: checked Experiment 7 against the user's Word scenario (branch `test/kich-ban-exp7`, not committed)
-
-- The user asked for a branch to check the scenarios in `D:\Download\# Kịch bản thí nghiệm chi tiết_ Hình thành cây con từ hạt, rễ, thân và lá (hỗ trợ 1-4 chậu).docx`. The file name says Experiment 6, but the content is the butterfly life cycle (Experiment 7), so Experiment 7 was checked.
-- New: `tests/kich-ban-exp7.test.js` (13 tests, one per section of the Word file, logic only) and `KIEM-TRA-KICH-BAN-EXP7.md` (the report in Vietnamese). No app code changed.
-- Finding B1: `stepStates` lights the last progress step BƯỚM TRƯỞNG THÀNH as soon as the adult emerges; `SPEC-NOTES.md` (Exp 7, 11003–11012 row) says it lights when the four cards are right. The Word file agrees with the code. Suggested fix: the note, not the code. Not done yet.
-- Differences Word vs site (K1–K7 in the report): the Word tray has no magnifier and says the magnifier never blocks progress (the site requires it before hatching and before the 3D cut); two messages differ (2.8, 2.9); the site adds the four dots in the pupa; no nectar scene; the wrong-drop warning names the male or female.
-- Tests: `node --test "tests/*.test.js"`: 129 tests, all pass. Browser (dev server, 800x600): scenario `finale` reaches HOÀN THÀNH THÍ NGHIỆM with no console errors; two resets give the same snapshot and the bar back at step 1. Not tested: `file://`, hand dragging, phone sizes, sound.
-- Open questions for the user: follow the Word file on K1–K7 or keep the md? Is this Word file meant for Experiment 6?
-- Later the same day: the source Google Doc (shared with the user, read through the Drive connector) has 3 tabs: Tab 1 = Exp 6, Tab 2 = Exp 8 (pig), Tab 3 = Exp 7 (the downloaded .docx held only Tab 3). The user asked whether the changes are valid. Report: `DANH-GIA-THAY-DOI-THEO-FILE.md`. Main points: Tab 2 copies cat facts (newborn eyes closed, embryo to day 45, fetus 45/60) that are wrong for pigs, so keep the site; Tab 2 also contradicts itself about the magnifier. Tab 1 asks for 1–4 pots (the md needs all 4) and leaves 3 rules undefined. Small text changes listed as ready to apply. Nothing in the app changed; pig facts were not checked against a source this time.
-
-### 2026-11-10 (later), Claude: Experiment 8 changed from a cat to a pig (merged into `main`, PR #2)
-
-- The user wrote "kiểm tra ở thí nghiệm số 8: con mèo đổi thành con heo" and, asked with a screenshot, chose "Đổi sang con heo" (change the animal), not "the cat looks like a pig".
-- New model `js/models/pig.js` (`Mo.pig`, same API as the old `Mo.cat`); `js/models/cat.js` removed (`git rm`), script tag in `index.html` changed, `Mo.cat(` → `Mo.pig(` in `js/experiments/exp8*.js`. The fetus in `js/models/cells.js` got a snout. Internal ids (`kitten`, `cats`, `showCatInfo`, `decideCat`) were left as they are.
-- Texts: a new `user` group in `js/content/exp8.vi.js` holds every md sentence with "mèo" rewritten for a pig, merged over `md` by `merge` in `js/experiments/exp8.js` (same pattern as Exp 2). App texts changed in place. Pig facts added by us (marks Ngày 0/10/20/30 and 30/70/Gần ngày sinh, eyes open at birth, starts eating at 2 weeks, "cơ thể nặng hơn nhiều" at 6 months) are listed in `SPEC-NOTES.md` (new table "Asked later"). Home card: 🐷 "Sinh sản và vòng đời của heo".
-- New test in `tests/exp8.test.js`: after the merge no text says "mèo", the lists keep their lengths, the fetus bar starts where the embryo bar ends, the newborn has "mắt đã mở".
-- `tests/shots.js`: the Exp 8 `fetus` scenario taps a missed part again. Before this change it already stopped at "timeout: the four parts" (the tail tap was missed; checked with the old `cells.js` too), so every later Exp 8 scenario failed in the 800x600 pane.
-- Tests: `node --test "tests/*.test.js"`: 116 tests, all pass. Browser (dev server, 800x600 pane, scripted scenarios): `identify`, `kitten`, `growth`, `finale` render with pigs and no "mèo" on screen; home card shows the pig. After `finale` + reset (twice) the snapshot equals a fresh start (geometries 33, textures 10). No console errors from the new code.
-- Not tested: `file://` (only a script tag name changed), real hand dragging, phone sizes, sound. The pig facts were not checked by the user.
-- `HUONG-DAN.txt` updated (Exp 8 line in the list, a note at the top of "Cách chơi thí nghiệm 8", marks, the newborn's open eyes).
-- Committed on `feature/exp-8-pig` (`adde541`), pushed, PR haccoco99999/experiment-xy12#2 opened and merged into `main` on 2026-11-11, all at the user's request (merge commit `f226c9e`). Tests on `main` after the merge: 116, all pass. GitHub Pages started rebuilding from it. The branch is kept. Open question for the user: are the pig facts and the new day marks acceptable?
-
-### 2026-11-10, Claude: four fixes from the user's Word file (Experiments 1, 2, 4 and 5), merged into `main` (PR #1)
-
-- Source: `C:\Users\ADMIN\Downloads\fix lỗi thí nghiệm.docx` (4 requests and a picture of a whole tomato plant with roots). The user confirmed: Exp 4 gas exchange keeps dragging; the four lines show while the rat excretes; Exp 5 keeps the clicks on the fruit (days 14 and 30); the plant shows its roots like the picture.
-- Exp 1: NPK bag removed (logic `js/logic/exp1.js`, texts, tray, `doNpk` in `js/experiments/exp1.js`, tests in `tests/logic.test.js`). `Mo.npkBag` is kept for Exp 2.
-- Exp 2: no "rau cải" on screen. The five changed md sentences moved to a new `user` group in `js/content/exp2.vi.js`, merged over `md` in `js/experiments/exp2.js` (the text-fidelity test only checks `md`). Home card subtitle in `js/core/app.js`. The 3D plant is the same.
-- Exp 4: waste and urine come out by themselves (`autoExcrete` in `js/experiments/exp4-wfw.js`), the four lines are `app.bodyFlows` shown in a side-panel card from `renderPanel` in `js/experiments/exp4.js`. `promptKeys` gives no task for waste/urine. The `waste` camera shot, `excrete`, `pending`, `isNear` and the waste tap in `onPick` are gone.
-- Exp 5: new model `js/models/tomato-plant.js` (script tag added in `index.html`), more detailed cut face and `facePoint`/`locules`/`seedSpots` in `Mo.tomatoFruit` (`js/models/tomato.js`), new flow in `js/experiments/exp5-fruit.js` (white fade to the plant at day 7, magnifier at day 14 and at the cut, plate, button "XEM KẾT QUẢ" before the results panel; `X.finaleShown` in `js/experiments/exp5.js`). New md labels "Thịt quả" and "Phần dịch nhầy" (both in the spec), app text `seeResults`.
-- `tests/shots.js`: Exp 4 scenarios no longer call `excrete`; Exp 5 `finale` presses "XEM KẾT QUẢ" (add `&cut=1` to stop at the cut fruit).
-- Docs: `HUONG-DAN.txt` (Exp 1 step 2, Exp 2 intro and step 1, Exp 4 step 5, Exp 5 steps 8 to 11) and a new first table in `SPEC-NOTES.md` listing every change that differs from the md.
-- Tests: `node --test "tests/*.test.js"`: 115 tests, all pass. Browser (dev server, 800x600 pane, scripted scenarios): Exp 1 tray without NPK, Exp 2 placed plant, Exp 4 `wfwGo` and `finale`, Exp 5 `d7`, `seeds`, `d30`, `finale&cut=1`, `finale`: all render, no console errors from the new code. Leak check: after `finale` + reset, Exp 4 and Exp 5 give the same snapshot as the code before these changes (geometries 33, textures 9; the 9th texture is a shared cache, the old code gives 9 too).
-- Not tested: opening `index.html` from `file://` (the browser pane shows file:// only as a static snapshot, and headless Edge on this machine no longer writes screenshots, even for https://example.com; the change only adds one classic `<script>` tag, no fetch), a full hand playthrough with real dragging, phone or tablet sizes, sound.
-- Done after review: the user asked for the commit on `feature/exp-2`, a branch `feature/exp-1` from the old `main`, a PR and the merge. PR haccoco99999/experiment-xy12#1 was merged on 2026-11-10 (commit `575b549`); GitHub Pages rebuilt and the live Experiment 1 tray has no NPK. Both feature branches are kept. Next: nothing open.
-
-### 2026-09-22 (later), Claude: deployed the site to GitHub Pages (free), at the user's request
-
-- The user asked how to put the site on the web for free and whether GitHub supports it. Answered: GitHub Pages is free but only for a public repo, and since the site ships plain unminified JS, a visitor can already read all app code via View Source once it is live anywhere — a private repo would only have hidden the spec copy in `docs/` and the working notes (`HANDOFF.md`, `SPEC-NOTES.md`), not the app code. Gave three options (Netlify with the repo kept private, GitHub Pages with the repo made public, or a no-Git drag-and-drop host); the user chose GitHub Pages with the repo public.
-- Did: `gh repo edit haccoco99999/experiment-xy12 --visibility public` (was private), then `gh api -X POST repos/haccoco99999/experiment-xy12/pages -f "source[branch]=main" -f "source[path]=/"` to turn on Pages (branch deploy, no build step, matches this project). Confirmed the build finished (`gh api .../pages/builds/latest` → `"status":"built"`). Live at https://haccoco99999.github.io/experiment-xy12/. No app code changed.
-- Updated `HUONG-DAN.txt`: "Cách mở" now lists the web address as Cách 1 (no download, needs internet) alongside the existing double-click-`index.html` method as Cách 2 (offline); "Cách chia sẻ" now leads with sending the link, with the old zip/folder method kept below for offline sharing.
-- Tested: opened https://haccoco99999.github.io/experiment-xy12/ in the browser pane — home page shows all 8 cards, no console errors; opened Experiment 1, the 3D table and tool tray render correctly, no console errors. Did not click through Experiments 2 to 8 on the live URL (they are unchanged code, already verified locally in the 2026-09-21 entry below). `node --test "tests/*.test.js"`: 115 tests, all pass (no logic files touched).
-- Not tested: a phone or tablet on the live URL, a custom domain (not requested).
-- Not done: `HUONG-DAN.txt` is changed locally but not committed or pushed — AGENTS.md says commit only when the user asks, and this session was not asked yet. Next assistant (or this one, later): ask the user, then `git add HUONG-DAN.txt HANDOFF.md` and commit in Vietnamese Conventional Commits form (e.g. `docs: thêm địa chỉ web vào HUONG-DAN.txt`).
-- Open question for the user: none blocking. The repo `haccoco99999/experiment-xy12` is now public on GitHub (was private) — if that turns out to be unwanted, it can be switched back to private in GitHub repo Settings, but note that reverts Pages too (Pages needs a public repo on the free plan).
-
-### 2026-09-22, Claude: fixed - Experiment 8's cat could not be dragged (a real bug, not user error)
-
-- The user reported: "cannot drag and drop the cat" in Experiment 8. Cause found in `css/app.css`: `#hud > * { pointer-events: auto; }` (line 79) is an ID selector, so by CSS specificity it silently overrode `.veil`'s own `pointer-events: none` (line 305) — a class selector loses to an ID selector regardless of which is written later in the file. The `.veil` div (`js/experiments/exp8.js`, the white fade used between scenes) is a direct child of `#hud`, covers the full screen (`inset:0`) and sits above everything (`z-index:30`). Being invisible (`opacity:0`) did not stop it from blocking clicks: it silently swallowed every real pointer event anywhere in Experiment 8, so no card, cat, sperm, egg, timeline mark or sorting card could be dragged or clicked. `tests/shots.js` never caught this because its scripted playthroughs call `el.dispatchEvent(...)` straight on the target element, which skips the browser's normal hit-testing and so never notices an invisible layer on top.
-- Fix: one line in `css/app.css` (line 80) - added `#hud > .veil` to the existing list of HUD children that must stay click-through (the same list already covering `#labels`, `#zones`, `#toasts`, `#caption`). No JS changed.
-- Tested in a browser with the real drag tool (not the virtual-clock scripted kind): first reproduced the break on `#exp8` (dragging "MÈO ĐỰC" onto the table did nothing, no console error; `getComputedStyle` showed the veil's `pointer-events` as `"auto"`, and `elementFromPoint` over the tray returned the veil). After the fix, on a fresh reload with no patches, both cats drag onto the table normally and the start button unlocks. Spot-checked Experiment 7 to confirm the shared CSS file was not broken elsewhere (`.veil` exists only in Experiment 8, so nothing else was touched). `node --test "tests/*.test.js"`: 115 tests, all pass (unchanged - this is a CSS-only fix).
-- Not tested: a real touch screen, Firefox/Safari, opening from `file://`.
-- Not done: nothing else was requested. Committed and pushed at the user's request.
-
-### 2026-09-21 (latest), Claude: review of the whole project, `package.json`, and a full playthrough of all 8 experiments
-
-- Added `package.json` (private, no build step): `npm test` runs `node --test "tests/*.test.js"`, `npm run serve` the dev server, `npm run shots` the shots page, and `puppeteer-core ^25.11.0` is recorded as the only dev dependency (it was already in `node_modules` with nothing naming it).
-- Added Experiment 7 and Experiment 8 scenarios to `tests/shots.js`, so every experiment can now be played by script (`?e=exp7&s=finale`, `?e=exp8&s=finale`; checkpoints in between: exp7 `pair|mated|laid|eggs|larva|fed|pupa|cut|adult|finale`, exp8 `place|identify|cells|fert|zygote|embryo|fetus|kitten|growth|adultCat|finale`). New shared helpers there: `until(label, test, max)` waits on the virtual clock, `pickPoint/tapPick` click a real point **on** a 3D object (its box centre can sit behind another part, which is why the fetus tail was missed at first), `panelBtn/pressPanel`, `marks()` walks a timeline bar.
-- Played all 8 from `file://` in headless Edge at 1280x720 (`tools/make-shots-page.mjs` page, virtual clock, real pointer events): exp1 `healthy`, exp2 `synth`, exp3 `healthy`, exp4 `replay`, exp5 `finale`, exp6 `finale`, exp7 `finale`, exp8 `finale`. Every one reached its end screen, no console errors or warnings anywhere. End states: exp2/4/5/6/7/8 report `finished`/`complete` true, exp1 and exp3 reach the results table (their 4th step stays `active` while the student reads it, as designed).
-- Cosmetic, seen in the end screenshots: in the sorting tray of exp7 and exp8 a long card label is clipped by the ✓ badge ("MÈO CON L… DẦN"). Experiment 5's progress bar keeps a padlock on step 6 "Cây con" on the completion screen; `js/logic/exp5.js` never sets `st[5]` and `tests/exp5.test.js:125` asserts exactly that, so it is a decision, not a slip - the seedling belongs to Experiment 6.
-- Ran `node --test "tests/*.test.js"`: 115 tests, all pass. `git status` before this task was clean, `main` equals `origin/main`, the spec copy in `docs/` is byte-for-byte the original one level up. Nothing is committed: `package.json` (new), `tests/shots.js` and this file are the changed files.
-- Checked in a browser over `http://127.0.0.1:4173` (1280x720 and 1024x600) and, the real check, from `file://` in headless Edge at 1280x720: the home page shows 8 open cards, all 8 experiments open, fonts load, tray thumbnails bake, no console errors or warnings. Leak check: opened exp1, then all 8 in a row, then exp1 twice more; `Lab.app.snapshot()` gave the same numbers every time (geometries 37, textures 24, zones 3, 1 ticker, 0 tweens, 0 labels).
-- Lifecycle is clean: 8 `dispose:` functions, 8 hint `setInterval`s and 8 matching `clearInterval`s, no `window`/`document` listeners left in `js/experiments` or `js/models`.
-- Found, not fixed: (1) tray cards are `role="button" tabindex="0"` but `Lab.drag.bindCard` has no `keydown`, so Enter and Space do nothing (verified live); (2) `.card` has `touch-action: none` (`css/app.css:112`), so on a touch screen a finger starting on a card cannot scroll the tray, and exp6 at 1024x600 shows 6 of 11 cards with the rest needing a scroll; (3) `UI.modal` handles Escape only inside `UI.confirm`, so the help and info dialogs close by clicking outside only; (4) nothing automated covers `js/core`, `js/three`, `js/models`, `js/experiments` - the scripted playthroughs above are the nearest thing.
-- Not tested: sound, a real touch screen, Firefox and Safari, phone-sized windows, wrong moves in exp7 and exp8 this time (the new scenarios play the right path only; the earlier entries tested the wrong moves by hand).
-- Next: the user decides whether to fix items 1 and 2 above - a few lines in `js/core/dragdrop.js` and `css/app.css`. Nothing else is open.
+- Đã thêm trang chủ Svelte/Threlte (`src/`, `dist-modern/`), làm mới môi trường, vật liệu, hiệu ứng và bố cục 3D dùng chung, ba mức đồ họa, thao tác bàn phím cho kéo/thả và các hành động trong cảnh, focus dialog/panel, giảm chuyển động, tạm dừng khi tab ẩn, điện thoại dọc và file offline một tệp.
+- `npm run check:modern`: đạt. `node --test "tests/*.test.js"`: 152/152 đạt. `git --no-pager diff --check`: sạch. `npm run build`: shell 114.112 byte, gzip 40,34 KB; `Thi-nghiem-tat-ca-trong-1-file.html` 3.110.231 byte. Kiểm thử hiệu năng tự dựng lại artifact trước khi đo để không đọc file cũ.
+- Trình duyệt: 8 trạng thái đầu mở được từ `file://`, không có request mạng ngoài hay page error; 8 kịch bản mục tiêu chạy đủ, trong đó các trạng thái kết thúc 2/4/5/6/7/8 hoàn thành. Axe WCAG 2 A/AA và 2.1 A/AA: 0 violation cho trang chủ và 8 bài; các mục `color-contrast` trên canvas/gradient và `label-content-name-mismatch` còn cần kiểm tra tay. Ảnh 1024×768 và 390×844 không tràn ngang; picker bàn phím, focus bài 8, chế độ Nhẹ và hạt trong reduced motion đã kiểm tra trực tiếp.
+- Chưa chạy benchmark trên laptop 8 GB vật lý, chưa xác nhận đầy đủ WCAG thủ công với người dùng/thiết bị hỗ trợ và chưa commit hay push. Công cụ đọc usage không có trong phiên này nên không thể báo phần trăm giới hạn. Còn lại: người dùng kiểm tra hình thức/nội dung khoa học; không có lỗi đã biết hoặc câu hỏi mở.

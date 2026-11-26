@@ -58,6 +58,7 @@
     var plant = X.plant, pot = plant.pot, can = Mo.wateringCan(), tilt = -0.78, off = tipOffset(can, tilt), soil = pot.soilPoint(), seq = X.seq;
     X.busy++;
     await flyIn(can, { x: soil.x - off.x, y: 2.05 - off.y, z: soil.z + 0.35 }, { x: soil.x - off.x - 3.2, y: 3.8, z: soil.z + 0.35 });
+    await Lab.tween.anticipate(can.rotation, 'z', 0.08, 0.16);
     await Lab.tween.to(can.rotation, { z: tilt }, 0.55, { ease: 'inOutCubic' }).promise;
     Lab.audio.play('water');
     var tip = new T.Vector3(); can.userData.tip.updateMatrixWorld(true); can.userData.tip.getWorldPosition(tip);
@@ -84,6 +85,7 @@
     X.busy++;
     showDots();
     await flyIn(bag, { x: soil.x - off.x, y: 2.1 - off.y, z: soil.z + 0.35 }, { x: soil.x - off.x - 3, y: 3.9, z: soil.z + 0.35 });
+    await Lab.tween.anticipate(bag.rotation, 'z', 0.1, 0.16);
     await Lab.tween.to(bag.rotation, { z: tilt }, 0.6, { ease: 'inOutCubic' }).promise;
     Lab.audio.play('pour');
     var tip = new T.Vector3(); bag.userData.tip.updateMatrixWorld(true); bag.userData.tip.getWorldPosition(tip);

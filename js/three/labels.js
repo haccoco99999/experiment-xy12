@@ -16,16 +16,31 @@
     init: function (el) { root = el; },
     /* add({html|text, cls, world: Vector3 | Object3D | fn, dx, dy, onClick}) → handle */
     add: function (o) {
-      var el = U.el('div', { class: 'tag3d ' + (o.cls || '') });
+      var interactive = typeof o.onClick === 'function';
+      var label = o.ariaLabel || o.text || (interactive ? (o.cls && o.cls.indexOf('lens') >= 0 ? 'Cất kính phóng đại' : 'Điểm tương tác trong cảnh 3D') : '');
+      var el = interactive
+        ? U.el('button', { class: 'tag3d clickable ' + (o.cls || ''), attrs: { type: 'button', 'aria-label': label } })
+        : U.el('div', { class: 'tag3d ' + (o.cls || '') });
       if (o.html) el.innerHTML = o.html; else el.textContent = o.text || '';
-      if (o.onClick) { el.classList.add('clickable'); el.addEventListener('click', o.onClick); }
+      if (interactive) {
+        el.addEventListener('click', o.onClick);
+        el.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            o.onClick(e);
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            if (o.onEscape) o.onEscape(e); else el.blur();
+          }
+        });
+      }
       root.appendChild(el);
       var item = { el: el, world: o.world, dx: o.dx || 0, dy: o.dy || 0, hidden: false, anchor: o.anchor || 'bottom' };
       items.push(item);
       Lab.loop.wake();
       return {
         el: el,
-        setHtml: function (h) { el.innerHTML = h; },
+        setHtml: function (h) { el.innerHTML = h; if (interactive && !label) el.setAttribute('aria-label', 'Điểm tương tác trong cảnh 3D'); },
         setVisible: function (v) { item.hidden = !v; el.style.display = v ? '' : 'none'; Lab.loop.wake(); },
         setWorld: function (w) { item.world = w; Lab.loop.wake(); },
         remove: function () { var i = items.indexOf(item); if (i >= 0) items.splice(i, 1); if (el.parentNode) el.parentNode.removeChild(el); }

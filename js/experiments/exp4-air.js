@@ -60,12 +60,31 @@
   }
 
   /* ---------------- dropping a molecule ---------------- */
-  function onDrop(it, info) {
-    var to = regionOf(info.client.x, info.client.y), from = it.inBody ? 'lungs' : 'env';
+  function attemptGas(it, to) {
+    var from = it.inBody ? 'lungs' : 'env';
     var r = L.decideGas(state, it.type, from, to);
     if (!r.ok) { if (r.msg) X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); return { ok: false }; }
     accept(it, r.move); return { ok: true };
   }
+  function onDrop(it, info) {
+    return attemptGas(it, regionOf(info.client.x, info.client.y));
+  }
+  function keyboardMove() {
+    var move = L.currentGasMove(state), it = null;
+    if (!move || X.busy || X.mode !== 'air') return false;
+    for (var i = 0; i < mols.length; i++) {
+      var candidate = mols[i], from = candidate.inBody ? 'lungs' : 'env';
+      if (candidate.type === move.gas && from === move.from && candidate.state === 'idle' && candidate.enabled()) { it = candidate; break; }
+    }
+    return it ? attemptGas(it, move.to).ok : false;
+  }
+  function gasButton() {
+    var move = L.currentGasMove(state);
+    if (!move || X.busy || X.mode !== 'air' || state.topic !== 'air') return null;
+    var gas = move.gas === 'o2' ? 'O₂' : 'CO₂';
+    return X.sceneButton(move.to === 'body' ? 'Cho ' + gas + ' đi vào cơ thể' : 'Thải ' + gas + ' ra ngoài', 'exp4-air', keyboardMove);
+  }
+  X.extra = gasButton;
   async function accept(it, move) {
     var into = move.to === 'body', rat = X.rat, seq = X.seq, key = into ? 'o2' : 'co2';
     var res = L.applyGas(state);

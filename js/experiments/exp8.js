@@ -49,9 +49,11 @@
     X.shot = function (name, ms) { var s = typeof name === 'string' ? SHOTS[name] : name; return Lab.stage.shot(s, ms == null ? 1000 : ms); };
     X.wait = function (s) { return Lab.tween.wait(s).promise; };
     X.tween = function (secs, fn, ease) { return Lab.tween.value(secs, fn, { ease: ease || 'inOutQuad' }).promise; };
-    X.button = function (text, cls, fn, locked) {
-      return el('button', { class: 'btn ' + (cls || 'btn-orange') + ' panel-btn' + (locked ? ' locked' : ''), text: text, attrs: locked ? { title: APP.startLocked } : {},
-        on: { click: function () { X.touch(); if (locked) { X.toast(APP.startLocked, { type: 'warn' }); Lab.audio.play('wrong'); } else fn(); } } });
+    X.button = function (text, cls, fn, locked, lockedText) {
+      var attrs = { type: 'button' }, why = lockedText || APP.startLocked;
+      if (locked) { attrs.disabled = 'disabled'; attrs.title = why; }
+      return el('button', { class: 'btn ' + (cls || 'btn-orange') + ' panel-btn' + (locked ? ' locked' : ''), text: text, attrs: attrs,
+        on: { click: function () { X.touch(); if (locked) { X.toast(why, { type: 'warn' }); Lab.audio.play('wrong'); } else fn(); } } });
     };
     X.fade = function (mid) {                                         // a soft white fade: out, change the picture, in
       return X.tween(0.55, function (k) { veil.style.opacity = k; }).then(function () { mid(); return X.tween(0.7, function (k) { veil.style.opacity = 1 - k; }); });
@@ -70,11 +72,13 @@
       motes = new T.InstancedMesh(new T.SphereGeometry(1, 8, 6), new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3, depthWrite: false, fog: false }), n); motes.frustumCulled = false; motes.userData.noPick = true;
       for (var i = 0; i < n; i++) data.push({ x: (R() - 0.5) * 20, y: R() * 6 - 0.5, z: -6 + R() * 5, s: 0.06 + R() * 0.16, v: 0.05 + R() * 0.12, ph: R() * 6.28 });
       var m = new T.Matrix4(), q = new T.Quaternion(), p = new T.Vector3(), sc = new T.Vector3();
-      X.ticks.push(function (dt, time) {
+      function updateMotes(dt, time) {
         if (!motes.visible) return;
         data.forEach(function (d, i) { d.y += d.v * dt; if (d.y > 5.5) d.y = -0.5; p.set(d.x + Math.sin(time * 0.4 + d.ph) * 0.3, d.y, d.z); sc.setScalar(d.s); m.compose(p, q, sc); motes.setMatrixAt(i, m); });
         motes.instanceMatrix.needsUpdate = true;
-      });
+      }
+      updateMotes(0, 0);
+      X.ticks.push(updateMotes);
       scene.add(motes);
     }
     X.setSet = function (k) {

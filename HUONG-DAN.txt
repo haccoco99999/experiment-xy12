@@ -16,18 +16,23 @@ Cả 8 thí nghiệm đều mở được từ trang chủ.
 
 Cách mở
 
-Có hai cách mở trang.
+Có ba cách mở trang.
 
 Cách 1: Mở qua mạng, không cần tải gì về máy.
 1. Vào địa chỉ https://haccoco99999.github.io/experiment-xy12/ bằng trình duyệt.
-2. Bấm nút "Bắt đầu" trên thẻ thí nghiệm để vào bàn thí nghiệm.
+2. Bấm nút "Bắt đầu khám phá" trên thẻ thí nghiệm để vào bàn thí nghiệm.
 Cách này cần có internet, dùng được trên máy tính, máy tính bảng và điện thoại.
 
-Cách 2: Mở trực tiếp từ máy, không cần internet.
+Cách 2: Mở bản một tệp từ máy, không cần internet.
+1. Nhấp đúp tệp Thi-nghiem-tat-ca-trong-1-file.html.
+2. Trang mở trong trình duyệt mặc định và chạy toàn bộ 8 thí nghiệm.
+3. Có thể chép riêng tệp này sang máy khác, thẻ USB hoặc thư mục khác rồi mở trực tiếp. Không cần chép thêm thư mục js, css hay vendor.
+
+Cách 3: Mở bản source từ máy, dành cho người sửa hoặc kiểm tra trang.
 1. Mở thư mục chứa tệp index.html.
 2. Nhấp đúp vào index.html.
 3. Trang mở trong trình duyệt mặc định của máy và chạy được khi không có internet.
-4. Bấm nút "Bắt đầu" trên thẻ thí nghiệm để vào bàn thí nghiệm.
+4. Bấm nút "Bắt đầu khám phá" trên thẻ thí nghiệm để vào bàn thí nghiệm.
 
 Nên dùng Google Chrome hoặc Microsoft Edge bản mới nhất. Trang đã được thử trên Edge. Firefox và Safari chưa được thử.
 
@@ -35,7 +40,27 @@ Cách chia sẻ
 
 Cách nhanh nhất là gửi địa chỉ https://haccoco99999.github.io/experiment-xy12/ cho người khác. Họ chỉ cần bấm vào link, không cần tải hay cài gì.
 
-Nếu muốn chia sẻ để dùng khi không có internet, sao chép cả thư mục chứa index.html, hoặc nén thành tệp .zip, rồi gửi cho người khác. Người nhận giải nén trước, sau đó nhấp đúp vào index.html. Nếu mở index.html khi nó còn nằm trong tệp .zip, trang chạy không đúng.
+Nếu muốn chia sẻ để dùng khi không có internet, gửi tệp Thi-nghiem-tat-ca-trong-1-file.html là đủ. Nếu vẫn cần gửi source để sửa, nén cả thư mục và nhờ người nhận giải nén trước khi mở index.html. Nếu mở source khi nó còn nằm trong tệp .zip, trang có thể chạy không đúng.
+
+Cách điều khiển chung
+
+Học sinh vẫn có thể kéo dụng cụ bằng chuột hoặc ngón tay. Ngoài ra, có thể hoàn thành bằng bàn phím:
+1. Dùng Tab để tới dụng cụ.
+2. Bấm Enter hoặc Space để chọn.
+3. Chọn vị trí trong danh sách hiện ra, rồi bấm Enter.
+4. Bấm Escape để hủy chọn.
+
+Với thao tác trong cảnh 3D như chuyển khí, nối ống phấn, cho bướm giao phối hoặc đưa tinh trùng tới trứng, bảng điều khiển có nút chữ tương ứng. Nhấn nút đó chạy cùng thao tác với cách kéo trong cảnh.
+
+Ở thanh trên cùng có mục "Chất lượng đồ họa". Chọn "Nhẹ" cho máy chậm, "Cân bằng" cho đa số máy, hoặc "Đẹp" cho máy đủ mạnh. Lựa chọn được nhớ trên máy.
+
+Nút "Tạm dừng hoạt cảnh" nằm cạnh mục chất lượng đồ họa. Bấm nút để dừng chuyển động 3D và các hiệu ứng đang chạy, rồi bấm nút "Tiếp tục hoạt cảnh" để chạy tiếp từ vị trí đã dừng. Trình duyệt nhớ trạng thái này. Khi đã tạm dừng, nút làm lại vẫn dựng cảnh mới ở trạng thái đứng yên.
+
+Toàn bộ tiêu đề, thông tin, nhãn và nút hiển thị dùng tiếng Việt. Trang không đổi sang tiếng Anh khi mở lại hoặc khi vào thí nghiệm khác.
+
+Khối "Thống kê tiêu đề" hiện tổng số tiêu đề, số bài đã mở, số bài thực vật và số bài động vật. Mở "Chi tiết độ dài" để xem độ dài trung bình và thí nghiệm có tiêu đề dài nhất.
+
+Trên điện thoại dọc, khay dụng cụ nằm dưới cảnh 3D và bảng điều khiển nằm ngay trên khay. Không cần xoay ngang để chơi.
 
 Cách chơi thí nghiệm 1
 
@@ -54,7 +79,7 @@ Nhấp vào một chậu để xem bảng thông tin: tuổi, chiều cao, số 
 
 Nút "LÀM LẠI THÍ NGHIỆM" nằm ở góc dưới bên phải và dùng được bất cứ lúc nào, kể cả khi cây đang lớn. Hộp thoại xác nhận có hai nút: "HỦY" giữ nguyên mọi thứ, "LÀM LẠI" đưa thí nghiệm về lúc ban đầu.
 
-Thanh trên cùng có ba nút: ngôi nhà về trang chủ, dấu hỏi mở hướng dẫn, chiếc loa bật hoặc tắt âm thanh.
+Thanh trên cùng có mục chọn chất lượng đồ họa và bốn nút: ngôi nhà về trang chủ, tạm dừng hoặc tiếp tục hoạt cảnh, dấu hỏi mở hướng dẫn, loa bật hoặc tắt âm thanh.
 
 Cách chơi thí nghiệm 2
 
@@ -62,7 +87,7 @@ Học sinh đặt một chậu cây lên bàn rồi tìm hiểu hai nội dung: 
 
 1. Kéo "Chậu cây" từ khay bên trái, thả lên bàn quan sát. Thả ngoài bàn thì chậu quay về khay kèm một lời nhắc. Khi chưa có cây, hai nút nội dung ở bảng bên phải bị khóa.
 2. Nhấp vào lá, thân hoặc đất của cây để đọc về từng bộ phận. Nhấp vào đất thì màn hình chuyển sang mặt cắt đất, thấy rõ bộ rễ. Nút "VỀ BÀN QUAN SÁT" ở dưới cùng đưa màn hình về như cũ.
-3. Bấm "TRAO ĐỔI KHÍ", rồi chọn "HÔ HẤP" hoặc "QUANG HỢP". Màn hình phóng lớn phần lá, quanh lá có các phân tử khí O₂ và CO₂. Hô hấp diễn ra trong bóng tối: kéo O₂ vào lá, rồi kéo CO₂ từ lá ra ngoài. Quang hợp diễn ra dưới ánh sáng: kéo CO₂ vào lá, rồi kéo O₂ từ lá ra ngoài. Kéo sai thì phân tử quay về chỗ cũ kèm một lời nhắc.
+3. Bấm "TRAO ĐỔI KHÍ", rồi chọn "HÔ HẤP" hoặc "QUANG HỢP". Màn hình phóng lớn phần lá, quanh lá có các phân tử khí O₂ và CO₂. Hô hấp diễn ra trong bóng tối: kéo O₂ vào lá, rồi kéo CO₂ từ lá ra ngoài. Quang hợp diễn ra dưới ánh sáng: kéo CO₂ vào lá, rồi kéo O₂ từ lá ra ngoài. Kéo sai thì phân tử quay về chỗ cũ kèm một lời nhắc. Có thể bấm nút chuyển khí ở bảng điều khiển thay cho việc kéo phân tử.
 4. Bấm "TRAO ĐỔI NƯỚC VÀ CHẤT KHOÁNG", rồi chọn "NƯỚC" hoặc "CHẤT KHOÁNG". Với nước, kéo "Bình tưới nước" vào đất. Với chất khoáng, kéo "Đất có chất khoáng" vào đất, chỗ có rễ. Thả sai chỗ thì dụng cụ quay về khay kèm một lời nhắc. Túi chất khoáng được vẽ giống túi phân bón NPK.
 5. Khi xong cả hai nội dung, thanh tiến trình hiện "HOÀN THÀNH". Bảng bên phải hiện kết luận, bảng tổng kết kiến thức và nút "TƯƠNG TÁC TỔNG HỢP". Bấm nút này để xem mọi dòng chuyển động cùng lúc: khí vào ra, nước và chất khoáng đi từ đất lên lá.
 
@@ -98,7 +123,7 @@ Học sinh đặt một chuột bạch lên bàn rồi tìm hiểu hai nội dun
 
 1. Kéo "Chuột bạch" từ khay bên trái, thả lên bàn quan sát. Thả ngoài bàn thì chuột quay về khay kèm một lời nhắc. Khi chưa có chuột, hai nút nội dung ở bảng bên phải bị khóa, và khay thức ăn, bát nước, kính phóng đại chưa dùng được.
 2. Nhấp vào chuột, hoặc vào thẻ "Chuột bạch" trong khay, để xem bảng thông tin: loài, giai đoạn, tình trạng. Bấm "ĐÓNG" để đóng bảng.
-3. Bấm "TRAO ĐỔI KHÍ". Chuột quay ngang, vẫn giữ hình dáng bình thường. Quanh chuột có các phân tử O₂ và CO₂. Kéo một phân tử O₂ vào người chuột, rồi kéo phân tử CO₂ hiện ra từ chuột ra ngoài. Chỉ sau khi kéo CO₂ ra ngoài, bảng bên phải mới hiện "O₂ VÀO ✓", "CO₂ RA ✓" và dòng "Khí ô-xi -> Chuột -> Khí các-bô- níc.". Kéo sai thì phân tử quay về chỗ cũ kèm một lời nhắc. Chuột là động vật nên thí nghiệm này không có quang hợp.
+3. Bấm "TRAO ĐỔI KHÍ". Chuột quay ngang, vẫn giữ hình dáng bình thường. Quanh chuột có các phân tử O₂ và CO₂. Kéo một phân tử O₂ vào người chuột, rồi kéo phân tử CO₂ hiện ra từ chuột ra ngoài. Chỉ sau khi kéo CO₂ ra ngoài, bảng bên phải mới hiện "O₂ VÀO ✓", "CO₂ RA ✓" và dòng "Khí ô-xi -> Chuột -> Khí các-bô- níc.". Kéo sai thì phân tử quay về chỗ cũ kèm một lời nhắc. Hai nút trong bảng điều khiển cũng thực hiện đúng hai thao tác này. Chuột là động vật nên thí nghiệm này không có quang hợp.
 4. Bấm "TRAO ĐỔI NƯỚC, THỨC ĂN VÀ CHẤT THẢI". Màn hình về góc nhìn bên ngoài. Kéo "Khay thức ăn" đặt gần chuột: chuột đi tới, ăn, và thức ăn trong khay vơi dần. Sau đó kéo "Bát nước" đặt gần chuột: chuột uống, nước trong bát giảm nhẹ. Phải cho ăn trước rồi mới cho uống. Đặt quá xa chuột, hoặc chưa chọn nội dung này, thì dụng cụ quay về khay kèm một lời nhắc. Trong lúc chuột đang đi hoặc ăn, dụng cụ thả thêm cũng quay về khay, kèm câu "Em chờ chuột một chút nhé."
 5. Khi chuột uống xong, màn hình hiện "MỘT KHOẢNG THỜI GIAN SAU..." và ánh sáng chớp sáng tối. Phần còn lại tự chạy, học sinh không cần làm gì. Bảng bên phải hiện thẻ "BÊN TRONG CƠ THỂ CHUỘT" và lần lượt từng dòng:
    Các chất hữu cơ trong thức ăn -> Chuột -> Các chất thải.
@@ -121,7 +146,7 @@ Học sinh làm việc với một bông hoa cà chua: xem cấu tạo, thụ ph
 4. Hoa được cắt dọc thành hai nửa, một nửa trong suốt. Cạnh mỗi bộ phận có một chấm sáng. Nhấp vào chấm đang nhấp nháy, theo thứ tự: nhị, chỉ nhị, bao phấn, nhụy, đầu nhụy, vòi nhụy, bầu nhụy, noãn. Mỗi lần nhấp, bộ phận sáng lên, màn hình phóng to và hiện tên bộ phận. Nhấp sai thứ tự thì hiện lời nhắc bộ phận cần xem trước. Khi nhấp vào bầu nhụy, vỏ bầu nhụy trong hơn để thấy các noãn.
 5. Xem đủ 8 bộ phận thì nút "THỰC HIỆN THỤ PHẤN" mở. Bấm nút này: hoa trở lại nguyên vẹn, bao phấn sáng nhẹ, đầu nhụy có một vòng sáng.
 6. Kéo "Que lấy phấn" đến bao phấn: hoa rung nhẹ, hạt phấn rơi ra, một ít bám vào đầu que, và thẻ que ghi "CÓ PHẤN". Kéo que sai chỗ thì que quay về khay kèm một lời nhắc. Sau đó kéo que có phấn đến đầu nhụy: hạt phấn ở lại đầu nhụy, có tiếng "ting" và dòng chữ "Thụ phấn đã xảy ra." Thả que có phấn lên cánh hoa, vòi nhụy hay bầu nhụy thì chưa thụ phấn. Thả lên cánh hoa thì vài hạt rơi xuống, que vẫn còn phấn.
-7. Hoa lại được cắt dọc, camera phóng vào nhụy. Nhấp vào hạt phấn trên đầu nhụy: hạt phấn nảy mầm và mọc ra ống phấn. Kéo đầu ống phấn xuống dọc vòi nhụy tới bầu nhụy. Thả tay khi con trỏ ở xa vòi nhụy thì ống phấn dừng ở chỗ gần nhất kèm một lời nhắc. Ở bầu nhụy, kéo đầu ống phấn tới một noãn. Rồi kéo chấm sáng màu xanh nhạt (tế bào sinh dục đực) vào giữa noãn. Hai tế bào gặp nhau, mọi thứ dừng khoảng 2 giây, rồi hiện "THỤ TINH ĐÃ XẢY RA".
+7. Hoa lại được cắt dọc, camera phóng vào nhụy. Nhấp vào hạt phấn trên đầu nhụy: hạt phấn nảy mầm và mọc ra ống phấn. Kéo đầu ống phấn xuống dọc vòi nhụy tới bầu nhụy. Thả tay khi con trỏ ở xa vòi nhụy thì ống phấn dừng ở chỗ gần nhất kèm một lời nhắc. Ở bầu nhụy, kéo đầu ống phấn tới một noãn. Rồi kéo chấm sáng màu xanh nhạt (tế bào sinh dục đực) vào giữa noãn. Hai tế bào gặp nhau, mọi thứ dừng khoảng 2 giây, rồi hiện "THỤ TINH ĐÃ XẢY RA". Bốn nút trong bảng điều khiển có thể lần lượt làm hạt phấn nảy mầm, đưa ống phấn xuống, nối tới noãn và đưa tế bào đực vào noãn.
 8. Bấm "BẮT ĐẦU QUAN SÁT SỰ TẠO QUẢ VÀ HẠT". Thời gian chạy nhanh qua các mốc ở thẻ "THỜI GIAN": Ngày 0, 3, 7, 14, 21, 30. Cánh hoa héo và rụng, bầu nhụy to dần. Ở Ngày 7 hiện mũi tên "BẦU NHỤY → QUẢ", rồi màn hình chuyển sang một cây cà chua nguyên cây: thân, lá có răng cưa, chùm hoa vàng, vài quả xanh và quả đỏ, và bộ rễ lộ ra dưới gốc. Quả xanh cần theo dõi treo trên một cành, có nhãn "QUẢ". Bấm "TIẾP TỤC TUA NHANH".
 9. Ở Ngày 14 màn hình dừng và quả nhấp nháy. Nhấp vào quả xanh: quả trong suốt lên, kính lúp hiện trên quả và phóng to các noãn đang lớn dần thành hạt. Bấm "TIẾP TỤC TUA NHANH". Quả lớn dần trên cành và chuyển từ xanh sang vàng rồi đỏ.
 10. Ở Ngày 30 quả đã chín đỏ. Nhấp vào quả: quả được hái xuống đĩa và cắt đôi. Nửa bên trái cho thấy vỏ, thịt quả, lõi giữa, bốn khoang dịch nhầy và các hạt. Kính lúp phóng to nửa bên phải, có nhãn "Thịt quả", "Phần dịch nhầy" và "HẠT". Bên trái đĩa có một hạt được phóng to.
@@ -198,7 +223,7 @@ Chữ của từng thí nghiệm nằm trong thư mục js/content. Với thí n
 
 Tệp có hai nhóm. Nhóm "md" gồm các câu chép nguyên văn từ tài liệu đặc tả. Nhóm "app" gồm các câu phụ mà tài liệu đặc tả không có. Thí nghiệm 2, 6, 7 và 8 có thêm nhóm "user" gồm các câu người dùng yêu cầu đổi sau này. Câu trong nhóm "user" được dùng thay cho câu cùng tên trong nhóm "md".
 
-Chữ ở trang chủ và ở các nút chung nằm trong js/core/app.js, js/core/ui.js và index.html. Một vài nhãn nhỏ khác nằm ngay trong js/experiments/exp1.js, js/experiments/exp2.js, js/experiments/exp2-gas.js, js/experiments/exp3.js, js/experiments/exp4.js, js/experiments/exp5.js, js/experiments/exp6.js, js/experiments/exp7-larva.js (đơn vị "mm" của thước đo), js/experiments/exp8-born.js (chữ "MỐC" trước tên mốc thời gian) và js/models/tools.js.
+Chữ tiếng Việt của trang chủ, tên nhóm, tiêu đề 8 thẻ và thống kê tiêu đề nằm trong src/i18n.ts. Cấu trúc trang chủ nằm trong src/ModernHome.svelte. Các nút chung nằm trong js/core/ui.js và index.html. Một vài nhãn nhỏ khác nằm trong js/experiments và js/models/tools.js.
 
 Cách đổi quy tắc nhiệt độ
 
@@ -208,7 +233,7 @@ Mở tệp js/logic/temperature-bands.js. Tệp có một bảng nhỏ gồm 5 k
 
 Nếu không thấy hình 3D
 
-Nếu trang báo "Máy chưa mở được màn hình 3D", mở lại bằng Google Chrome hoặc Microsoft Edge bản mới nhất. Nếu vẫn báo, nhờ người quản trị máy bật tăng tốc phần cứng (hardware acceleration) trong trình duyệt. Trên máy tính bảng, giữ máy nằm ngang.
+Nếu trang báo "Máy chưa mở được màn hình 3D", mở lại bằng Google Chrome hoặc Microsoft Edge bản mới nhất. Nếu vẫn báo, nhờ người quản trị máy bật tăng tốc phần cứng trong trình duyệt. Nếu máy yếu, chọn "Nhẹ" ở thanh trên cùng. Điện thoại dọc vẫn chơi được; khay dụng cụ nằm dưới cảnh 3D.
 
 Dùng nhiều trợ lý AI trong cùng thư mục
 
@@ -225,9 +250,12 @@ Nếu sửa AGENTS.md hoặc một skill trong .claude/skills, trợ lý chạy 
 
 Trong thư mục có gì
 
-index.html: tệp duy nhất cần mở.
+index.html: tệp source để mở hoặc sửa.
+Thi-nghiem-tat-ca-trong-1-file.html: bản duy nhất để chia sẻ hoặc mở offline.
 css: kiểu dáng của trang.
 js: mã chương trình. Thư mục js/content chứa chữ của từng thí nghiệm, js/logic chứa quy tắc, js/models chứa vật thể 3D và js/experiments ghép từng thí nghiệm hoàn chỉnh. Phần dùng chung (giao diện, kéo thả, khung cảnh 3D) nằm trong js/core và js/three.
+src: trang chủ Svelte, cảnh 3D Threlte, bản dịch tiêu đề Sveltia I18n và hàm thống kê tiêu đề TypeScript.
+dist-modern: bản biên dịch của trang chủ hiện đại. Không sửa bằng tay.
 vendor: thư viện 3D three.js. Không sửa thư mục này.
 docs: bản sao tài liệu đặc tả "THÍ NGHIỆM 1909.md".
 SPEC-NOTES.md: các chỗ tài liệu đặc tả mâu thuẫn hoặc còn thiếu, và cách đã xử lý.
@@ -238,4 +266,4 @@ HANDOFF.md: ghi chú bàn giao giữa các trợ lý AI: việc đã xong, việ
 .claude/skills: bốn skill cho trợ lý AI. web-design-guidelines và frontend-design nói về thiết kế giao diện. humanizer là hướng dẫn viết văn tự nhiên, dùng khi viết HUONG-DAN.txt. Nguồn của ba skill này ghi trong .claude/skills/SOURCES.md. frontend-pr-generator đọc thay đổi trong git rồi viết tiêu đề commit tiếng Việt và mô tả Pull Request.
 .agents/skills: bản sao của .claude/skills, dành cho Codex và Antigravity.
 .claude/commands: lệnh gõ nhanh cho trợ lý AI. Gõ /pr hoặc /generate-pr để chạy skill frontend-pr-generator.
-tests và tools: dành cho người lập trình, có thể bỏ qua.
+tests và tools: kiểm thử và công cụ biên dịch dành cho người lập trình, có thể bỏ qua khi chỉ dùng trang.

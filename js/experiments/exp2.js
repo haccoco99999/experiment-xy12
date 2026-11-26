@@ -85,17 +85,48 @@
         return b;
       }));
     }
+    function focusNode(node) {
+      try { node.focus({ preventScroll: true }); } catch (err) { node.focus(); }
+    }
+    X.keepSceneFocus = function (node) { X.sceneFocusNode = node; };
+    X.sceneButton = function (text, key, action) {
+      var b = U.el('button', { class: 'btn btn-orange panel-btn', text: text, attrs: { type: 'button', 'data-scene-action': key, 'aria-label': text } });
+      b.addEventListener('click', function () {
+        X.touch();
+        X.keepSceneFocus(b);
+        var ok = action();
+        if (ok === false) { X.keepSceneFocus(null); return; }
+        b.disabled = true;
+        b.setAttribute('aria-disabled', 'true');
+      });
+      return b;
+    };
+    function takeSceneFocus() {
+      var active = document.activeElement, origin = X.sceneFocusNode;
+      if (!origin && active && active.getAttribute && active.getAttribute('data-scene-action')) origin = active;
+      if (origin && active !== origin && active !== document.body) { X.sceneFocusNode = null; return null; }
+      return origin ? { node: origin, key: origin.getAttribute('data-scene-action') } : null;
+    }
+    function restoreSceneFocus(saved) {
+      if (!saved) return;
+      var controls = Array.prototype.slice.call(UI.el.panel.querySelectorAll('[data-scene-action]:not([disabled])'));
+      var target = controls.filter(function (b) { return b.getAttribute('data-scene-action') === saved.key; })[0] || controls[0];
+      if (!target && !X.busy) target = UI.el.panel.querySelector('.btn.pulse:not([disabled])') || UI.el.panel.querySelector('.sub-btn.open:not([disabled]), .sub-btn.active:not([disabled])') || UI.el.panel.querySelector('.btn:not([disabled])');
+      if (target) { X.sceneFocusNode = null; focusNode(target); }
+      else X.sceneFocusNode = saved.node;
+    }
     function renderPanel() {
       var stack = U.el('div', { class: 'panel-stack' });
       if (X.finaleShown && X.finale) X.finale.render(stack);                  // the completion cards come first
       stack.appendChild(U.el('div', { class: 'panel-card' }, U.el('div', { class: 'panel-title', text: APP.chooseTopic }), topicButton('air'), topicButton('water')));
       if (state.topic === 'air') stack.appendChild(U.el('div', { class: 'panel-card' }, U.el('div', { class: 'panel-title', text: APP.chooseGas }), subButtons(['resp', 'photo'])));
       else if (state.topic === 'water') stack.appendChild(U.el('div', { class: 'panel-card' }, U.el('div', { class: 'panel-title', text: APP.choosePart }), subButtons(['water', 'minerals'])));
-      if (X.task) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, U.el('p', { class: 'task-text', text: X.task.text }), X.task.legend ? U.el('div', { class: 'legend' }, X.task.legend) : null));
+      if (X.task) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, U.el('p', { class: 'task-text', text: X.task.text }), X.task.legend ? U.el('div', { class: 'legend' }, X.task.legend) : null, X.task.action ? X.task.action() : null));
       else if (state.placed && !state.topic && !state.finished) stack.appendChild(U.el('div', { class: 'panel-card task-card' }, U.el('p', { class: 'task-text', text: APP.tapParts })));
       UI.setPanel(stack);
     }
     X.refresh = function () {
+      var sceneFocus = takeSceneFocus();
       var steps = L.stepStates(state);
       if (!X.finaleShown) steps[3] = 'locked';                                // "HOÀN THÀNH" only once the last effect has played
       UI.setProgress(MD.steps, steps, MD.stateNames);
@@ -105,6 +136,7 @@
       UI.setCard('box', { ghost: state.box });
       UI.setCard('magnifier', { ghost: Lab.lens.active() });
       renderPanel();
+      restoreSceneFocus(sceneFocus);
       Lab.loop.wake();
     };
 

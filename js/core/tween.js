@@ -63,6 +63,12 @@
       return make(sec, o.delay, typeof o.ease === 'string' ? ease[o.ease] : o.ease, fn);
     },
     wait: function (sec) { return make(sec, 0, ease.linear, null); },
+    anticipate: function (target, key, offset, sec) {
+      if (reducedMotion) return Promise.resolve();
+      var base = target[key], half = Math.max(0.04, (sec || 0.16) / 2);
+      return tween.to(target, { [key]: base + offset }, half, { ease: 'outQuad' }).promise
+        .then(function () { return tween.to(target, { [key]: base }, half, { ease: 'inOutQuad' }).promise; });
+    },
     killAll: function () { list.forEach(function (h) { h.dead = true; }); list.length = 0; },
     count: function () { return list.length; },
     setTimeScale: function (s) { timeScale = s; },
@@ -84,16 +90,65 @@
   var tickers = [];
   var running = false, needsRender = false, last = 0, raf = 0, frames = 0;
   var slowFrames = 0;
+  var pageHidden = !!(document && document.hidden);
+  var userPaused = false;
+  var motionQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var reducedMotion = !!(motionQuery && motionQuery.matches);
+
+  function hasRequiredTicker() {
+    return tickers.some(function (t) { return !t.ambient; });
+  }
+  function shouldContinue() {
+    return list.length > 0 || (reducedMotion ? hasRequiredTicker() : tickers.length > 0) || loop.keepAlive > 0;
+  }
+  function setPageHidden(hidden) {
+    pageHidden = !!hidden;
+    if (document.body) document.body.classList.toggle('is-page-hidden', pageHidden);
+    if (pageHidden) {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0; running = false;
+    } else {
+      last = performance.now();
+      loop.wake();
+    }
+  }
+  function setUserPaused(paused) {
+    userPaused = !!paused;
+    if (document.body) document.body.classList.toggle('is-motion-paused', userPaused);
+    if (userPaused) {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0; running = false;
+    } else {
+      last = performance.now();
+      loop.wake();
+    }
+    return userPaused;
+  }
+  function setReducedMotion(value) {
+    reducedMotion = !!value;
+    if (document.documentElement) document.documentElement.classList.toggle('reduced-motion', reducedMotion);
+    loop.wake();
+  }
 
   function frame(now) {
     raf = 0;
+    if (pageHidden) { running = false; return; }
+    if (userPaused) {
+      if (loop.render) loop.render(0);
+      needsRender = false;
+      last = now;
+      running = false;
+      return;
+    }
     var elapsed = now - last;
-    var busy = list.length > 0 || needsRender || tickers.some(function (t) { return !t.ambient; }) || loop.keepAlive > 0;
-    if (!busy && elapsed < 30) { raf = requestAnimationFrame(frame); return; } // ambient-only: ~30 fps
+    var busy = list.length > 0 || needsRender || hasRequiredTicker() || loop.keepAlive > 0;
+    if (!busy && !reducedMotion && tickers.length && elapsed < 33) { raf = requestAnimationFrame(frame); return; } // ambient-only: ~30 fps
     last = now;
     var dt = Math.min(0.05, elapsed / 1000);
     tween._update(dt);
-    for (var i = 0; i < tickers.length; i++) tickers[i].fn(dt, now / 1000);
+    for (var i = 0; i < tickers.length; i++) {
+      if (!reducedMotion || !tickers[i].ambient) tickers[i].fn(dt, now / 1000);
+    }
     if (loop.render) loop.render(dt);
     needsRender = false;
     frames++;
@@ -102,7 +157,7 @@
       if (elapsed > 38) slowFrames++; else slowFrames = Math.max(0, slowFrames - 2);
       if (slowFrames > 45) { slowFrames = 0; loop.onSlow(); }
     }
-    if (list.length || tickers.length || loop.keepAlive > 0) raf = requestAnimationFrame(frame);
+    if (shouldContinue()) raf = requestAnimationFrame(frame);
     else running = false;
   }
 
@@ -112,7 +167,7 @@
     keepAlive: 0,
     wake: function () {
       needsRender = true;
-      if (!running) { running = true; last = performance.now(); raf = requestAnimationFrame(frame); }
+      if (!pageHidden && !running) { running = true; last = performance.now(); raf = requestAnimationFrame(frame); }
     },
     /* add(fn(dt,time), {ambient:true}) → remove() */
     add: function (fn, o) {
@@ -125,6 +180,20 @@
     tickerCount: function () { return tickers.length; },
     /* runs every ticker once with a fixed step – used by the test pages, which drive time by hand */
     tickAll: function (dt, time) { for (var i = 0; i < tickers.length; i++) tickers[i].fn(dt, time); },
-    frames: function () { return frames; }
+    frames: function () { return frames; },
+    isPageHidden: function () { return pageHidden; },
+    prefersReducedMotion: function () { return reducedMotion; },
+    isPaused: function () { return userPaused; },
+    setPaused: setUserPaused,
+    pause: function () { return setUserPaused(true); },
+    resume: function () { return setUserPaused(false); }
   };
+
+  document.addEventListener('visibilitychange', function () { setPageHidden(!!document.hidden); });
+  if (motionQuery) {
+    if (motionQuery.addEventListener) motionQuery.addEventListener('change', function (e) { setReducedMotion(e.matches); });
+    else if (motionQuery.addListener) motionQuery.addListener(function (e) { setReducedMotion(e.matches); });
+  }
+  setReducedMotion(reducedMotion);
+  if (pageHidden && document.body) document.body.classList.add('is-page-hidden');
 })(window.Lab);

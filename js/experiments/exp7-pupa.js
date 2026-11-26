@@ -30,7 +30,10 @@
     await Lab.tween.value(1.0, function (k) { X.pupa.setGlass(k); }, { ease: 'inOutQuad' }).promise;
     cutTag = X.tag(MD.labels.cut, function () { return X.pupa.world(V(0, 0.45, 0.35)); }, 'part');
     L.PARTS.forEach(function (p) {
-      dots[p] = X.tag('', function () { return X.pupa.world(DOT[p]); }, 'hot next', 0, { html: '<span class="hotdot"></span>', onClick: function () { X.touch(); tapPart(p); } });
+      dots[p] = X.tag('', function () { return X.pupa.world(DOT[p]); }, 'hot next', 0, {
+        html: '<span class="hotdot"></span>', ariaLabel: 'Quan sát ' + MD.parts[p].toLowerCase(),
+        onClick: function () { X.touch(); tapPart(p); }
+      });
     });
     L.observeCutaway(state); Lab.audio.play('ok');
     X.toast(MD.right.pupaStill, { type: 'info', ms: 6000 }); X.wait(2.4).then(function () { if (!state.metamorphosis) X.toast(APP.tapDots, { type: 'info', ms: 6000 }); });

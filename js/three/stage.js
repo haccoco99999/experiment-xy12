@@ -8,9 +8,9 @@
   var S = Lab.stage = {
     renderer: null, canvas: null, container: null, scene: null, camera: null, envTex: null,
     size: { w: 1, h: 1 }, insets: { l: 0, t: 0, r: 0, b: 0 },
-    quality: 'high', ok: false,
+    quality: 'balanced', qualityMode: 'balanced', ok: false, contextLost: false,
     rig: { tx: 0, ty: 1, tz: 0, dist: 12, yaw: 0, pitch: 0.4, fov: 30 },
-    fps: 0, _labelsDirty: true
+    fps: 0, _labelsDirty: true, _clientRect: null, _lastRefitKey: ''
   };
   var ray = new T.Raycaster(), ndc = new T.Vector2(), tmpV = new T.Vector3(), plane = new T.Plane(new T.Vector3(0, 1, 0), 0);
   var pickHandler = null;
@@ -37,7 +37,7 @@
     r.outputColorSpace = T.SRGBColorSpace;
     r.toneMapping = T.NeutralToneMapping;
     r.toneMappingExposure = 1.0;
-    r.shadowMap.enabled = true;
+    r.shadowMap.enabled = S.quality !== 'light';
     r.shadowMap.type = T.PCFShadowMap;
     r.setClearColor(0x000000, 0);
 
@@ -46,13 +46,30 @@
 
     S.canvas.addEventListener('webglcontextlost', function (e) {
       e.preventDefault();
-      if (Lab.ui && Lab.ui.toast) Lab.ui.toast('Màn hình 3D vừa tạm dừng. Hãy bấm LÀM LẠI THÍ NGHIỆM để tiếp tục.', { type: 'warn' });
+      S.contextLost = true;
+      if (Lab.ui && Lab.ui.toast) Lab.ui.toast('Màn hình 3D vừa tạm dừng. Đang thử khôi phục lại.', { type: 'warn' });
+    });
+    S.canvas.addEventListener('webglcontextrestored', function () {
+      try {
+        S.contextLost = false;
+        if (S.renderer.resetState) S.renderer.resetState();
+        rebuildRendererResources();
+        S.resize(true);
+        S.refit(true);
+        if (Lab.lens && Lab.lens.rebuild) Lab.lens.rebuild();
+        Lab.loop.wake();
+        if (Lab.ui && Lab.ui.toast) Lab.ui.toast('Màn hình 3D đã khôi phục.', { type: 'ok' });
+      } catch (err) {
+        S.contextLost = true;
+        console.error('Không thể khôi phục màn hình 3D:', err);
+        if (Lab.ui && Lab.ui.toast) Lab.ui.toast('Màn hình 3D chưa khôi phục được. Em hãy bấm LÀM LẠI THÍ NGHIỆM.', { type: 'warn' });
+      }
     });
     if (window.ResizeObserver) new ResizeObserver(function () { S.resize(); }).observe(container);
     window.addEventListener('resize', S.resize);
 
     Lab.loop.render = S.render;
-    Lab.loop.onSlow = function () { if (S.quality === 'high') { S.setQuality('light'); } };
+    Lab.loop.onSlow = function () { if (S.quality !== 'light') { S.setQuality('light'); } };
 
     S.canvas.addEventListener('pointerup', onCanvasPointerUp);
     S.canvas.addEventListener('pointerdown', function (e) { S._down = { x: e.clientX, y: e.clientY, t: performance.now() }; });
@@ -78,6 +95,24 @@
     env.traverse(function (o) { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); });
   }
 
+  function rebuildRendererResources() {
+    if (S.envTex && S.envTex.dispose) S.envTex.dispose();
+    buildEnvMap();
+    S.renderer.shadowMap.type = T.PCFShadowMap;
+    S.renderer.shadowMap.enabled = S.quality !== 'light';
+    S.renderer.renderLists.dispose();
+    if (S.scene) {
+      S.scene.environment = S.envTex;
+      S.scene.environmentIntensity = 0.55;
+      S.scene.traverse(function (o) {
+        if (o.material) {
+          (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (m) { m.needsUpdate = true; });
+        }
+        if (o.texture && o.texture.version != null) o.texture.version++;
+      });
+    }
+  }
+
   /* ---------- scenes ---------- */
   S.newScene = function () {
     S.disposeScene();
@@ -99,12 +134,24 @@
   };
 
   /* ---------- size, quality ---------- */
-  S.resize = function () {
+  S.clientRect = function (refresh) {
+    if (!S._clientRect || refresh) {
+      var rc = S.container.getBoundingClientRect();
+      S._clientRect = { left: rc.left, top: rc.top, width: rc.width, height: rc.height, right: rc.right, bottom: rc.bottom };
+    }
+    return S._clientRect;
+  };
+  S.resize = function (force) {
     if (!S.ok) return;
-    var rc = S.container.getBoundingClientRect();
+    var rc = S.clientRect(true);
     var w = Math.max(2, Math.round(rc.width)), h = Math.max(2, Math.round(rc.height));
+    var dprCap = S.quality === 'high' ? 1.5 : S.quality === 'balanced' ? 1.25 : 1;
+    var pixelRatio = Math.min(window.devicePixelRatio || 1, dprCap);
+    var oldPixelRatio = S.renderer.getPixelRatio ? S.renderer.getPixelRatio() : -1;
+    var sameSize = S.size.w === w && S.size.h === h && oldPixelRatio === pixelRatio;
+    if (!force && sameSize) return;
     S.size.w = w; S.size.h = h;
-    S.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, S.quality === 'high' ? 1.75 : 1));
+    S.renderer.setPixelRatio(pixelRatio);
     S.renderer.setSize(w, h, false);
     S.canvas.style.width = '100%'; S.canvas.style.height = '100%';
     S.camera.aspect = w / h;
@@ -113,17 +160,29 @@
     Lab.loop.wake();
   };
   S.setInsets = function (l, t, r, b) {
-    S.insets = { l: l | 0, t: t | 0, r: r | 0, b: b | 0 };
+    var next = { l: l | 0, t: t | 0, r: r | 0, b: b | 0 };
+    if (S.insets.l === next.l && S.insets.t === next.t && S.insets.r === next.r && S.insets.b === next.b) return false;
+    S.insets = next;
     S.applyRig();
     Lab.loop.wake();
+    return true;
   };
-  S.setQuality = function (q) {
-    if (S.quality === q) return;
+  S.setQuality = function (q, silent) {
+    q = q === 'light' || q === 'balanced' || q === 'high' ? q : 'balanced';
+    S.qualityMode = q;
+    if (S.quality === q) return q;
     S.quality = q;
-    S.renderer.shadowMap.enabled = q === 'high';
+    var select = document.getElementById('quality-select');
+    if (select) select.value = q;
+    if (S.renderer) S.renderer.shadowMap.enabled = q !== 'light';
     if (S.scene) S.scene.traverse(function (o) { if (o.material) { (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (m) { m.needsUpdate = true; }); } });
-    S.resize();
-    if (Lab.ui && Lab.ui.toast && q === 'light') Lab.ui.toast('Đã chuyển sang chế độ nhẹ để máy chạy mượt hơn.', { type: 'info', emoji: '⚡' });
+    if (S.ok) S.resize(true);
+    if (Lab.lens && Lab.lens.rebuild) Lab.lens.rebuild();
+    if (!silent && Lab.ui && Lab.ui.toast) {
+      var labels = { light: 'Chế độ Nhẹ', balanced: 'Chế độ Cân bằng', high: 'Chế độ Đẹp' };
+      Lab.ui.toast('Đã chuyển sang ' + labels[q] + '.', { type: 'info', emoji: q === 'light' ? '⚡' : '🎨' });
+    }
+    return q;
   };
 
   /* ---------- camera rig ---------- */
@@ -167,26 +226,35 @@
     }, { ease: Lab.tween.ease.inOutCubic }).promise;
   };
   /* re-fit the last shot after the layout changed (window resize, panel opened…) */
-  S.refit = function () { if (S._lastSpec && S._lastSpec.w) { Object.assign(S.rig, S.fit(S._lastSpec)); S.applyRig(); Lab.loop.wake(); } };
+  S.refit = function (force) {
+    if (!S._lastSpec || !S._lastSpec.w) return false;
+    var target = S.fit(S._lastSpec);
+    var key = [S.size.w, S.size.h, S.insets.l, S.insets.t, S.insets.r, S.insets.b, target.tx, target.ty, target.tz, target.dist, target.yaw, target.pitch, target.fov].join('|');
+    if (!force && key === S._lastRefitKey) return false;
+    S._lastRefitKey = key;
+    Object.assign(S.rig, target);
+    S.applyRig(); Lab.loop.wake();
+    return true;
+  };
 
   /* ---------- projection / picking ---------- */
-  S.project = function (v3) {
+  S.project = function (v3, rc) {
     tmpV.copy(v3).project(S.camera);
-    var rc = S.container.getBoundingClientRect();
+    rc = rc || S.clientRect();
     return { x: rc.left + (tmpV.x * 0.5 + 0.5) * rc.width, y: rc.top + (-tmpV.y * 0.5 + 0.5) * rc.height, behind: tmpV.z > 1 };
   };
   /* screen rectangle (client px) covering an object or Box3, grown by padPx */
   S.rectOf = function (target, padPx) {
     var box = target.isBox3 ? target : new T.Box3().setFromObject(target);
-    var xs = [], ys = [], mn = box.min, mx = box.max, v = new T.Vector3();
+    var xs = [], ys = [], mn = box.min, mx = box.max, v = new T.Vector3(), rc = S.clientRect();
     [mn.x, mx.x].forEach(function (x) { [mn.y, mx.y].forEach(function (y) { [mn.z, mx.z].forEach(function (z) {
-      var p = S.project(v.set(x, y, z)); xs.push(p.x); ys.push(p.y);
+      var p = S.project(v.set(x, y, z), rc); xs.push(p.x); ys.push(p.y);
     }); }); });
     var p = padPx || 0, x0 = Math.min.apply(null, xs) - p, x1 = Math.max.apply(null, xs) + p, y0 = Math.min.apply(null, ys) - p, y1 = Math.max.apply(null, ys) + p;
     return { x: x0, y: y0, w: x1 - x0, h: y1 - y0, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 };
   };
   S.rayAt = function (cx, cy) {
-    var rc = S.container.getBoundingClientRect();
+    var rc = S.clientRect();
     ndc.set(((cx - rc.left) / rc.width) * 2 - 1, -((cy - rc.top) / rc.height) * 2 + 1);
     ray.setFromCamera(ndc, S.camera);
     return ray;
@@ -218,7 +286,8 @@
 
   /* ---------- render ---------- */
   S.render = function (dt) {
-    if (!S.ok || !S.scene) return;
+    if (!S.ok || !S.scene || S.contextLost || document.hidden) return;
+    S.clientRect();
     S.renderer.render(S.scene, S.camera);
     if (S.afterRender) S.afterRender(S.renderer);          // the magnifier lens draws its picture on top (js/three/lens.js)
     if (Lab.labels) Lab.labels.update();

@@ -16,6 +16,20 @@
     return ctx;
   }
 
+  function resume(c) {
+    if (!c || c.state !== 'suspended' || typeof c.resume !== 'function') return null;
+    try {
+      var promise = c.resume();
+      if (promise && typeof promise.catch === 'function') {
+        promise.catch(function (err) { console.warn('Không thể tiếp tục âm thanh:', err); });
+      }
+      return promise;
+    } catch (err) {
+      console.warn('Không thể tiếp tục âm thanh:', err);
+      return null;
+    }
+  }
+
   function tone(freq, t0, dur, type, gain, slideTo) {
     var o = ctx.createOscillator(), g = ctx.createGain();
     o.type = type || 'sine';
@@ -65,10 +79,10 @@
     play: function (name) {
       if (muted) return;
       var c = ensure(); if (!c) return;
-      if (c.state === 'suspended') c.resume();
+      if (c.state === 'suspended') resume(c);
       var fn = sounds[name]; if (fn) fn(c.currentTime + 0.01);
     },
-    unlock: function () { var c = ensure(); if (c && c.state === 'suspended') c.resume(); },
+    unlock: function () { return resume(ensure()); },
     isMuted: function () { return muted; },
     setMuted: function (m) { muted = !!m; Lab.util.store.set('muted', muted ? '1' : '0'); },
     toggle: function () { Lab.audio.setMuted(!muted); return muted; }

@@ -146,13 +146,11 @@
     d7: async function (api) { await S5.male(api); click('.panel-btn'); await adv(16); },
     d14: async function (api) { await S5.d7(api); click('.panel-btn'); await adv(5); },
     seeds: async function (api) {
-      await S5.d14(api); var X = api.X, p = Lab.stage.project(X.scene.children.filter(function (o) { return o.userData && o.userData.pick === 'fruit'; })[0].position);
-      ev('pointerdown', p.x, p.y, Lab.stage.canvas); ev('pointerup', p.x, p.y, Lab.stage.canvas); await adv(12);
+      await S5.d14(api); document.querySelector('[data-fruit-action="seeds"]').click(); await adv(12);
     },
-    d30: async function (api) { await S5.seeds(api); click('.panel-btn'); await adv(9); await adv(4); },
+    d30: async function (api) { await S5.seeds(api); Array.from(document.querySelectorAll('.panel-btn')).filter(function (b) { return b.textContent.includes('TIẾP TỤC'); })[0].click(); await adv(9); await adv(4); },
     finale: async function (api) {
-      await S5.d30(api); var X = api.X, p = Lab.stage.project(X.scene.children.filter(function (o) { return o.userData && o.userData.pick === 'fruit'; })[0].position);
-      ev('pointerdown', p.x, p.y, Lab.stage.canvas); ev('pointerup', p.x, p.y, Lab.stage.canvas); await adv(12);
+      await S5.d30(api); document.querySelector('[data-fruit-action="cut"]').click(); await adv(12);
       if (!q.get('cut')) { click('.panel-btn'); await adv(3); }               // ?cut=1 stops at the cut fruit and the magnifier
       document.getElementById('caption').innerHTML = ''; document.getElementById('toasts').innerHTML = '';
     }

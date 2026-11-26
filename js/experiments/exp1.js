@@ -177,6 +177,7 @@
       toolStart('water');
       var pot = pots.B, can = Mo.wateringCan(), tilt = -0.78, off = tipOffset(can, tilt), soil = pot.soilPoint();
       await flyIn(can, { x: soil.x - off.x, y: 2.6 - off.y, z: soil.z + 0.2 }, { x: soil.x - off.x - 3.2, y: 5.6, z: soil.z + 0.2 });
+      await Lab.tween.anticipate(can.rotation, 'z', 0.08, 0.16);
       await Lab.tween.to(can.rotation, { z: tilt }, 0.55, { ease: 'inOutCubic' }).promise;
       Lab.audio.play('water');
       Lab.fx.pour(scene, { from: worldOf(can.userData.tip), to: soil, color: 0x59bff2, size: 0.055, count: 46, duration: 1.9, spread: 0.12, opacity: 0.85, flight: 0.5 });
@@ -194,6 +195,7 @@
       gp.userData.tip.position.set(0, 0.84, 0);
       off = tipOffset(gp, tilt);
       await flyIn(gp, { x: soil.x - off.x, y: 2.7 - off.y, z: soil.z + 0.1 }, { x: soil.x - 3, y: 5.6, z: soil.z + 0.1 });
+      await Lab.tween.anticipate(gp.rotation, 'z', 0.1, 0.16);
       await Lab.tween.to(gp.rotation, { z: tilt }, 0.6, { ease: 'inOutCubic' }).promise;
       gp.userData.pebbles.visible = false;
       Lab.audio.play('pour');

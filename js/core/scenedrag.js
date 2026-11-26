@@ -80,7 +80,18 @@
     Lab.stage.canvas.addEventListener('pointerdown', onDown);
     document.addEventListener('pointermove', onMove);
     document.addEventListener('pointerup', onUp);
-    document.addEventListener('pointercancel', function (e) { if (drag && e.pointerId === drag.id) { var it = drag.it; drag = null; document.body.classList.remove('is-dragging-item'); if (it.onEnd) it.onEnd(it); sendHome(it); } });
+    document.addEventListener('pointercancel', function (e) { if (drag && e.pointerId === drag.id) cancelDrag(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && drag) { e.preventDefault(); cancelDrag(); } });
+    document.addEventListener('visibilitychange', function () { if (document.hidden && drag) cancelDrag(); });
+  }
+
+  function cancelDrag() {
+    if (!drag) return;
+    var d = drag, it = d.it; drag = null;
+    document.body.classList.remove('is-dragging-item');
+    try { Lab.stage.canvas.releasePointerCapture(d.id); } catch (err) { /* synthetic events have no capture */ }
+    if (it.onEnd) it.onEnd(it);
+    sendHome(it);
   }
 
   /* item: {id, object, radius, home():{x,y,z} (local), enabled(item), region(item)→'env'|'leaf', onStart(item), onDrop(item, info)→{ok}} */

@@ -179,6 +179,7 @@
       var pot = X.pots[i], can = Mo.wateringCan(), tilt = -0.78, off = tipOffset(can, tilt), soil = pot.soilPoint();
       can.position.set(soil.x - off.x - 3.2, 5.6, soil.z + 0.2); scene.add(can);
       await Lab.tween.to(can.position, { x: soil.x - off.x, y: 2.6 - off.y, z: soil.z + 0.2 }, 0.8, { ease: 'outCubic' }).promise;
+      await Lab.tween.anticipate(can.rotation, 'z', 0.08, 0.16);
       await Lab.tween.to(can.rotation, { z: tilt }, 0.55, { ease: 'inOutCubic' }).promise;
       Lab.audio.play('water');
       Lab.fx.pour(scene, { from: worldOf(can.userData.tip), to: soil, color: 0x59bff2, size: 0.055, count: 46, duration: 1.9, spread: 0.12, opacity: 0.85, flight: 0.5 });

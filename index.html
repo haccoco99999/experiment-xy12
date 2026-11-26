@@ -22,13 +22,22 @@
         <button id="btn-home" class="btn btn-ghost btn-icon" aria-label="Về trang chủ" title="Về trang chủ">🏠</button>
         <h1 id="lab-title"></h1>
         <div class="topbar-tools">
+          <label class="quality-control">
+            <span class="visually-hidden">Chất lượng đồ họa</span>
+            <select id="quality-select" aria-label="Chất lượng đồ họa" title="Chất lượng đồ họa">
+              <option value="light">Nhẹ</option>
+              <option value="balanced" selected>Cân bằng</option>
+              <option value="high">Đẹp</option>
+            </select>
+          </label>
+          <button id="btn-motion" class="btn btn-ghost btn-icon" aria-label="Tạm dừng hoạt cảnh" aria-pressed="false" title="Tạm dừng hoạt cảnh">⏸️</button>
           <button id="btn-help" class="btn btn-ghost btn-icon" aria-label="Hướng dẫn" title="Hướng dẫn">❓</button>
           <button id="btn-sound" class="btn btn-ghost btn-icon" aria-label="Âm thanh" title="Âm thanh">🔊</button>
         </div>
       </header>
-      <nav id="progress" aria-label="Tiến trình thí nghiệm"></nav>
+      <nav id="progress" aria-label="Tiến trình thí nghiệm" tabindex="0"></nav>
       <aside id="tray" aria-label="Khay dụng cụ"></aside>
-      <aside id="panel" class="hidden"></aside>
+      <aside id="panel" class="hidden" aria-label="Điều khiển và thông tin thí nghiệm" tabindex="0"></aside>
       <div id="labels"></div>
       <div id="zones"></div>
       <div id="toasts" aria-live="polite"></div>
@@ -54,6 +63,8 @@
 </div>
 
 <script src="vendor/three.classic.js"></script>
+<!-- Optional Svelte shell. If this asset is missing or fails to run, app.js keeps the legacy home renderer. -->
+<script src="dist-modern/lab-modern.js"></script>
 <script src="js/core/lab.js"></script>
 <script src="js/core/tween.js"></script>
 <script src="js/core/audio.js"></script>

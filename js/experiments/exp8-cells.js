@@ -2,7 +2,7 @@
    "inside" backdrop: click the sperm and the egg and drag each to the right cat's area, drag one sperm to the big egg (fertilization), and look at the zygote with the glass. */
 (Lab.exp8mods = Lab.exp8mods || []).push(function (X) {
   'use strict';
-  var T = X.T, L = X.L, MD = X.MD, APP = X.APP, UI = X.UI, state = X.state, V = X.V, Mo = X.Mo, PH = X.PH;
+  var T = X.T, L = X.L, MD = X.MD, APP = X.APP, UI = X.UI, state = X.state, V = X.V, Mo = X.Mo, PH = X.PH, el = X.U.el;
   var SPOT = { male: V(-1.9, 0, 0.6), female: V(1.9, 0, 0.6) }, YAW = { male: -0.9, female: -2.24 };           // on the table, facing each other and the student
   var cats = {}, rings = {}, tags = {}, show = {}, cell = { sperms: [], egg: null, items: [], areas: [] };
   var EGG_HOME = V(0.7, 1.15, 0), AREA = { male: V(-3.0, 2.1, 0.3), female: V(3.0, 2.1, 0.3) };
@@ -58,17 +58,30 @@
     X.shot('table', 900); X.toast(MD.right.intro, { type: 'info', ms: 7000 });
     Object.keys(rings).forEach(function (k) { rings[k].material.color.setHex(0xffffff); });
   };
+  function identify(sex) {
+    var r = L.decideIdentify(state, sex);
+    if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return false; }
+    L.applyIdentify(state, sex); Lab.audio.play('ok'); cats[sex].glow(true); Lab.fx.sparkles(X.scene, cats[sex].group.position.clone().add(V(0, 1.4, 0)), 0xffe066, 8);
+    if (!tags[sex]) tags[sex] = X.tag(MD.labels[sex], function () { return cats[sex].group.position.clone().add(V(0, 1.85, 0)); }, 'place');
+    X.toast(sex === 'male' ? MD.right.maleId : MD.right.femaleId, { type: 'ok', ms: 5600 }); X.showCatInfo(sex); return true;
+  }
   X.clicks.push(function (hit) {
     var id = hit && hit.id;
     if (state.phase === PH.identify) {
-      var sex = id === 'male' || id === 'female' ? id : null, r = L.decideIdentify(state, sex);
-      if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return true; }
-      L.applyIdentify(state, sex); Lab.audio.play('ok'); cats[sex].glow(true); Lab.fx.sparkles(X.scene, cats[sex].group.position.clone().add(V(0, 1.4, 0)), 0xffe066, 8);
-      if (!tags[sex]) tags[sex] = X.tag(MD.labels[sex], function () { return cats[sex].group.position.clone().add(V(0, 1.85, 0)); }, 'place');
-      X.toast(sex === 'male' ? MD.right.maleId : MD.right.femaleId, { type: 'ok', ms: 5600 }); X.showCatInfo(sex); return true;
+      identify(id === 'male' || id === 'female' ? id : null); return true;
     }
     if ((id === 'male' || id === 'female') && cats[id] && cats[id].group.visible) { X.showCatInfo(id); return true; }
     return false;
+  });
+  X.panelHooks.push(function (stack) {
+    if (state.phase !== PH.identify) return;
+    var card = el('div', { class: 'panel-card' }, el('div', { class: 'obs-head', text: 'XÁC ĐỊNH HAI CON HEO' }));
+    ['male', 'female'].forEach(function (sex) {
+      var done = sex === 'male' ? state.maleIdentified : state.femaleIdentified;
+      card.appendChild(X.button('XÁC ĐỊNH ' + MD.tools[sex], 'btn-blue', function () { identify(sex); }, !!X.busy || done,
+        done ? MD.tools[sex] + ' đã được xác định.' : APP.busy));
+    });
+    stack.appendChild(card);
   });
 
   /* ---------------- phase 2: sperm and egg in the "inside" picture (md 12) ---------------- */
@@ -120,6 +133,25 @@
     if (what === 'sperm') cell.sperms.forEach(function (s) { if (s !== sp && s.mode === 'swim') { s.mode = 'gone'; X.tween(0.9, function (k) { s.group.scale.setScalar(1.1 * (1 - k) + 0.001); }).then(function () { s.group.visible = false; }); } });
     X.refresh(); return { ok: true };
   }
+  function keyboardSperm() {
+    for (var i = 0; i < cell.sperms.length; i++) {
+      if (cell.sperms[i].group.visible && cell.sperms[i].mode === 'swim') return cell.sperms[i];
+    }
+    return null;
+  }
+  X.panelHooks.push(function (stack) {
+    if (state.phase !== PH.cells) return;
+    var sperm = keyboardSperm(), card = el('div', { class: 'panel-card' }, el('div', { class: 'obs-head', text: 'QUAN SÁT VÀ ĐẶT TẾ BÀO SINH DỤC' }));
+    card.appendChild(X.button('QUAN SÁT TINH TRÙNG', 'btn-blue', function () { observe('sperm'); },
+      !!X.busy || !sperm || state.spermObserved, state.spermObserved ? 'Tinh trùng đã được quan sát.' : APP.busy));
+    card.appendChild(X.button('ĐƯA TINH TRÙNG VÀO KHU VỰC HEO ĐỰC', 'btn-orange', function () { dropCell('sperm', { world: AREA.male }, sperm); },
+      !!X.busy || !sperm || !state.spermObserved || state.spermPlaced, !state.spermObserved ? 'Hãy quan sát tinh trùng trước.' : state.spermPlaced ? 'Tinh trùng đã được đặt đúng khu vực.' : APP.busy));
+    card.appendChild(X.button('QUAN SÁT TRỨNG', 'btn-blue', function () { observe('egg'); },
+      !!X.busy || !cell.egg || state.eggObserved, state.eggObserved ? 'Trứng đã được quan sát.' : APP.busy));
+    card.appendChild(X.button('ĐƯA TRỨNG VÀO KHU VỰC HEO CÁI', 'btn-orange', function () { dropCell('egg', { world: AREA.female }); },
+      !!X.busy || !cell.egg || !state.eggObserved || state.eggPlaced, !state.eggObserved ? 'Hãy quan sát trứng trước.' : state.eggPlaced ? 'Trứng đã được đặt đúng khu vực.' : APP.busy));
+    stack.appendChild(card);
+  });
   X.targets.sperm = function () { var s = cell.sperms.filter(function (q) { return q.group.visible && q.mode !== 'gone'; })[0]; return s && state.phase <= PH.cells ? boxAt(s.group.position, 0.8) : null; };
   X.lensPoint.sperm = function () { var s = cell.sperms.filter(function (q) { return q.group.visible; })[0]; return s.group.position.clone(); };
   X.lensSize.sperm = 1.6;
@@ -129,12 +161,16 @@
     var id = hit && hit.id;
     if (state.phase === PH.fertilize && id === 'egg') { var c = L.clickEgg(state); if (c.msg) { X.toast(X.msgFor(c.msg), { type: 'info', ms: 5200 }); Lab.audio.play('click'); } return true; }
     if (state.phase === PH.zygote && id === 'egg') {
-      if (!state.zygoteObserved) { X.toast(MD.msg.zygoteLensTask, { type: 'info', ms: 5200 }); return true; }
-      if (L.applyZygoteClick(state)) { Lab.audio.play('ok'); Lab.fx.sparkles(X.scene, cell.egg.group.position.clone(), 0xffe066, 10); X.refresh(); }
-      return true;
+      clickZygote(); return true;
     }
     return false;
   });
+  function clickZygote() {
+    if (state.phase !== PH.zygote) return false;
+    if (!state.zygoteObserved) { X.toast(MD.msg.zygoteLensTask, { type: 'info', ms: 5200 }); return false; }
+    if (L.applyZygoteClick(state)) { Lab.audio.play('ok'); Lab.fx.sparkles(X.scene, cell.egg.group.position.clone(), 0xffe066, 10); X.refresh(); }
+    return true;
+  }
 
   /* ---------------- phase 3: fertilization (md 13) ---------------- */
   X.enter[PH.fertilize] = function () {
@@ -157,6 +193,16 @@
     if (!r.ok) { if (r.msg) { X.toast(X.msgFor(r.msg), { type: 'warn' }); Lab.audio.play('wrong'); } return { ok: false }; }
     sp.mode = 'busy'; fertilize(sp); return { ok: true };
   }
+  X.panelHooks.push(function (stack) {
+    if (state.phase !== PH.fertilize) return;
+    var sperm = keyboardSperm(), locked = !!X.busy || !sperm || state.fertilized;
+    stack.appendChild(X.button('CHỌN MỘT TINH TRÙNG VÀ ĐƯA ĐẾN TRỨNG', 'btn-orange', function () {
+      var chosen = keyboardSperm();
+      if (!chosen || X.busy) return;
+      var result = dropSperm(chosen, { world: cell.egg.group.position.clone() });
+      if (result.ok) X.refresh();
+    }, locked, state.fertilized ? 'Thụ tinh đã hoàn thành.' : APP.busy));
+  });
   async function fertilize(sp) {
     X.busy++; var egg = cell.egg, ep = egg.group.position, g = sp.group;
     sp.glow(true); faceTo(g, g.position, ep);
@@ -174,6 +220,12 @@
 
   /* ---------------- phase 4: the zygote (md 14) ---------------- */
   X.enter[PH.zygote] = function () { X.toast(MD.right.zygote, { type: 'info', ms: 6500 }); X.setInfo({ title: MD.steps[3], msg: MD.right.zygote }); };
+  X.panelHooks.push(function (stack) {
+    if (state.phase !== PH.zygote) return;
+    var locked = !!X.busy || !state.zygoteObserved || state.zygoteClicked;
+    stack.appendChild(X.button('NHẤP VÀO HỢP TỬ', 'btn-blue', clickZygote, locked,
+      !state.zygoteObserved ? MD.msg.zygoteLensTask : state.zygoteClicked ? 'Hợp tử đã được chọn.' : APP.busy));
+  });
   X.targets.zygote = function () { return cell.egg && state.phase === PH.zygote ? boxAt(cell.egg.group.position, 1.6) : null; };
   X.lensPoint.zygote = function () { return cell.egg.group.position.clone(); }; X.lensSize.zygote = 2.8;
   X.lensHooks.zygote = function () { cell.egg.setGlow(1); Lab.fx.sparkles(X.scene, cell.egg.group.position.clone(), 0xffe066, 12); Lab.audio.play('ok'); X.toast(MD.right.zygote, { type: 'ok', ms: 6000 }); X.setInfo({ title: MD.steps[3], msg: MD.right.zygote }); };

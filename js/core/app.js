@@ -19,7 +19,7 @@
   var app = Lab.app = { current: null, catalog: CATALOG };
   var els = {};
 
-  function renderHome() {
+  function renderLegacyHome() {
     var wrap = U.el('div', { class: 'home-wrap' });
     wrap.appendChild(U.el('header', { class: 'home-head' },
       U.el('h1', { class: 'home-title', text: 'PHÒNG THÍ NGHIỆM SÂN VƯỜN' }),
@@ -45,6 +45,41 @@
     U.clear(els.home); els.home.appendChild(wrap);
   }
 
+  function unmountModernHome() {
+    var modern = window.LabModern;
+    if (!modern || typeof modern.unmountHome !== 'function') return;
+    try { modern.unmountHome(); } catch (e) { console.error(e); }
+  }
+
+  function modernText(method, fallback, id) {
+    var modern = window.LabModern;
+    if (!modern || typeof modern[method] !== 'function') return fallback;
+    try { return modern[method](id, fallback); } catch (e) { console.error(e); return fallback; }
+  }
+
+  function renderHome() {
+    var modern = window.LabModern;
+    if (modern && typeof modern.mountHome === 'function') {
+      try {
+        modern.mountHome(els.home, {
+          catalog: CATALOG.map(function (item) {
+            return {
+              n: item.n, id: item.id, group: item.group, emoji: item.emoji,
+              title: item.title, sub: item.sub, available: !!Lab.experiments[item.id]
+            };
+          })
+        });
+        return;
+      } catch (e) {
+        console.error('Không mở được trang chủ Svelte; dùng giao diện cũ.', e);
+        unmountModernHome();
+        document.documentElement.lang = 'vi';
+        document.title = 'Phòng thí nghiệm sân vườn';
+      }
+    }
+    renderLegacyHome();
+  }
+
   function cleanup() {
     if (app.current && app.current.inst && app.current.inst.dispose) { try { app.current.inst.dispose(); } catch (e) { console.error(e); } }
     app.current = null;
@@ -57,7 +92,7 @@
   function build(id) {
     var exp = Lab.experiments[id];
     cleanup();
-    UI.setExperiment(exp);
+    UI.setExperiment(exp, modernText('getExperimentTitle', exp.title, id), modernText('getLocale', 'vi'));
     var scene = Lab.stage.newScene();
     try {
       var inst = exp.create({ scene: scene });
@@ -71,20 +106,27 @@
 
   function showHome() {
     cleanup();
+    unmountModernHome();
     document.body.dataset.screen = 'home';
+    document.documentElement.lang = modernText('getLocale', 'vi');
     els.home.hidden = false; els.lab.hidden = true;
     els.fallback.hidden = true;
-    document.title = 'Phòng thí nghiệm sân vườn';
+    document.title = modernText('getDocumentTitle', 'Phòng thí nghiệm sân vườn');
+    renderHome();
   }
 
   function enterLab(id) {
+    unmountModernHome();
     document.body.dataset.screen = 'lab';
+    document.documentElement.lang = 'vi';
     els.home.hidden = true; els.lab.hidden = false;
     if (!Lab.stage.ok) {
       if (!Lab.stage.supported() || !Lab.stage.init(UI.el.stage)) { els.fallback.hidden = false; return; }
     }
     els.fallback.hidden = true;
-    document.title = Lab.experiments[id].title + ' – Phòng thí nghiệm sân vườn';
+    var expTitle = modernText('getExperimentTitle', Lab.experiments[id].title, id);
+    var brand = modernText('getDocumentTitle', 'Phòng thí nghiệm sân vườn');
+    document.title = expTitle + ' – ' + brand;
     build(id);
   }
 
@@ -131,7 +173,6 @@
     document.getElementById('btn-fallback-home').addEventListener('click', function () { app.go(''); });
     window.addEventListener('hashchange', route);
     window.addEventListener('error', function (e) { console.error(e.error || e.message); });
-    renderHome();
     var ready = (document.fonts && document.fonts.load) ? Promise.all([document.fonts.load('800 20px Quicksand'), document.fonts.load('600 20px Quicksand')]).catch(function () { }) : Promise.resolve();
     ready.then(route);
   }
