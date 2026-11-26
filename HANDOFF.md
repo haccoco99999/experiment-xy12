@@ -53,6 +53,28 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 
 ## Log (newest first)
 
+### 2026-11-26, Copilot: cài skill và prototype hoạt cảnh thí nghiệm 1
+
+- Đã cài và khóa 8 skill trong `.claude/skills`, đồng bộ sang `.agents/skills`: ba skill Three.js, ba skill animation/SVG/accessibility, hai skill Svelte. `package.json` và runtime không thêm animation library nào; `skills-lock.json` ghi nguồn và commit của từng skill.
+- Thí nghiệm 1 trong `js/experiments/exp1.js` có thao tác chạm dùng chung picker với bàn phím, camera tập trung vào chậu B khi tưới nước/rải sỏi/đặt thùng, rồi quay lại góc tổng quan. `css/app.css` thêm SVG chỉ đường nhẹ; pause dừng cả 3D tween và SVG. Reduced motion giữ nguyên camera và hiện trạng thái SVG tĩnh. `HUONG-DAN.txt` đã cập nhật.
+- Browser 1024×768: pause giữ nguyên toàn bộ giá trị camera, cue bị dừng; sau thao tác camera về đúng góc tổng quan. Trên 390×844, pointer touch tổng hợp mở picker đúng vị trí, không tràn ngang. Reduced motion giữ camera bất biến và SVG dùng `animation:none`, `opacity: 1`. Bản offline `file://`: picker chạy, không page/console error, không tài nguyên HTTP ngoài.
+- `npm run check:modern`: 0 error/0 warning; `npm run check:typescript`: đạt; `node --test "tests/*.test.js"`: 159/159 đạt; audit 0 lỗ hổng; `git diff --check`: sạch. Build: shell 149,086 byte, gzip 51,64 KB; offline 3.155.315 byte, vẫn dưới budget.
+- Chưa benchmark laptop 8 GB thật hoặc screen reader thật; chưa áp dụng prototype cho 7 bài còn lại. Còn lại: người dùng duyệt hình và quyết định mở rộng; câu hỏi mở: không có. Công cụ đọc usage vẫn không khả dụng nên không báo được phần trăm giới hạn.
+
+### 2026-11-26, Copilot: khảo sát skill hoạt cảnh, SVG và 3D
+
+- Không sửa mã sản phẩm. Đã tra Skills.sh và kho nguồn chính thức cho GSAP, Three.js, SVG animation, LottieFiles motion design, Remotion, Rive và Svelte 5.
+- Nên thêm có chọn lọc vào skill workspace: `threejs-animation`, `threejs-interaction`, `threejs-performance`; `svg-animation`, `accessible-animation`, `60fps-animation`; `svelte-code-writer` hoặc `svelte-core-bestpractices`. Thêm `motion-design` chỉ sau khi loại phần Creator MCP/referral vì Skills.sh đang có cảnh báo Snyk prompt injection.
+- Không nên cài GSAP, Remotion, Rive hoặc Lottie runtime vào web hiện tại. GSAP trùng luồng `Lab.tween`; Remotion có cảnh báo Snyk và phù hợp xuất video hơn; Rive thêm renderer/asset pipeline; Lottie tăng file nhưng ít cải thiện điều khiển 3D.
+- `node --test "tests/*.test.js"`: 157/157 đạt sau nghiên cứu; lượt này không thay đổi mã sản phẩm ngoài `HANDOFF.md`. Chưa cài skill hoặc benchmark skill mới. Còn lại: nếu được duyệt, cài đúng nhóm skill đã chọn rồi chạy đồng bộ `.claude/.agents`. Câu hỏi mở: cài ngay skill hay chỉ dùng báo cáo để chọn.
+
+### 2026-11-26, Copilot: rà soát thiết kế và kiến trúc 3D
+
+- Không sửa mã sản phẩm. Đã rà trang chủ Svelte/Threlte, shell classic Three.js, CSS, camera, chất lượng đồ họa, kéo/thả, hiệu ứng, dữ liệu catalog, luồng học tập và độ lớn bản offline.
+- Browser: trang chủ desktop/mobile và thí nghiệm 1/3 đã kiểm tra trực quan. `axe` WCAG 2 A/AA và 2.1 A/AA: 0 lỗi trên trang chủ và thí nghiệm 1. Mở `index.html` bằng `file://` cho đến thí nghiệm 1: không có page/console error.
+- Kết luận thiết kế: giữ Svelte 5 + Threlte/Three.js + WebGLRenderer, đổi trang chủ thành vườn 3D có hotspot và cảnh thí nghiệm thành diorama toàn màn hình với bảng điều khiển theo ngữ cảnh. Điện thoại dọc hiện đưa cùng lúc cả khay và panel xuống dưới nên vùng cảnh 3D còn rất ít; đây là điểm ưu tiên đầu tiên. Catalog hiện lặp ở `js/core/app.js` và `src/i18n.ts`; `three` dev là 0.187 nhưng runtime là r185.
+- `npm run check:modern`: 0 error/0 warning; `npm run check:typescript`: đạt; `node --test "tests/*.test.js"`: 157/157 đạt. Chưa triển khai redesign, chưa benchmark laptop 8 GB thật hoặc screen reader thật. Còn lại: báo cáo phương án và xin người dùng chọn mức triển khai. Câu hỏi mở: ưu tiên prototype 1 bài hay chuyển toàn bộ 8 bài.
+
 ### 2026-11-26, Copilot: khóa toàn bộ tiêu đề và nhãn bằng tiếng Việt
 
 - Đã gỡ hoàn toàn selector ngôn ngữ và bản dịch English khỏi `src/ModernHome.svelte`, `src/i18n.ts`, `src/catalog.ts` và `LabModernApi`. Locale cố định `vi`, old key `lab.locale` được xóa khi mở trang để một lần chọn English trước đây không thể quay lại giao diện English sau reload.
@@ -66,24 +88,3 @@ A good answer lists all five rules (including the 90% usage rule and Vietnamese 
 - Đã thêm anticipation giảm chuyển động 160 ms cho thao tác rót nước/rải khoáng ở thí nghiệm 1, 2, 6 và đưa que lấy phấn ở thí nghiệm 5. Không biến dạng kích thước sinh học. Đã đổi transition nhiệt độ, trứng thụ tinh, card, zone, pulse và shell hiện đại sang `transform`/`opacity`, bỏ animation `width`, `background` và `box-shadow`.
 - `node --test "tests/*.test.js"`: 157/157 đạt. `npm run check:modern`: 0 error/0 warning; `npm run check:typescript`: đạt; audit 0 lỗ hổng; review code không tìm thấy lỗi đáng kể. Browser: pause đóng băng vị trí tween, thông báo vẫn hiện, reload giữ pause, reset dựng cảnh tĩnh, 4 kịch bản 1/2/5/6 chạy đủ; axe 0 violation; 390 px không tràn.
 - Build: shell 154,86 KB, gzip 52,96 KB; offline 3.156.457 byte. Chưa kiểm tra trên laptop 8 GB vật lý hoặc screen reader thật. Còn lại: benchmark phần cứng và kiểm tra đọc bằng công cụ hỗ trợ nếu cần tuyên bố WCAG chính thức. Câu hỏi mở: không.
-
-### 2026-11-26, Copilot: đối chiếu 12 nguyên tắc hoạt cảnh
-
-- Không sửa mã sản phẩm. Đã đọc Overshoot/Disney 12 principles và đối chiếu tween, camera, model động vật/thực vật, hiệu ứng và CSS. Ước tính: 8/12 nguyên tắc dùng rõ (staging, pose-to-pose, slow in/out, arcs, secondary action, timing/spacing, solid form, appeal); squash/stretch, anticipation, overlap/follow-through và exaggeration còn ở mức một phần.
-- Điểm mạnh: easing time-based và `outBack`/`outBounce` trong `js/core/tween.js`, camera staging/reduced-motion trong `js/three/stage.js`, curve/path/particle trong `js/three/fx.js`, các pose của gà/chuột/bướm và nhịp cánh/camera trong `js/models/*` và `js/experiments/*`.
-- Rủi ro cần xử lý trước khi tuyên bố WCAG đầy đủ: nhiều CSS/ambient loop tự chạy quá 5 giây (`css/app.css:108`, `:136`, `js/experiments/exp1.js:343`, `exp7.js:148`, `exp8.js:227`) không có nút pause/stop chung cho người dùng; `Lab.loop.pause/resume` tồn tại nhưng chưa nối ra UI. Một vài transition còn dùng `width`, `background`, `box-shadow` thay vì chỉ `transform`/`opacity` (`css/app.css:150`, `:298`). `node --test "tests/*.test.js"`: 155/155 đạt.
-- Đề xuất nếu áp dụng: thêm một nút "Tạm dừng hoạt cảnh" toàn site, giữ hoạt cảnh khoa học bắt buộc nhưng giảm/bỏ trang trí, chuẩn hóa anticipation 120–180 ms và follow-through nhẹ, không dùng squash/stretch/exaggeration làm sai kích thước sinh học. Chưa benchmark máy 8 GB thật trong lượt này; không có lỗi mới do review. Câu hỏi mở: không.
-
-### 2026-11-26, Copilot: thêm i18n và thống kê tiêu đề Svelte
-
-- Đã cài `@sveltia/i18n` 1.5.0, thêm bản Tiếng Việt/English cho trang chủ, tên nhóm, 8 tiêu đề thẻ và tiêu đề thanh thí nghiệm. Đã thêm `src/i18n.ts`, thống kê TypeScript trong `src/catalog.ts`, selector ngôn ngữ, số liệu 8/8/4/4 và chi tiết độ dài; lựa chọn được lưu bằng `lab.locale`.
-- Đã thay `check:modern` bằng `svelte-check-native` 1.12.2 chạy với TypeScript native preview 7, vẫn giữ `check:typescript` cho TypeScript 6.0.3. `npm run check:modern`: 0 error/0 warning. `npm run check:typescript`: đạt. `node --test "tests/*.test.js"`: 155/155 đạt. `npm audit --audit-level=high`: 0 lỗ hổng.
-- Build: `lab-modern.js` 154,89 KB, gzip 52,97 KB, dưới hạn mức 60 KB; file offline 3.153.713 byte. Trình duyệt `file://`: đổi Tiếng Việt/English đúng, giữ lựa chọn sau reload, tiêu đề bài 1 đổi theo locale nhưng gốc bài vẫn được đánh dấu `lang="vi"`; reset giữ tiêu đề và không tràn tại 390 px. Axe: 0 violation cho tiếng Việt/English và hết cảnh báo label-content-name-mismatch; phần contrast trên nền gradient/canvas vẫn cần kiểm tra tay.
-- Chỉ Sveltia I18n và bộ kiểm tra native được đưa vào; các gói DnD, OGL/GSAP, state, editor, backend, toast, skeleton, picker và animation copy/paste không được cài vì trùng hoặc chưa có nhu cầu. Chưa dịch nội dung khoa học bên trong thí nghiệm; chưa commit/push. Còn lại: xác nhận translation English với giáo viên nếu cần sửa cách diễn đạt. Câu hỏi mở: không.
-
-### 2026-11-26, Copilot: hoàn thành nâng cấp toàn bộ 8 thí nghiệm
-
-- Đã thêm trang chủ Svelte/Threlte (`src/`, `dist-modern/`), làm mới môi trường, vật liệu, hiệu ứng và bố cục 3D dùng chung, ba mức đồ họa, thao tác bàn phím cho kéo/thả và các hành động trong cảnh, focus dialog/panel, giảm chuyển động, tạm dừng khi tab ẩn, điện thoại dọc và file offline một tệp.
-- `npm run check:modern`: đạt. `node --test "tests/*.test.js"`: 152/152 đạt. `git --no-pager diff --check`: sạch. `npm run build`: shell 114.112 byte, gzip 40,34 KB; `Thi-nghiem-tat-ca-trong-1-file.html` 3.110.231 byte. Kiểm thử hiệu năng tự dựng lại artifact trước khi đo để không đọc file cũ.
-- Trình duyệt: 8 trạng thái đầu mở được từ `file://`, không có request mạng ngoài hay page error; 8 kịch bản mục tiêu chạy đủ, trong đó các trạng thái kết thúc 2/4/5/6/7/8 hoàn thành. Axe WCAG 2 A/AA và 2.1 A/AA: 0 violation cho trang chủ và 8 bài; các mục `color-contrast` trên canvas/gradient và `label-content-name-mismatch` còn cần kiểm tra tay. Ảnh 1024×768 và 390×844 không tràn ngang; picker bàn phím, focus bài 8, chế độ Nhẹ và hạt trong reduced motion đã kiểm tra trực tiếp.
-- Chưa chạy benchmark trên laptop 8 GB vật lý, chưa xác nhận đầy đủ WCAG thủ công với người dùng/thiết bị hỗ trợ và chưa commit hay push. Công cụ đọc usage không có trong phiên này nên không thể báo phần trăm giới hạn. Còn lại: người dùng kiểm tra hình thức/nội dung khoa học; không có lỗi đã biết hoặc câu hỏi mở.

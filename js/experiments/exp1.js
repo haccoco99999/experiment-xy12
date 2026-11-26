@@ -7,8 +7,15 @@
 
   var POS = { A: { x: -2.3, z: 0.45 }, B: { x: 2.3, z: 0.45 } };
   var OVERVIEW = { cx: 0, cy: 2.0, cz: 0.4, w: 7.6, h: 5.0, pitch: 0.33, fov: 34 };
+  var FOCUS_B = { cx: 2.3, cy: 2.0, cz: 0.45, w: 4.6, h: 4.9, pitch: 0.24, fov: 34 };
   var RESULTS = { cx: 0, cy: 2.0, cz: 0.4, w: 7.2, h: 4.9, pitch: 0.3, fov: 34 };
   var DAY_SECONDS = 2.6;
+  var CUES = {
+    water: { route: 'M18 14 C42 16 54 52 96 54', kind: 'water' },
+    gravel: { route: 'M18 14 C42 16 54 52 96 54', kind: 'gravel' },
+    blackBin: { route: 'M58 10 C58 30 58 42 58 58', kind: 'cover' },
+    clearBin: { route: 'M58 10 C58 30 58 42 58 58', kind: 'cover' }
+  };
 
   Lab.experiments.exp1 = { id: 'exp1', number: 1, title: MD.title, help: APP.help, create: create };
 
@@ -17,7 +24,8 @@
     var state = L.initialState();
     var pots = { A: null, B: null }, bins = { black: null, clear: null };
     var placards = {}, thermo, startBtn, busy = 0, lastAction = performance.now(), hintTimer = null;
-    var extraFx = [], coverLight = null, finished = false;
+    var extraFx = [], coverLight = null, finished = false, actionCue = null, actionFocused = false;
+    var actionCueWorld = new T.Vector3(POS.B.x, 3.7, POS.B.z);
 
     /* ------------------------------------------------------------------ helpers */
     function touch() { lastAction = performance.now(); UI.setCard('potA', { pulse: false }); UI.setCard('potB', { pulse: false }); startBtn.classList.remove('pulse'); }
@@ -25,6 +33,52 @@
     function msgFor(key) {
       if (!key || key === 'locked') return '';
       return MD.msg[key] || APP[key] || '';
+    }
+    function tapPlace(item) {
+      touch();
+      var card = UI.card(item.id);
+      if (card) Lab.drag.keyboardPlace(card, item);
+    }
+    function actionCueMarkup(kind) {
+      var cue = CUES[kind];
+      var cover = cue.kind === 'cover';
+      var particles = cover
+        ? '<circle class="exp1-action-cue-dot exp1-action-cue-dot--1" cx="58" cy="19" r="5"></circle>' +
+          '<circle class="exp1-action-cue-dot exp1-action-cue-dot--2" cx="58" cy="34" r="5"></circle>' +
+          '<circle class="exp1-action-cue-dot exp1-action-cue-dot--3" cx="58" cy="48" r="5"></circle>'
+        : '<circle class="exp1-action-cue-dot exp1-action-cue-dot--1" cx="28" cy="18" r="5"></circle>' +
+          '<circle class="exp1-action-cue-dot exp1-action-cue-dot--2" cx="49" cy="30" r="5"></circle>' +
+          '<circle class="exp1-action-cue-dot exp1-action-cue-dot--3" cx="72" cy="45" r="5"></circle>';
+      return '<svg class="exp1-action-cue-svg exp1-action-cue-svg--' + cue.kind + '" viewBox="0 0 116 70" aria-hidden="true" focusable="false">' +
+        '<rect class="exp1-action-cue-bg" x="4" y="4" width="108" height="62" rx="22"></rect>' +
+        '<path class="exp1-action-cue-route" pathLength="1" d="' + cue.route + '"></path>' +
+        particles +
+        '<path class="exp1-action-cue-target" d="' + (cover ? 'M46 48 L58 60 L70 48' : 'M84 46 L96 58 L108 46') + '"></path>' +
+        '</svg>';
+    }
+    async function beginAction(kind) {
+      clearActionCue();
+      actionCueWorld.y = kind === 'blackBin' || kind === 'clearBin' ? 4.9 : 3.7;
+      actionCue = Lab.labels.add({
+        html: actionCueMarkup(kind),
+        cls: 'exp1-action-cue',
+        world: actionCueWorld,
+        anchor: 'center'
+      });
+      if (Lab.loop.prefersReducedMotion()) return;
+      actionFocused = true;
+      await Lab.stage.shot(FOCUS_B, 650);
+    }
+    function clearActionCue() {
+      if (!actionCue) return;
+      actionCue.remove();
+      actionCue = null;
+    }
+    async function endAction() {
+      clearActionCue();
+      if (!actionFocused) return;
+      actionFocused = false;
+      await Lab.stage.shot(OVERVIEW, Lab.loop.prefersReducedMotion() ? 0 : 720);
     }
     function tipOffset(obj, tilt) {                  // where the "mouth" ends up after tilting an object about z
       var p = obj.userData.tip.position, c = Math.cos(tilt), s = Math.sin(tilt);
@@ -48,7 +102,7 @@
       { id: 'gravel', label: MD.tray.gravel, thumb: th.gravel },
       { id: 'blackBin', label: MD.tray.blackBin, thumb: th.black },
       { id: 'clearBin', label: MD.tray.clearBin, thumb: th.clear }
-    ], { onClick: function (item) { if (item.id === 'potA' || item.id === 'potB') showInfo(); } });
+    ], { onClick: tapPlace });
 
     /* ------------------------------------------------------------------ side panel: thermostat + start */
     thermo = UI.thermostat({
@@ -176,6 +230,7 @@
     async function doWater() {
       toolStart('water');
       var pot = pots.B, can = Mo.wateringCan(), tilt = -0.78, off = tipOffset(can, tilt), soil = pot.soilPoint();
+      await beginAction('water');
       await flyIn(can, { x: soil.x - off.x, y: 2.6 - off.y, z: soil.z + 0.2 }, { x: soil.x - off.x - 3.2, y: 5.6, z: soil.z + 0.2 });
       await Lab.tween.anticipate(can.rotation, 'z', 0.08, 0.16);
       await Lab.tween.to(can.rotation, { z: tilt }, 0.55, { ease: 'inOutCubic' }).promise;
@@ -186,6 +241,7 @@
       await Lab.tween.to(can.rotation, { z: 0 }, 0.35).promise;
       await flyAway(can, 3.4, 3);
       UI.toast(MD.status.water[0], { type: 'ok' });
+      await endAction();
       toolEnd('water');
     }
 
@@ -194,6 +250,7 @@
       var pot = pots.B, gp = Mo.gravelPot(), tilt = -2.0, off = tipOffset(gp, tilt), soil = pot.soilPoint();
       gp.userData.tip.position.set(0, 0.84, 0);
       off = tipOffset(gp, tilt);
+      await beginAction('gravel');
       await flyIn(gp, { x: soil.x - off.x, y: 2.7 - off.y, z: soil.z + 0.1 }, { x: soil.x - 3, y: 5.6, z: soil.z + 0.1 });
       await Lab.tween.anticipate(gp.rotation, 'z', 0.1, 0.16);
       await Lab.tween.to(gp.rotation, { z: tilt }, 0.6, { ease: 'inOutCubic' }).promise;
@@ -205,6 +262,7 @@
       await Lab.tween.to(gp.rotation, { z: 0 }, 0.35).promise;
       await flyAway(gp, -3, 3);
       UI.toast(MD.status.minerals[1], { type: 'warn', emoji: '🪨' });
+      await endAction();
       toolEnd('gravel');
     }
 
@@ -212,6 +270,7 @@
       var id = which === 'black' ? 'blackBin' : 'clearBin';
       busy++; refreshUI();
       var bin = which === 'black' ? Mo.blackBin() : Mo.clearBin(), x = POS.B.x, z = POS.B.z;
+      await beginAction(id);
       bin.position.set(x, 8.5, z); scene.add(bin);
       bins[which] = bin;
       var other = bins.black;
@@ -222,8 +281,8 @@
       if (which === 'clear' && other) await Lab.tween.to(other.position, { y: 0 }, 0.4, { ease: 'outBounce' }).promise;
       if (which === 'clear') Lab.tween.value(3.5, function (k) { bin.userData.setMist(0.35 + 0.35 * k); }, { ease: 'outQuad' });
       UI.toast(which === 'black' ? MD.status.light[1] : MD.status.air[1], { type: 'warn', emoji: which === 'black' ? '🌑' : '🫧' });
+      await endAction();
       busy--; refreshUI();
-      void id;
     }
 
     /* ------------------------------------------------------------------ start → 14-day time-lapse → results */
@@ -354,7 +413,7 @@
     Lab.loop.wake();
 
     return {
-      dispose: function () { clearInterval(hintTimer); Lab.stage.onPick(null); extraFx.forEach(function (f) { if (f && f.stop) f.stop(); }); },
+      dispose: function () { clearInterval(hintTimer); clearActionCue(); Lab.stage.onPick(null); extraFx.forEach(function (f) { if (f && f.stop) f.stop(); }); },
       /* small handle for automated tests */
       api: {
         state: function () { return state; }, pots: pots, bins: bins, drop: handleDrop, start: onStartClick,

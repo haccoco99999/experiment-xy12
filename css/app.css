@@ -357,6 +357,22 @@ a.btn { display: block; text-align: center; text-decoration: none; line-height: 
 .tag3d .cond-row.num .mark { padding-right: 0; width: auto; }
 .tag3d .ct { margin-bottom: 4px; font-size: 13.5px; }
 
+/* ---------- experiment 1: lightweight SVG action cues ---------- */
+.tag3d.exp1-action-cue { width: 116px; height: 70px; padding: 0; border: 0; background: transparent; border-radius: 0; box-shadow: none; pointer-events: none; }
+.exp1-action-cue-svg { display: block; width: 100%; height: 100%; overflow: visible; color: var(--secondary-c); }
+.exp1-action-cue-svg--water { color: #2f9bc8; }
+.exp1-action-cue-svg--gravel { color: #9a6843; }
+.exp1-action-cue-svg--cover { color: #52635a; }
+.exp1-action-cue-bg { fill: rgba(255, 255, 255, .94); stroke: rgba(35, 93, 54, .18); stroke-width: 2; }
+.exp1-action-cue-route { fill: none; stroke: currentColor; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: exp1CueDraw .62s cubic-bezier(.2, .75, .25, 1) forwards; }
+.exp1-action-cue-dot { fill: currentColor; opacity: 0; transform-box: fill-box; transform-origin: center; animation: exp1CueDot 1.15s ease-in-out 2; }
+.exp1-action-cue-dot--2 { animation-delay: .16s; }
+.exp1-action-cue-dot--3 { animation-delay: .32s; }
+.exp1-action-cue-target { fill: none; stroke: currentColor; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform-box: fill-box; transform-origin: center; animation: exp1CueTarget .3s ease-out .46s forwards; }
+@keyframes exp1CueDraw { to { stroke-dashoffset: 0; } }
+@keyframes exp1CueDot { 0%, 100% { opacity: .15; transform: translateY(-3px) scale(.85); } 50% { opacity: 1; transform: translateY(3px) scale(1.05); } }
+@keyframes exp1CueTarget { from { opacity: 0; transform: translateY(-4px) scale(.88); } to { opacity: 1; transform: none; } }
+
 /* ---------- toasts, captions, dialogs ---------- */
 #toasts { position: absolute; left: 50%; top: var(--top); transform: translateX(-50%); z-index: 30; width: min(600px, 58vw); display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .toast { display: flex; align-items: center; gap: 12px; max-width: 100%; padding: 12px 20px 12px 16px; background: rgba(255, 255, 255, .97); border-left: 8px solid var(--secondary-c);
@@ -451,6 +467,9 @@ canvas.confetti { position: fixed; inset: 0; z-index: 80; pointer-events: none; 
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .exp1-action-cue-route, .exp1-action-cue-dot, .exp1-action-cue-target { animation: none !important; transform: none; }
+  .exp1-action-cue-route { stroke-dashoffset: 0; }
+  .exp1-action-cue-dot, .exp1-action-cue-target { opacity: 1; }
 }
 body.is-page-hidden *, body.is-page-hidden *::before, body.is-page-hidden *::after,
 body.is-motion-paused *, body.is-motion-paused *::before, body.is-motion-paused *::after { animation-play-state: paused !important; }

@@ -327,3 +327,21 @@ test('keyboard placement refreshes target geometry before listing and dropping',
   assert.deepStrictEqual(JSON.parse(JSON.stringify(dropped.point)), { x: 180, y: 50 });
   assert.ok(reads >= 3, 'dropping refreshes the target again');
 });
+
+test('Experiment 1 tap placement and staged cues preserve shared controls', () => {
+  const exp1 = source('js/experiments/exp1.js');
+  const css = source('css/app.css');
+
+  assert.match(exp1, /function tapPlace\(item\)[\s\S]*Lab\.drag\.keyboardPlace\(card, item\)/);
+  assert.match(exp1, /onClick: tapPlace/);
+  assert.match(exp1, /await beginAction\('water'\)/);
+  assert.match(exp1, /await beginAction\('gravel'\)/);
+  assert.match(exp1, /await beginAction\(id\)/);
+  assert.match(exp1, /Lab\.loop\.prefersReducedMotion\(\)/);
+  assert.match(exp1, /Lab\.stage\.shot\(FOCUS_B, 650\)/);
+  assert.match(exp1, /Lab\.stage\.shot\(OVERVIEW, Lab\.loop\.prefersReducedMotion\(\) \? 0 : 720\)/);
+  assert.match(exp1, /pathLength="1"/);
+  assert.match(css, /\.exp1-action-cue-route[^}]*stroke-dashoffset: 1/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.exp1-action-cue-route, \.exp1-action-cue-dot, \.exp1-action-cue-target/);
+  assert.match(css, /body\.is-motion-paused \*.*animation-play-state: paused/s);
+});

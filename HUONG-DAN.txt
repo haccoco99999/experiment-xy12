@@ -50,6 +50,8 @@ Học sinh vẫn có thể kéo dụng cụ bằng chuột hoặc ngón tay. Ngo
 3. Chọn vị trí trong danh sách hiện ra, rồi bấm Enter.
 4. Bấm Escape để hủy chọn.
 
+Trên điện thoại, học sinh có thể chạm hoặc nhấp nhanh vào một dụng cụ. Trang hiện danh sách vị trí phù hợp để chọn bằng một lần chạm.
+
 Với thao tác trong cảnh 3D như chuyển khí, nối ống phấn, cho bướm giao phối hoặc đưa tinh trùng tới trứng, bảng điều khiển có nút chữ tương ứng. Nhấn nút đó chạy cùng thao tác với cách kéo trong cảnh.
 
 Ở thanh trên cùng có mục "Chất lượng đồ họa". Chọn "Nhẹ" cho máy chậm, "Cân bằng" cho đa số máy, hoặc "Đẹp" cho máy đủ mạnh. Lựa chọn được nhớ trên máy.
@@ -72,6 +74,8 @@ Có hai chậu đậu xanh. Chậu A là chậu đối chứng, luôn đủ 5 y�
 4. Bấm "BẮT ĐẦU THÍ NGHIỆM". Bấm xong thì không đổi được điều kiện nữa.
 5. Cây lớn lên hoặc héo qua Ngày 1, Ngày 3, Ngày 7 và Ngày 14. Sau đó màn hình hiện "14 NGÀY SAU", bảng so sánh hai chậu và chiều cao của từng cây.
 6. Bấm thẻ "Quan sát chậu B" để đọc mô tả chi tiết.
+
+Khi rót nước, rải sỏi hoặc đặt thùng, camera đưa chậu B vào giữa và một mũi tên SVG nhỏ chỉ hướng thao tác. Sau đó camera trở lại góc nhìn hai chậu. Nếu hệ điều hành bật giảm chuyển động, camera giữ nguyên góc nhìn và mũi tên hiện ở trạng thái tĩnh.
 
 Nút nhiệt độ và nút "BẮT ĐẦU THÍ NGHIỆM" bị khóa cho đến khi hai chậu nằm trên bàn.
 

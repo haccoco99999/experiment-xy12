@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "skills": {
+    "60fps-animation": {
+      "source": "iart-ai/web-animation-skills",
+      "commit": "ed3a045192679b24d32090ee7a983871311ababd",
+      "sourceType": "github",
+      "skillPath": "skills/60fps-animation/SKILL.md",
+      "computedHash": "3783bf5371256b4a496fb3a3ee3e345a66887dc9141091b49984e47bad822811",
+      "installMode": "copy"
+    },
+    "accessible-animation": {
+      "source": "iart-ai/web-animation-skills",
+      "commit": "ed3a045192679b24d32090ee7a983871311ababd",
+      "sourceType": "github",
+      "skillPath": "skills/accessible-animation/SKILL.md",
+      "computedHash": "396a43fbb461daa4cb93a2795910459ae96c82937f965906b2b84f2703aef76c",
+      "installMode": "copy"
+    },
+    "svelte-code-writer": {
+      "source": "sveltejs/ai-tools",
+      "commit": "f9d22f2f7f7cd5e4596eef5d108a69ac8f0dd48d",
+      "sourceType": "github",
+      "skillPath": "tools/skills/svelte-code-writer/SKILL.md",
+      "computedHash": "8eccb2e23091d482aeaca1c95db6c5aa34d055ac2d0c9797efbbecbe5a8e4fd0",
+      "installMode": "copy"
+    },
+    "svelte-core-bestpractices": {
+      "source": "sveltejs/ai-tools",
+      "commit": "f9d22f2f7f7cd5e4596eef5d108a69ac8f0dd48d",
+      "sourceType": "github",
+      "skillPath": "tools/skills/svelte-core-bestpractices/SKILL.md",
+      "computedHash": "32070b91f54f92dba3f6e1739d82bf944c14e7a4a75cfe609a59bf1117c34338",
+      "installMode": "copy"
+    },
+    "svg-animation": {
+      "source": "iart-ai/web-animation-skills",
+      "commit": "ed3a045192679b24d32090ee7a983871311ababd",
+      "sourceType": "github",
+      "skillPath": "skills/svg-animation/SKILL.md",
+      "computedHash": "cfcf1a801009db1ee4d5141c749acbf6c5eff23534610c4ac3c87c16580809df",
+      "installMode": "copy"
+    },
+    "threejs-animation": {
+      "source": "CloudAI-X/threejs-skills",
+      "commit": "0e181866f095b5f06d005133876e926515390d95",
+      "sourceType": "github",
+      "skillPath": "skills/threejs-animation/SKILL.md",
+      "computedHash": "2686d953e17a59121254760b34b3af59c861a29fac28cd5f40f9b054e916ccfb",
+      "installMode": "copy"
+    },
+    "threejs-interaction": {
+      "source": "CloudAI-X/threejs-skills",
+      "commit": "0e181866f095b5f06d005133876e926515390d95",
+      "sourceType": "github",
+      "skillPath": "skills/threejs-interaction/SKILL.md",
+      "computedHash": "160f06e61488f74734eaf75ef51e8a55624777e3ffa3d6a0fd4f325813ceff87",
+      "installMode": "copy"
+    },
+    "threejs-performance": {
+      "source": "CloudAI-X/threejs-skills",
+      "commit": "0e181866f095b5f06d005133876e926515390d95",
+      "sourceType": "github",
+      "skillPath": "skills/threejs-performance/SKILL.md",
+      "computedHash": "edc078cf2cb729eb4a808ee3c202f4bdbda40a0beb6e34f2cf7b1f5003f11783",
+      "installMode": "copy"
+    }
+  }
+}

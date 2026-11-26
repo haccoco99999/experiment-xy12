@@ -48,6 +48,19 @@ test('.agents/skills files are identical to the masters', () => {
   });
 });
 
+test('the selected animation and Svelte skills are installed and locked', () => {
+  const names = [
+    'threejs-animation', 'threejs-interaction', 'threejs-performance',
+    'svg-animation', 'accessible-animation', '60fps-animation',
+    'svelte-code-writer', 'svelte-core-bestpractices'
+  ];
+  const lock = JSON.parse(read('skills-lock.json'));
+  names.forEach((name) => {
+    assert.ok(lock.skills[name], name + ' is missing from skills-lock.json');
+    assert.ok(fs.existsSync(path.join(root, '.claude', 'skills', name, 'SKILL.md')), name + ' is missing from the master folder');
+  });
+});
+
 test('HANDOFF.md exists and points to AGENTS.md', () => {
   const t = read('HANDOFF.md');
   assert.ok(t.includes('AGENTS.md') && /log/i.test(t));
